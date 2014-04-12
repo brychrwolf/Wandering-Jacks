@@ -1,11 +1,39 @@
-
+/**
+ *
+ * @author Bryan Wolfford
+ * @version %I%, %G%
+ *
+ */
 
 public class WanderingJacks {
+	/**
+	 *
+	 */
 	Deck deck;
+	/**
+	 *
+	 */
 	DiscardPile discardPile;
-	Player player, dealer;
-	Retainer[] playerRetainer, dealerRetainer;
+	/**
+	 *
+	 */
+	Player player;
+	/**
+	 *
+	 */
+	Player dealer;
+	/**
+	 *
+	 */
+	Retainer[] playerRetainer;
+	/**
+	 *
+	 */
+	Retainer[] dealerRetainer;
 
+	/**
+	 * This constructor is...
+	 */
 	WanderingJacks(){
 		boolean includeJokers = true;
 		deck = new Deck(includeJokers);
@@ -43,6 +71,10 @@ public class WanderingJacks {
 		}System.out.println("Game Over.");
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public boolean isGameOver(){
 		// Player wins
 		if(playerRetainer[0].retainsJack()
@@ -62,6 +94,9 @@ public class WanderingJacks {
 		}else return false;
 	}
 
+	/**
+	 *
+	 */
 	public void setUpGameEnvironment(){
 		// shuffle deck
 		deck.shuffleAllCards();
@@ -97,6 +132,10 @@ public class WanderingJacks {
 		discardPile.discard(deck.dealCard());
 	}
 
+	/**
+	 *
+	 * @param card
+	 */
 	public void validMoves(Card card){
 		switch(card.getValueAsString()){
 		case "Jack":
@@ -189,6 +228,9 @@ public class WanderingJacks {
 		}
 	}
 
+	/**
+	 *
+	 */
 	public void endTurn(){
 		//multiple queens steal Jacks (or Kings) from stacks built on 10s
 		//multiple 10s steal Jacks (or Kings) from stacks built on Queens

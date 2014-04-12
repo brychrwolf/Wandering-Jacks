@@ -1,15 +1,32 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-
+/**
+ *
+ * @author Initia7_B
+ *
+ */
 public class Deck{
+	/**
+	 *
+	 */
 	private Stack<Card> deck = new Stack<Card>();
+	/**
+	 *
+	 */
 	private boolean includesJokers;
 
+	/**
+	 *
+	 */
 	public Deck(){
 		this(false);
 	}
 
+	/**
+	 *
+	 * @param includeJokers
+	 */
 	public Deck(boolean includeJokers){
 		if(includeJokers) includesJokers = true;
 		else includesJokers = false;
@@ -25,6 +42,9 @@ public class Deck{
 		}
 	}
 
+	/**
+	 *
+	 */
 	public void shuffleAllCards(){
 		List<Card> tempDeck = new ArrayList<Card>();
 		for(int suit = 0; suit <= 3; suit++){
@@ -40,6 +60,10 @@ public class Deck{
 		}
 	}
 
+	/**
+	 *
+	 * @param otherCards
+	 */
 	public void shuffleWithOtherCards(Stack<Card> otherCards){
 		Stack<Card> tempDeck = deck;
 		for(Card card : otherCards) tempDeck.push(card);
@@ -51,16 +75,28 @@ public class Deck{
 		}
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public int cardsLeft(){
 		return deck.size();
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public Card dealCard(){
 		if(deck.size() <= 0)
 			throw new IllegalStateException("No cards are left in the deck.");
 		return deck.pop();
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public boolean hasJokers(){
 		return includesJokers;
 	}
