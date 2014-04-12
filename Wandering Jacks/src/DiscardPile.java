@@ -1,18 +1,20 @@
 import java.util.Stack;
 /**
- *
+ * A discard pile is a stack of cards, facing up, typically found next to a
+ * Deck of cards (which faces down). A discard pile begins with zero cards, but
+ * can grow to any size as more cards are "discarded" (added to the pile).
+ * Cards may also be taken from the top, removing it from the pile completely.
  * @author Initia7_B
- *
+ * @version %I%, %G%
  */
 public class DiscardPile {
-	/**
-	 *
-	 */
 	private Stack<Card> discardPile = new Stack<Card>();
 
 	/**
-	 *
-	 * @return
+	 * Returns a single card from the top of the pile.
+	 * @return a single card from the top of the pile. Actually removes the
+	 * card from the pile so that the card will no longer exist in the pile.
+	 * @throws IllegalStateException if there are now cards in the pile to take
 	 */
 	public Card takeCard(){
 		if(discardPile.size() <= 0)
@@ -21,39 +23,40 @@ public class DiscardPile {
 	}
 
 	/**
-	 *
-	 * @param c
+	 * Adds a single card to the top of the pile.
+	 * @param c Card that was added to the top of the pile.
 	 */
 	public void discard(Card c){
 		discardPile.push(c);
 	}
 
 	/**
-	 *
-	 * @return
+	 * Returns the card that is on the top of the pile.
+	 * @return the card that is on the top of the pile. Does NOT remove card
+	 * from the pile.
 	 */
 	public Card peekAtTopCard(){
 		return discardPile.peek();
 	}
 
 	/**
-	 *
-	 * @return
+	 * Returns the entire discard pile.
+	 * @return the entire pile of discarded cards.
 	 */
 	public Stack<Card> getDiscardPile(){
 		return discardPile;
 	}
 
 	/**
-	 *
+	 * Removes every card from the discard pile resulting in an empty pile.
 	 */
 	public void empty(){
 		discardPile = new Stack<Card>();
 	}
 
 	/**
-	 *
-	 * @return
+	 * Returns true is the discard pile is empty.
+	 * @return true if the discard pile is empty, and false otherwise.
 	 */
 	public boolean isEmpty(){
 		return discardPile.isEmpty();
