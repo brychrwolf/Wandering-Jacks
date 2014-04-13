@@ -1,16 +1,68 @@
-/* Adapted from http://math.hws.edu/javanotes/c5/s4.html */
-
+/**
+ * A Card is one of the 53 unique cards found in a standard deck of 54 cards.
+ * It has a suit and a value, (for Jokers, both are set to Joker).
+ * <ul>
+ *  <li>Suits
+ *   <ul>
+ * 	  <li>Spades</li>
+ * 	  <li>Hearts</li>
+ * 	  <li>Diamonds</li>
+ * 	  <li>Clubs</li>
+ * 	  <li>Jokers</li>
+ *   </ul>
+ * 	</li>
+ * 	<li>Values
+ * 	 <ul>
+ * 	  <li>Aces</li>
+ * 	  <li>2s-10s</li>
+ * 	  <li>Jacks</li>
+ * 	  <li>Queens</li>
+ * 	  <li>Kings</li>
+ * 	  <li>Jokers</li>
+ *   </ul>
+ * 	</li>
+ * </ul>
+ *
+ * @author Bryan Wolfford
+ * @version %I%, %G%
+ */
 public class Card {
-
+	/**
+	 * An arbitrary integer code for the suit, Spades.
+	 */
    public final static int SPADES = 0;   // Codes for the 4 suits, plus Joker.
+   /**
+    * An arbitrary integer code for the suit, Hearts.
+    */
    public final static int HEARTS = 1;
+   /**
+    * An arbitrary integer code for the suit, Diamonds.
+    */
    public final static int DIAMONDS = 2;
+   /**
+    * An arbitrary integer code for the suit, Clubs.
+    */
    public final static int CLUBS = 3;
+   /**
+    * An arbitrary integer code for the suit and value of Jokers.
+    */
    public final static int JOKER = 4;
 
+   /**
+    * An integer code for the value of Aces.
+    */
    public final static int ACE = 1;      // Codes for the non-numeric cards.
+   /**
+    * An integer code for the value of Jacks.
+    */
    public final static int JACK = 11;    //   Cards 2 through 10 have their
+   /**
+    * An integer code for the value of Queens.
+    */
    public final static int QUEEN = 12;   //   numerical values for their codes.
+   /**
+    * An integer code for the value of Kings.
+    */
    public final static int KING = 13;
 
    /**
@@ -136,6 +188,4 @@ public class Card {
       else
          return getValueAsString() + " of " + getSuitAsString();
    }
-
-
-} // end class Card
+}
