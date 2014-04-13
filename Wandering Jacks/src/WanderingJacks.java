@@ -1,38 +1,59 @@
 /**
- *
+ * Wandering Jacks is a two-player card game.
+ * <p>
+ * Wandering Jacks is a two-player, competitive card game that uses a single,
+ * standard deck of cards (including the Jokers) and was authored by Xawn
+ * Alexander, a Mensan from the USA, in conjunction with a novel which is
+ * currently unnamed and still in development.
+ * <p>
+ * Full game rules can be found at the private repo wiki:
+ * https://bitbucket.org/brychrwolf/wandering-jacks/wiki/Home
  * @author Bryan Wolfford
  * @version %I%, %G%
- *
+ * @see Deck
+ * @see DiscardPile
+ * @see Player
+ * @see Retainer
  */
 
 public class WanderingJacks {
 	/**
-	 *
+	 * A standard deck of 54 cards (52 + 2 Jokers)used in the game. Its
+	 * contents are "random" and secret.
+	 * @see Deck
 	 */
 	Deck deck;
 	/**
-	 *
+	 * The discard pile where discarded cards go. Its contents are known.
+	 * @see DiscardPile
 	 */
 	DiscardPile discardPile;
 	/**
-	 *
+	 * One of the two players in the game. Has a hand of cards, and a
+	 * bankroll with which to bet. Plays the part of the gambler.
+	 * @see Player
 	 */
 	Player player;
 	/**
-	 *
+	 * One of the two players in the game. Has a hand of cards, and a
+	 * bankroll with which to bet. Plays the part of the house.
+	 * @see Player
 	 */
 	Player dealer;
 	/**
-	 *
+	 * An array of the player's 4 retainers.
+	 * @see Retainer
 	 */
 	Retainer[] playerRetainer;
 	/**
-	 *
+	 * An array of the dealer's 4 retainers.
+	 * @see Retainer
 	 */
 	Retainer[] dealerRetainer;
 
 	/**
-	 * This constructor is...
+	 * Creates the game environment with two players, their array of 4
+	 * retainers each, the deck, and discard pile.
 	 */
 	WanderingJacks(){
 		boolean includeJokers = true;
@@ -72,8 +93,11 @@ public class WanderingJacks {
 	}
 
 	/**
-	 *
-	 * @return
+	 * Returns true if the game is over.
+	 * <p>
+	 * The game is over if the player or dealer ever has all 4 Jacks, one each in
+	 * their retainers, or if the player's bankroll ever reaches or goes below 0.
+	 * @return true is the game is over, false if otherwise.
 	 */
 	public boolean isGameOver(){
 		// Player wins
@@ -95,7 +119,7 @@ public class WanderingJacks {
 	}
 
 	/**
-	 *
+	 * Set up the game environment.
 	 */
 	public void setUpGameEnvironment(){
 		// shuffle deck
@@ -133,8 +157,10 @@ public class WanderingJacks {
 	}
 
 	/**
-	 *
-	 * @param card
+	 * This is a placeholder for a function that would either validate a given
+	 * move or enumerate all the possible moves that a player may have, thus is
+	 * currently unusable.
+	 * @param card the Card from which the list of moves is evaluated against
 	 */
 	public void validMoves(Card card){
 		switch(card.getValueAsString()){
@@ -229,7 +255,8 @@ public class WanderingJacks {
 	}
 
 	/**
-	 *
+	 * This cleans up the state of the game environment at the end of every turn
+	 * as provided by the rules of the game.
 	 */
 	public void endTurn(){
 		//multiple queens steal Jacks (or Kings) from stacks built on 10s
