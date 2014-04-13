@@ -11,7 +11,6 @@ import java.util.Stack;
  */
 public class Deck{
 	private Stack<Card> deck = new Stack<Card>();
-	private boolean includesJokers;
 
 	/**
 	 * Alias of Deck(false);
@@ -27,8 +26,6 @@ public class Deck{
 	 * @see Card
 	 */
 	public Deck(boolean includeJokers){
-		if(includeJokers) includesJokers = true;
-		else includesJokers = false;
 
 		for(int suit = 0; suit <= 3; suit++){
 			for(int value = 1; value <= 13; value++){
@@ -100,15 +97,5 @@ public class Deck{
 		if(deck.size() <= 0)
 			throw new IllegalStateException("No cards are left in the deck.");
 		return deck.pop();
-	}
-
-	/**
-	 * Returns true if the deck was originally constructed with Jokers.
-	 * @return true if the deck was originally constructed with Jokers, false
-	 * if otherwise. Note that Jokers added after the deck construction will not
-	 * affect this value.
-	 */
-	public boolean hasJokers(){
-		return includesJokers;
 	}
 }
