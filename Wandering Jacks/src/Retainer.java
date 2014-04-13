@@ -32,6 +32,7 @@ public class Retainer {
 	 * @param target is the card that is searched for in the retainer.
 	 * @return true only if the target card is found within the retainer, and
 	 * false if otherwise.
+	 * @see Card
 	 */
 	public boolean contains(Card target){
 		return retainer.contains(target);
@@ -44,6 +45,7 @@ public class Retainer {
 	 * in the retainer
 	 * @return true only if the target value is found within the retainer, and
 	 * false if otherwise.
+	 * @see Card
 	 */
 	public boolean contains(String targetValue){
 		boolean found = false;
@@ -65,6 +67,7 @@ public class Retainer {
 	 * Adds a Card to the top of the retainer. Restrictions about which cards
 	 * may be put on which retainers are defined in the rules of the game.
 	 * @param card the Card that is to be put in the retainer.
+	 * @see Card
 	 */
 	public void add(Card card){
 		retainer.add(card);
@@ -75,6 +78,7 @@ public class Retainer {
 	/**
 	 * Removes the given card from the retainer.
 	 * @param card the card to remove from the retainer.
+	 * @see Card
 	 */
 	public void remove(Card card){
 		retainer.remove(card);

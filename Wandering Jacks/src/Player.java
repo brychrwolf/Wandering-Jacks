@@ -6,6 +6,7 @@ import java.util.List;
  * "hand" and a "bankroll" of money from which they may make bets.
  * @author Bryan Wolfford
  * @version %I%, %G%
+ * @see Card
  */
 public class Player {
 	private int bankroll;
@@ -38,6 +39,7 @@ public class Player {
 	/**
 	 * Returns the list of cards held in the Player's hand.
 	 * @return the entire List<Card> of the Player's hand.
+	 * @see Card
 	 */
 	public List<Card> getHand() {
 		return hand;
@@ -46,6 +48,7 @@ public class Player {
 	/**
 	 * Adds a card to the secret list of cards in the Player's hand.
 	 * @param c the card to be added to the Player's hand.
+	 * @see Card
 	 */
 	public void addToHand(Card c){
 		hand.add(c);
@@ -56,6 +59,7 @@ public class Player {
 	 * @param c the card to be removed and returned.
 	 * @return the card that was removed from the Player's hand (if it exists).
 	 * @throws NullPointerException if the card does not exists in hand.
+	 * @see Card
 	 */
 	public Card playFromHand(Card c){
 		if(hand.contains(c))
@@ -69,6 +73,7 @@ public class Player {
 	 * @param i the index of the card to be removed and returned.
 	 * @return the card that was removed from the Player's hand (if it exists).
 	 * @throws IndexOutOfBoundsException if the index does not exist.
+	 * @see Card
 	 */
 	public Card playFromHand(int i){
 		Card c;
