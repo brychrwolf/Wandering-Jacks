@@ -4,6 +4,33 @@ import org.junit.Test;
 
 
 public class DeckTest {
+	@Test
+	public void shuffleSizeTest(){
+		/**
+		 * This test ensures that shuffling a deck, returns a deck with the same size.
+		 * <p>
+		 * Test is achieved by recording the deck's size, shuffling the deck,
+		 * asserting that the deck size hasn't changed, then popping a card off
+		 * the deck repeating.
+		 */
+		Deck seedDeck = new Deck(true);
+		int sizeBefore;
+		int sizeAfter;
+		while(seedDeck.cardsLeft() > 0){
+			sizeBefore = seedDeck.cardsLeft();
+			seedDeck.shuffleAllCards();
+			sizeAfter = seedDeck.cardsLeft();
+			assertTrue(sizeBefore == sizeAfter);
+			seedDeck.dealCard();
+		}
+	}
+
+	@Test
+	public void shuffleContentsTest(){
+		/**
+		 * This test ensures that shuffling a deck, returns a deck with the same contents
+		 */
+	}
 
 	@Test
 	public void shuffleTest() {
