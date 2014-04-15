@@ -18,7 +18,7 @@ public class DeckTest {
 		int sizeAfter;
 		while(seedDeck.cardsLeft() > 0){
 			sizeBefore = seedDeck.cardsLeft();
-			seedDeck.shuffleAllCards();
+			seedDeck.shuffle();
 			sizeAfter = seedDeck.cardsLeft();
 			assertTrue(sizeBefore == sizeAfter);
 			seedDeck.dealCard();
@@ -28,8 +28,24 @@ public class DeckTest {
 	@Test
 	public void shuffleContentsTest(){
 		/**
-		 * This test ensures that shuffling a deck, returns a deck with the same contents
+		 * This test ensures that shuffling a deck, returns a deck with the same contents.
+		 * <p>
+		 * Test is achieved by recording the deck's size, shuffling the deck,
+		 * asserting that the deck size hasn't changed, then popping a card off
+		 * the deck repeating.
 		 */
+		// get two initial contents
+		Deck initialDeck1 = new Deck(true);
+		Deck initialDeck2 = new Deck(true);
+		// get another copy of initial contents and shuffle it
+		Deck shuffledDeck = new Deck(true);
+		shuffledDeck.shuffle();
+		// assert that all the cards in the initial1 set are in the shuffled set
+		while(initialDeck1.cardsLeft() > 0)
+			assertTrue(shuffledDeck.contains(initialDeck1.dealCard()));
+		// assert that all the cards in the shuffled set are in the initial2 set
+		while(shuffledDeck.cardsLeft() > 0)
+			assertTrue(initialDeck2.contains(shuffledDeck.dealCard()));
 	}
 
 	@Test
@@ -52,7 +68,7 @@ public class DeckTest {
 		// Create a new deck, shuffle it, then put that in a new array
 		seedDeck = new Deck(true);
 		Card[] shuffledDeck = new Card[deckSize];
-		seedDeck.shuffleAllCards();
+		seedDeck.shuffle();
 		for(int i = 0; i < deckSize; i++)
 			shuffledDeck[i] = seedDeck.dealCard();
 		// count the number of differences between the two arrays
