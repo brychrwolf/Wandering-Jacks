@@ -27,7 +27,7 @@ public class Deck{
 	 */
 	public Deck(boolean includeJokers){
 
-		for(int suit = 0; suit <= 3; suit++){
+		for(int suit = 1; suit <= 4; suit++){
 			for(int value = 1; value <= 13; value++){
 				deck.push(new Card(value,suit));
 			}

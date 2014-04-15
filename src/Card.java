@@ -28,9 +28,9 @@
  */
 public class Card {
 	/**
-	 * An arbitrary integer code for the suit, Spades.
+	 * An arbitrary integer code for the suit and value of Jokers.
 	 */
-   public final static int SPADES = 0;   // Codes for the 4 suits, plus Joker.
+   public final static int JOKER = 0;   // Codes for the 4 suits, plus Joker.
    /**
     * An arbitrary integer code for the suit, Hearts.
     */
@@ -44,9 +44,9 @@ public class Card {
     */
    public final static int CLUBS = 3;
    /**
-    * An arbitrary integer code for the suit and value of Jokers.
+    * An arbitrary integer code for the suit, Spades.
     */
-   public final static int JOKER = 4;
+   public final static int SPADES = 4;
 
    /**
     * An integer code for the value of Aces.

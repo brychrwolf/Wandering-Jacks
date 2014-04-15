@@ -124,17 +124,17 @@ public class WanderingJacks {
 	public void setUpGameEnvironment(){
 		// shuffle deck
 		deck.shuffle();
-		// deal a card to each players' retainers, alternating between each player, discarding Jacks, Aces, and Jokers
+		// deal a card to each players' retainers, alternating between each player, discarding Jacks, Aces, Jokers, and Kings
 		Card rcard;
 		for(int i = 0; i < 4; i++){
 			while(playerRetainer[i].isEmpty() == true){
 				rcard = deck.dealCard();
-				if(rcard.getValue() == Card.JACK || rcard.getValue() == Card.ACE || rcard.getSuit() == Card.JOKER)
+				if(rcard.getValue() == Card.JACK || rcard.getValue() == Card.ACE || rcard.getValue() == Card.JOKER || rcard.getValue() == Card.KING)
 					discardPile.discard(rcard);
 				else playerRetainer[i].add(rcard);}
 			while(dealerRetainer[i].isEmpty() == true){
 				rcard = deck.dealCard();
-				if(rcard.getValue() == Card.JACK || rcard.getValue() == Card.ACE || rcard.getSuit() == Card.JOKER)
+				if(rcard.getValue() == Card.JACK || rcard.getValue() == Card.ACE || rcard.getValue() == Card.JOKER || rcard.getValue() == Card.KING)
 					discardPile.discard(rcard);
 				else dealerRetainer[i].add(rcard);
 			}

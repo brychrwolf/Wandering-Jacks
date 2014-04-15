@@ -100,4 +100,29 @@ public class Retainer {
 	public void empty(){
 		retainer = new ArrayList<Card>();
 	}
+
+	/**
+	 * Returns the card at given index
+	 * @param index the integer index to get from the Retainer, 0 is the bottom
+	 * of the retainer
+	 * @return the Card found at the given index
+	 * @throws IndexOutOfBoundsException if the index is out of bounds
+	 * @see Card
+	 */
+	public Card get(int index){
+		try{
+			return retainer.get(index);
+		}catch (IndexOutOfBoundsException e){
+		    System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+		    System.err.println("Index " + index + " not within {0 - " + (retainer.size() - 1) + "}");
+			throw new IndexOutOfBoundsException(e + "Index " + index + " not within {0 - " + (retainer.size() - 1) + "}");
+		}
+	}
+
+	/**
+	 * Returns the size of the retainer.
+	 */
+	public int size(){
+		return retainer.size();
+	}
 }
