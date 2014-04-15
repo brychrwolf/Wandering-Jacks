@@ -1,3 +1,4 @@
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -103,6 +104,22 @@ public class CardTest {
 		assertTrue(c.getValueAsString() instanceof String);
 		assertTrue(c.getSuitAsString() instanceof String);
 		assertTrue(c.toString() instanceof String);
+	}
+
+	/**
+	 * This test ensures accuracy of the comparison function, Card.equals()
+	 */
+	@Test
+	public void testAccuracyOfEqualsFunction(){
+		Card a = new Card(0,0);
+		Card b = new Card(1,1);
+		Card c = new Card(1,1);
+		assertFalse(a.equals(b));
+		assertFalse(b.equals(a));
+		assertFalse(a.equals(c));
+		assertFalse(c.equals(a));
+		assertTrue(b.equals(c));
+		assertTrue(c.equals(b));
 	}
 
 }

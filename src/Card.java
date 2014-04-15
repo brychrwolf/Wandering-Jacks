@@ -192,7 +192,7 @@ public class Card {
 
    /**
     * Returns true if the card value and suit are the same as this
-    * @param card
+    * @param card the card to be compared with this
     * @return true if the card value and suit are the same as this
     */
    public Boolean equals(Card card){
