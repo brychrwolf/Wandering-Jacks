@@ -121,4 +121,15 @@ public class WanderingJacksTest{
 			assertTrue(c.getValue() != Card.JOKER);
 	}
 
+	/**
+	 * This test ensures that at the beginning of the game, after the
+	 * environment has been set up, the discard pile only has one card.
+	 */
+	@Test
+	public void testInitialDiscardPileOnlyHasOneCard(){
+		WanderingJacks wj = new WanderingJacks();
+		wj.setUpGameEnvironment();
+		assertEquals(wj.discardPile.getDiscardPile().size(),1);
+	}
+
 }
