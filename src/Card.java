@@ -91,20 +91,25 @@ public class Card {
 
    /**
     * Creates a card with a specified suit and value.
-    * @param value the value of the new card.  For a regular card (non-joker),
-    * the value must be in the range 1 through 13, with 1 representing an Ace.
-    * You can use the constants Card.ACE, Card.JACK, Card.QUEEN, and Card.KING.
-    * For a Joker, the value can be anything.
+    * @param value the value of the new card.  For a regular card,
+    * the value must be in the range 0 through 13, with 1 representing an Ace,
+    * and 0 representing a joker.
+    * You can use the constants Card.ACE, Card.JACK, Card.QUEEN, Card.KING, and
+    * Card.JOKER.
     * @param suit the suit of the new card.  This must be one of the values
     * Card.SPADES, Card.HEARTS, Card.DIAMONDS, Card.CLUBS, or Card.JOKER.
     * @throws IllegalArgumentException if the parameter values are not in the
-    * permissible ranges
+    * permissible ranges or if value Joker unless it also has a suit of Joker,
+    * and vice versa
     */
    public Card(int value, int suit) {
       if(suit != JOKER && suit != SPADES && suit != HEARTS && suit != DIAMONDS && suit != CLUBS)
          throw new IllegalArgumentException("Illegal playing card suit");
       if(value != JOKER && value != ACE && value != JACK && value != QUEEN && value != KING && (value < 2 || value > 10))
          throw new IllegalArgumentException("Illegal playing card value");
+      if((value == JOKER && suit != JOKER) || (value != JOKER && suit == JOKER))
+          throw new IllegalArgumentException("Illegal playing card value");
+
       this.value = value;
       this.suit = suit;
    }
@@ -131,14 +136,17 @@ public class Card {
     * Returns a String representation of the card's suit.
     * @return one of the strings "Spades", "Hearts", "Diamonds", "Clubs"
     * or "Joker".
+    * @throws IllegalStateException is an invalid suit exists
     */
-   public String getSuitAsString() {
-      switch ( suit ) {
-      case SPADES:   return "Spades";
-      case HEARTS:   return "Hearts";
-      case DIAMONDS: return "Diamonds";
-      case CLUBS:    return "Clubs";
-      default:       return "Joker";
+   public String getSuitAsString(){
+      switch(suit){
+      	case SPADES:   return "Spades";
+      	case HEARTS:   return "Hearts";
+      	case DIAMONDS: return "Diamonds";
+      	case CLUBS:    return "Clubs";
+      	case JOKER:    return "Joker";
+      	default:
+      		throw new IllegalStateException(suit+" is not a valid suit.");
       }
    }
 
@@ -147,45 +155,39 @@ public class Card {
     * @return for a regular card, one of the strings "Ace", "2",
     * "3", ..., "10", "Jack", "Queen", or "King".  For a Joker, the
     * string is always numerical.
+    * @throws IllegalStateException is an invalid value exists
     */
    public String getValueAsString() {
-      if (suit == JOKER)
-         return "Joker" + value;
-      else {
-         switch ( value ) {
-         case 1:   return "Ace";
-         case 2:   return "2";
-         case 3:   return "3";
-         case 4:   return "4";
-         case 5:   return "5";
-         case 6:   return "6";
-         case 7:   return "7";
-         case 8:   return "8";
-         case 9:   return "9";
-         case 10:  return "10";
-         case 11:  return "Jack";
-         case 12:  return "Queen";
-         default:  return "King";
-         }
-      }
+     switch(value){
+	     case 0:   return "Joker";
+	     case 1:   return "Ace";
+	     case 2:   return "2";
+	     case 3:   return "3";
+	     case 4:   return "4";
+	     case 5:   return "5";
+	     case 6:   return "6";
+	     case 7:   return "7";
+	     case 8:   return "8";
+	     case 9:   return "9";
+	     case 10:  return "10";
+	     case 11:  return "Jack";
+	     case 12:  return "Queen";
+	     case 13:  return "King";
+	     default:
+      		throw new IllegalStateException(value+" is not a valid value.");
+     }
    }
 
    /**
-    * Returns a string representation of this card, including both
-    * its suit and its value (except that for a Joker with value 1,
-    * the return value is just "Joker").  Sample return values
-    * are: "Queen of Hearts", "10 of Diamonds", "Ace of Spades",
-    * "Joker", "Joker #2"
+    * Returns a string representation of this card
+    * @return a string representation of this card including both its suit and
+    * its value (except that for a Joker which will return just "Joker").
+    * Sample return values are: "Queen of Hearts", "10 of Diamonds",
+    * "Ace of Spades", "Joker"
     */
-   public String toString() {
-      if (suit == JOKER) {
-         //if (value == 1)
-            return "Joker";
-         //else
-         //   return "Joker #" + value;
-      }
-      else
-         return getValueAsString() + " of " + getSuitAsString();
+   public String toString(){
+      if(suit == JOKER) return "Joker";
+      else return getValueAsString() + " of " + getSuitAsString();
    }
 
    /**
