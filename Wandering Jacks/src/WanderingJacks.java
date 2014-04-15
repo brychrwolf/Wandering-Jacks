@@ -123,7 +123,7 @@ public class WanderingJacks {
 	 */
 	public void setUpGameEnvironment(){
 		// shuffle deck
-		deck.shuffleAllCards();
+		deck.shuffle();
 		// deal a card to each players' retainers, alternating between each player, discarding Jacks, Aces, and Jokers
 		Card rcard;
 		for(int i = 0; i < 4; i++){

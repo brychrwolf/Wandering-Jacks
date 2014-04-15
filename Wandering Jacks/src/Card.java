@@ -188,4 +188,15 @@ public class Card {
       else
          return getValueAsString() + " of " + getSuitAsString();
    }
+
+   /**
+    * Returns true if the card value and suit are the same as this
+    * @param card
+    * @return true if the card value and suit are the same as this
+    */
+   public Boolean equals(Card card){
+	   if(this.value == card.getValue() && this.suit == card.getSuit())
+		   return true;
+	   else return false;
+   }
 }

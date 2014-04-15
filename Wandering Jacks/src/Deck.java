@@ -39,19 +39,16 @@ public class Deck{
 	}
 
 	/**
-	 * Randomize the order of (shuffle) the deck, after adding back every card
-	 * that had been removed.
+	 * Randomize the order of (shuffle) the current deck, maintaining the
+	 * current size and contents.
 	 * @see Card
 	 */
-	public void shuffleAllCards(){
+	public void shuffle(){
 		List<Card> tempDeck = new ArrayList<Card>();
-		for(int suit = 0; suit <= 3; suit++){
-			for(int value = 1; value <= 13; value++){
-				tempDeck.add(new Card(value,suit));
-			}
-		}
+		for(Card c: deck)
+			tempDeck.add(c);
 		deck = new Stack<Card>();
-		for(int i = tempDeck.size()-1; i > 0; i--){
+		for(int i = tempDeck.size()-1; i >= 0; i--){
 			int rand = (int)(Math.random()*(i+1));
 			deck.push(tempDeck.get(rand));
 			tempDeck.remove(rand);
@@ -98,4 +95,21 @@ public class Deck{
 			throw new IllegalStateException("No cards are left in the deck.");
 		return deck.pop();
 	}
+
+
+   /**
+    * Returns true if a card with the same value and suit is found in the deck
+    * @param card the card to search for
+    * @return true if a card with the same value and suit is found in the deck,
+    * uses the overloaded Card.equals() method for comparison.
+    */
+   public Boolean contains(Card card){
+	   for(int i = 0; i < deck.size(); i++){
+		   if(card.equals(deck.elementAt(i)))
+			   return true;
+	   }
+	   return false;
+   }
+
+
 }
