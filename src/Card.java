@@ -91,23 +91,22 @@ public class Card {
 
    /**
     * Creates a card with a specified suit and value.
-    * @param theValue the value of the new card.  For a regular card (non-joker),
+    * @param value the value of the new card.  For a regular card (non-joker),
     * the value must be in the range 1 through 13, with 1 representing an Ace.
     * You can use the constants Card.ACE, Card.JACK, Card.QUEEN, and Card.KING.
     * For a Joker, the value can be anything.
-    * @param theSuit the suit of the new card.  This must be one of the values
+    * @param suit the suit of the new card.  This must be one of the values
     * Card.SPADES, Card.HEARTS, Card.DIAMONDS, Card.CLUBS, or Card.JOKER.
     * @throws IllegalArgumentException if the parameter values are not in the
     * permissible ranges
     */
-   public Card(int theValue, int theSuit) {
-      if (theSuit != SPADES && theSuit != HEARTS && theSuit != DIAMONDS &&
-            theSuit != CLUBS && theSuit != JOKER)
+   public Card(int value, int suit) {
+      if(suit != JOKER && suit != SPADES && suit != HEARTS && suit != DIAMONDS && suit != CLUBS)
          throw new IllegalArgumentException("Illegal playing card suit");
-      if (theSuit != JOKER && (theValue < 1 || theValue > 13))
+      if(value != JOKER && value != ACE && value != JACK && value != QUEEN && value != KING && (value < 2 || value > 10))
          throw new IllegalArgumentException("Illegal playing card value");
-      value = theValue;
-      suit = theSuit;
+      this.value = value;
+      this.suit = suit;
    }
 
    /**
