@@ -22,34 +22,34 @@ public class WanderingJacks {
 	 * contents are "random" and secret.
 	 * @see Deck
 	 */
-	Deck deck;
+	public Deck deck;
 	/**
 	 * The discard pile where discarded cards go. Its contents are known.
 	 * @see DiscardPile
 	 */
-	DiscardPile discardPile;
+	public DiscardPile discardPile;
 	/**
 	 * One of the two players in the game. Has a hand of cards, and a
 	 * bankroll with which to bet. Plays the part of the gambler.
 	 * @see Player
 	 */
-	Player player;
+	public Player player;
 	/**
 	 * One of the two players in the game. Has a hand of cards, and a
 	 * bankroll with which to bet. Plays the part of the house.
 	 * @see Player
 	 */
-	Player dealer;
+	public Player dealer;
 	/**
 	 * An array of the player's 4 retainers.
 	 * @see Retainer
 	 */
-	Retainer[] playerRetainer;
+	public Retainer[] playerRetainer;
 	/**
 	 * An array of the dealer's 4 retainers.
 	 * @see Retainer
 	 */
-	Retainer[] dealerRetainer;
+	public Retainer[] dealerRetainer;
 
 	/**
 	 * Creates the game environment with two players, their array of 4
