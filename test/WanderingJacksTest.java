@@ -1,3 +1,4 @@
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
@@ -89,6 +90,35 @@ public class WanderingJacksTest{
 		wj.setUpGameEnvironment();
 		for(Retainer r : wj.playerRetainer)
 			assertTrue(!forbiddenValues.contains(r.get(0).getValue()));
+	}
+
+
+	/**
+	 * This test ensures that at the beginning of the game, after the
+	 * environment has been set up, that there are exactly 3 cards in each
+	 * players' hand.
+	 */
+	@Test
+	public void testInitialPlayersHandsHave3Cards(){
+		WanderingJacks wj = new WanderingJacks();
+		wj.setUpGameEnvironment();
+		assertEquals(wj.player.getHand().size(), 3);
+		assertEquals(wj.dealer.getHand().size(), 3);
+	}
+
+	/**
+	 * This test ensures that at the beginning of the game, after the
+	 * environment has been set up, that there are no Jokers in either players
+	 * hand.
+	 */
+	@Test
+	public void testInitialPlayersHandsHaveNoJokers(){
+		WanderingJacks wj = new WanderingJacks();
+		wj.setUpGameEnvironment();
+		for(Card c : wj.player.getHand())
+			assertTrue(c.getValue() != Card.JOKER);
+		for(Card c : wj.dealer.getHand())
+			assertTrue(c.getValue() != Card.JOKER);
 	}
 
 }
