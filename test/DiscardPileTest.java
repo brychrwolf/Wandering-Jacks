@@ -1,3 +1,4 @@
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Stack;
@@ -98,8 +99,9 @@ public class DiscardPileTest {
 	}
 
 	/**
-	 * This test ensures that empty() removes and returns all the cards from
-	 * the discard pile, throwing an error if it is already empty.
+	 * This test ensures that testTakingAllCards() removes and returns all the
+	 * cards from the discard pile,
+	 * throwing an error if it is already empty.
 	 */
 	@Test
 	public void testTakingAllCards(){
@@ -128,28 +130,25 @@ public class DiscardPileTest {
 
 	/**
 	 * This test ensures that isEmpty() reports true when there are
-	 * no cards in the retainer, and never at any other time
+	 * no cards in the pile, and never at any other time
 	 */
-	/*@Test
+	@Test
 	public void testRetainerIsEmpty(){
 		Card aJoker = new Card(0,0);
-		Retainer retainer = new Retainer();
+		DiscardPile dp = new DiscardPile();
 		//test initial size is empty
-		assertTrue(retainer.isEmpty());
+		assertTrue(dp.isEmpty());
 		//test after adding card
-		retainer.add(aJoker);
-		assertFalse(retainer.isEmpty());
+		dp.discard(aJoker);
+		assertFalse(dp.isEmpty());
 		//test after removing a card
-		retainer.remove(aJoker);
-		assertTrue(retainer.isEmpty());
+		dp.takeTopCard();
+		assertTrue(dp.isEmpty());
 		//test after emptying a register with cards in it
-		retainer.add(aJoker);
-		retainer.empty();
-		assertTrue(retainer.isEmpty());
-		//test after emptying a empty register
-		retainer.empty();
-		assertTrue(retainer.isEmpty());
-	}*/
+		dp.discard(aJoker);
+		dp.takeAllCards();
+		assertTrue(dp.isEmpty());
+	}
 
 
 	/**
