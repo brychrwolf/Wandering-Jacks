@@ -6,6 +6,49 @@ import org.junit.Test;
 
 public class RetainerTest {
 	/**
+	 * This test ensures that remove(Card) removes the correct card from the
+	 * retainer, and throws an error if there are no cards or if that card
+	 * didn't exist in the retainer.
+	 */
+	@Test
+	public void testRetainerRemove(){
+		Card aJoker = new Card(0, 0);
+		Card aJack = new Card(Card.JACK, Card.CLUBS);
+		Retainer retainer = new Retainer();
+		//test removing from initial retainer
+		try{retainer.remove(aJoker);}
+		catch(IllegalStateException e){
+			assertTrue(e instanceof IllegalStateException);}
+		//test removing after adding that card
+		retainer = new Retainer();
+		retainer.add(aJoker);
+		assertTrue(retainer.remove(aJoker).equals(aJoker));
+		//test removing after adding a different card
+		retainer = new Retainer();
+		retainer.add(aJack);
+		try{retainer.remove(aJoker);}
+		catch(IllegalStateException e){
+			assertTrue(e instanceof IllegalStateException);}
+		//test removing after adding two cards, one different
+		retainer = new Retainer();
+		retainer.add(aJoker);
+		retainer.add(aJack);
+		assertTrue(retainer.remove(aJoker).equals(aJoker));
+		//test removing after adding two cards, one different (differnt order)
+		retainer = new Retainer();
+		retainer.add(aJack);
+		retainer.add(aJoker);
+		assertTrue(retainer.remove(aJoker).equals(aJoker));
+		//test removing after adding, then emptying
+		retainer = new Retainer();
+		retainer.add(aJoker);
+		retainer.empty();
+		try{retainer.remove(aJoker);}
+		catch(IllegalStateException e){
+			assertTrue(e instanceof IllegalStateException);}
+	}
+
+	/**
 	 * This test ensures that Retainer.empty() reports true when there are
 	 * no cards in the retainer, and never at any other time
 	 */
@@ -107,7 +150,7 @@ public class RetainerTest {
 		assertFalse(retainer.retainsJack());
 		//test after retainer is emptied
 		retainer = new Retainer();
-		retainer.remove(hJack);
+		retainer.add(hJack);
 		retainer.empty();
 		assertFalse(retainer.retainsJack());
 

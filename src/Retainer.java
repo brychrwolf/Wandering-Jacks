@@ -76,14 +76,20 @@ public class Retainer {
 	}
 
 	/**
-	 * Removes the given card from the retainer.
+	 * Returns and removes the given card from the retainer.
 	 * @param card the card to remove from the retainer.
+	 * @throws IllegalStateException if no cards exist
+	 * @throws IllegalStateException target card does not exist
 	 * @see Card
 	 */
-	public void remove(Card card){
-		retainer.remove(card);
+	public Card remove(Card card){
+		if(this.size() <= 0)
+			throw new IllegalStateException("No cards in the retainer to remove.");
+		if(!retainer.remove(card))
+			throw new IllegalStateException("There was no "+card.toString()+" in the retainer to remove.");
 		if(card.getValueAsString() == "Jack")
 			retainsJack = false;
+		return card;
 	}
 
 	/**
@@ -98,6 +104,7 @@ public class Retainer {
 	 * Removes all the cards from the retainer, resulting in a empty retainer.
 	 */
 	public void empty(){
+		if(retainsJack == true) retainsJack = false;
 		retainer = new ArrayList<Card>();
 	}
 
