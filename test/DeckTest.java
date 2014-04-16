@@ -1,3 +1,4 @@
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Stack;
@@ -240,5 +241,18 @@ public class DeckTest {
 			if(initialDeck[i] != shuffledDeck[i])
 				numCardsDifferent++;
 		assertTrue(numCardsDifferent / initDeckSizePlus2 >= .5);
+	}
+
+	/**
+	 * This test ensures that Deck.contains() returns true if a card with
+	 * the same value and suit is found in the deck
+	 */
+	@Test
+	public void testDeckContains(){
+		Card aJoker = new Card(0,0);
+		Deck sDeck = new Deck();
+		assertFalse(sDeck.contains(aJoker));
+		Deck jDeck = new Deck(true);
+		assertTrue(jDeck.contains(aJoker));
 	}
 }
