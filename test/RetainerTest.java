@@ -44,26 +44,44 @@ public class RetainerTest {
 		try{retainer.remove(aJoker);}
 		catch(IllegalStateException e){
 			assertTrue(e instanceof IllegalStateException);}
-		//test removing after adding that card
+		try{retainer.remove(0);}
+		catch(IndexOutOfBoundsException e){
+			assertTrue(e instanceof IndexOutOfBoundsException);}
+		//test removing by card after adding that card
 		retainer = new Retainer();
 		retainer.add(aJoker);
 		assertTrue(retainer.remove(aJoker).equals(aJoker));
-		//test removing after adding a different card
+		//test removing by index after adding that card
+		retainer = new Retainer();
+		retainer.add(aJoker);
+		assertTrue(retainer.remove(0).equals(aJoker));
+		//test removing by card after adding a different card
 		retainer = new Retainer();
 		retainer.add(aJack);
 		try{retainer.remove(aJoker);}
 		catch(IllegalStateException e){
 			assertTrue(e instanceof IllegalStateException);}
-		//test removing after adding two cards, one different
+		//test removing by card after adding two cards, one different
 		retainer = new Retainer();
 		retainer.add(aJoker);
 		retainer.add(aJack);
 		assertTrue(retainer.remove(aJoker).equals(aJoker));
-		//test removing after adding two cards, one different (differnt order)
+		//test removing by index after adding two cards, one different
+		retainer = new Retainer();
+		retainer.add(aJoker);
+		retainer.add(aJack);
+		assertTrue(retainer.remove(0).equals(aJoker));
+		//test removing by card after adding two cards, one different (differnt order)
 		retainer = new Retainer();
 		retainer.add(aJack);
 		retainer.add(aJoker);
 		assertTrue(retainer.remove(aJoker).equals(aJoker));
+		//test removing by card after adding two cards, one different (differnt order)
+		retainer = new Retainer();
+		retainer.add(aJack);
+		retainer.add(aJoker);
+		assertTrue(retainer.remove(0).equals(aJack));
+
 		//test removing after adding, then emptying
 		retainer = new Retainer();
 		retainer.add(aJoker);

@@ -78,6 +78,7 @@ public class Retainer {
 	/**
 	 * Returns and removes the given card from the retainer.
 	 * @param card the card to remove from the retainer.
+	 * @return card the card that was removed
 	 * @throws IllegalStateException if no cards exist
 	 * @throws IllegalStateException target card does not exist
 	 * @see Card
@@ -90,6 +91,25 @@ public class Retainer {
 		if(card.getValueAsString() == "Jack")
 			retainsJack = false;
 		return card;
+	}
+
+	/**
+	 * Returns and removes the given card from the retainer at index.
+	 * @param index the index from which to remove from a card
+	 * @return the card
+	 * @throws IllegalStateException if no cards exist
+	 * @throws IllegalStateException target index is out of bounds
+	 */
+	public Card remove(int index){
+		Card c;
+		try{
+			c = retainer.get(index);
+			retainer.remove(c);
+		}catch(IndexOutOfBoundsException e){
+			System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+			throw new IndexOutOfBoundsException("Index "+index+" is not within bounds: "+retainer.size());
+		}
+		return c;
 	}
 
 	/**
