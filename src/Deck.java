@@ -89,7 +89,7 @@ public class Deck{
 	 * @see Card
 	 */
 	public Card dealCard(){
-		if(deck.size() <= 0)
+		if(this.cardsLeft() <= 0)
 			throw new IllegalStateException("No cards are left in the deck.");
 		return deck.pop();
 	}

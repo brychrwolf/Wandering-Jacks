@@ -7,6 +7,18 @@ import org.junit.Test;
 
 public class DeckTest {
 	/**
+	 * This test ensures that dealing a card from deck returns, and actually
+	 * removes, the top card.
+	 */
+	@Test
+	public void testDealCard(){
+		Deck d = new Deck();
+		int initialDeckSize = d.cardsLeft();
+		assertTrue(d.dealCard() instanceof Card);
+		assertTrue(d.cardsLeft() == initialDeckSize - 1);
+	}
+
+	/**
 	 * This test ensures that a deck reports the correct number of cards
 	 * <p>
 	 * This test relies on dealCard decrementing a card from the deck, and
@@ -15,14 +27,14 @@ public class DeckTest {
 	@Test
 	public void testDeckCardsLeft(){
 		Deck seedDeck = new Deck();
-		int initialCardsLeft = seedDeck.cardsLeft();
+		int reportedDeckSize = seedDeck.cardsLeft();
 		int countedCards = 0;
 		while(true){
 			try{
 				seedDeck.dealCard();
 				countedCards++;
 			}catch(IllegalStateException e){
-				assertTrue(initialCardsLeft == countedCards);
+				assertTrue(reportedDeckSize == countedCards);
 				break;
 			}
 		}
