@@ -151,8 +151,7 @@ public class WanderingJacks {
 				discardPile.discard(rcard);
 			else dealer.getHand().add(rcard);}
 		// shuffle discard stack into deck, discard top card from the deck
-		deck.shuffleWithOtherCards(discardPile.getDiscardPile());
-		discardPile.empty();
+		deck.shuffleWithOtherCards(discardPile.takeAllCards());
 		discardPile.discard(deck.dealCard());
 	}
 

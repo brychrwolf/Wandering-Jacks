@@ -37,6 +37,7 @@ public class DiscardPile {
 	 * Returns the card that is on the top of the pile.
 	 * @return the card that is on the top of the pile. Does NOT remove card
 	 * from the pile.
+	 * @throws IllegalStateException if there are no cards to peek
 	 * @See Card
 	 */
 	public Card peekAtTopCard(){
@@ -46,19 +47,16 @@ public class DiscardPile {
 	}
 
 	/**
-	 * Returns the entire discard pile.
-	 * @return the entire pile of discarded cards.
-	 * @see Card
+	 * Returns and removes every card from the discard pile.
+	 * @return every card that was in the pile
+	 * @throws IllegalStateException if there are no cards to return/empty
 	 */
-	public Stack<Card> getDiscardPile(){
-		return discardPile;
-	}
-
-	/**
-	 * Removes every card from the discard pile resulting in an empty pile.
-	 */
-	public void empty(){
+	public Stack<Card> takeAllCards(){
+		if(discardPile.size() <= 0)
+			throw new IllegalStateException("No cards to return/empty in the discard pile.");
+		Stack<Card> tempPile = discardPile;
 		discardPile = new Stack<Card>();
+		return tempPile;
 	}
 
 	/**

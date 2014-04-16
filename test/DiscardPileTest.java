@@ -1,5 +1,7 @@
 import static org.junit.Assert.assertTrue;
 
+import java.util.Stack;
+
 import org.junit.Test;
 
 
@@ -95,6 +97,83 @@ public class DiscardPileTest {
 		assertTrue(cardPeeked.equals(aJoker));
 	}
 
+	/**
+	 * This test ensures that empty() removes and returns all the cards from
+	 * the discard pile, throwing an error if it is already empty.
+	 */
+	@Test
+	public void testTakingAllCards(){
+		Card aJoker = new Card(0,0);
+		Card aJack = new Card(Card.JACK, Card.CLUBS);
+		DiscardPile dp = new DiscardPile();
+		Stack<Card> returnedPile;
+		//test emptying the initial DiscardPile
+		try{returnedPile = dp.takeAllCards();}
+		catch(IllegalStateException e){
+			assertTrue(e instanceof IllegalStateException);}
+		//test emptying after adding one card
+		dp.discard(aJoker);
+		returnedPile = dp.takeAllCards();
+		assertTrue(dp.size() == 0);
+		assertTrue(returnedPile.size() == 1);
+		assertTrue(returnedPile.peek().equals(aJoker));
+		//test taking after adding two cards
+		dp.discard(aJack);
+		dp.discard(aJoker);
+		returnedPile = dp.takeAllCards();
+		assertTrue(dp.size() == 0);
+		assertTrue(returnedPile.size() == 2);
+		assertTrue(returnedPile.peek().equals(aJoker));
+	}
 
+	/**
+	 * This test ensures that isEmpty() reports true when there are
+	 * no cards in the retainer, and never at any other time
+	 */
+	/*@Test
+	public void testRetainerIsEmpty(){
+		Card aJoker = new Card(0,0);
+		Retainer retainer = new Retainer();
+		//test initial size is empty
+		assertTrue(retainer.isEmpty());
+		//test after adding card
+		retainer.add(aJoker);
+		assertFalse(retainer.isEmpty());
+		//test after removing a card
+		retainer.remove(aJoker);
+		assertTrue(retainer.isEmpty());
+		//test after emptying a register with cards in it
+		retainer.add(aJoker);
+		retainer.empty();
+		assertTrue(retainer.isEmpty());
+		//test after emptying a empty register
+		retainer.empty();
+		assertTrue(retainer.isEmpty());
+	}*/
+
+
+	/**
+	 * This test ensures that Retainer.size() is accurate
+	 */
+	/*@Test
+	public void testRetainerSize(){
+		Card aJoker = new Card(0,0);
+		Retainer retainer = new Retainer();
+		//test initial size is empty
+		assertTrue(retainer.size() == 0);
+		//test after adding card
+		retainer.add(aJoker);
+		assertTrue(retainer.size() == 1);
+		//test after removing a card
+		retainer.remove(aJoker);
+		assertTrue(retainer.size() == 0);
+		//test after emptying a register with cards in it
+		retainer.add(aJoker);
+		retainer.empty();
+		assertTrue(retainer.size() == 0);
+		//test after emptying a empty register
+		retainer.empty();
+		assertTrue(retainer.size() == 0);
+	}*/
 
 }

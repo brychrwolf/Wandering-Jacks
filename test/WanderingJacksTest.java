@@ -129,7 +129,7 @@ public class WanderingJacksTest{
 	public void testInitialDiscardPileOnlyHasOneCard(){
 		WanderingJacks wj = new WanderingJacks();
 		wj.setUpGameEnvironment();
-		assertEquals(wj.discardPile.getDiscardPile().size(),1);
+		assertEquals(wj.discardPile.size(), 1);
 	}
 
 }
