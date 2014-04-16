@@ -46,6 +46,39 @@ public class Player {
 	}
 
 	/**
+	 * Returns true only if the target card is found within the hand.
+	 * @param target is the card that is searched for in the hand.
+	 * @return true only if the target card is found within the hand, and
+	 * false if otherwise.
+	 * @see Card
+	 */
+	public boolean handContains(Card target){
+		boolean found = false;
+		for(Card card : hand)
+			if(card.equals(target))
+				found = true;
+		return found;
+	}
+
+	/**
+	 * Returns true only if any of the cards in the hand have a value that
+	 * matches the given target value string.
+	 * @param targetValue the string to search for among all the cards' values
+	 * in the hand
+	 * @return true only if the target value is found within the hand, and
+	 * false if otherwise.
+	 * @see Card
+	 */
+	public boolean handContains(String targetValue){
+		boolean found = false;
+		for(Card card : hand)
+			if(card.getValueAsString() == targetValue)
+				found = true;
+		return found;
+	}
+
+
+	/**
 	 * Adds a card to the secret list of cards in the Player's hand.
 	 * @param c the card to be added to the Player's hand.
 	 * @see Card
@@ -62,7 +95,7 @@ public class Player {
 	 * @see Card
 	 */
 	public Card playFromHand(Card c){
-		if(hand.contains(c))
+		if(this.handContains(c))
 			hand.remove(c);
 		else throw new NullPointerException("It is illeagal to attempt playing a card that is not in hand.");
 		return c;
