@@ -77,7 +77,6 @@ public class Player {
 		return found;
 	}
 
-
 	/**
 	 * Adds a card to the secret list of cards in the Player's hand.
 	 * @param c the card to be added to the Player's hand.
@@ -85,6 +84,13 @@ public class Player {
 	 */
 	public void addToHand(Card c){
 		hand.add(c);
+	}
+
+	/**
+	 * Returns the size of the hand.
+	 */
+	public int handSize(){
+		return hand.size();
 	}
 
 	/**
