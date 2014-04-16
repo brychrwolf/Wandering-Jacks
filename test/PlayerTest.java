@@ -53,27 +53,27 @@ public class PlayerTest {
 	/**
 	 * This test ensures that addToHand(Card) adds the correct card.
 	 */
-	/*@Test
-	public void testAdd(){
+	@Test
+	public void testAddToHAnd(){
 		Card aJoker = new Card(0, 0);
 		Card aJack = new Card(Card.JACK, Card.CLUBS);
 		Player p = new Player();
 		//test adding to initial retainer
-		int sizeBefore = p.size();
-		retainer.add(aJoker);
-		int sizeAfter = retainer.size();
+		int sizeBefore = p.handSize();
+		p.addToHand(aJoker);
+		int sizeAfter = p.handSize();
 		assertTrue(sizeBefore + 1 == sizeAfter);
 		//test adding to retainer with same card
-		sizeBefore = retainer.size();
-		retainer.add(aJoker);
-		sizeAfter = retainer.size();
+		sizeBefore = p.handSize();
+		p.addToHand(aJoker);
+		sizeAfter = p.handSize();
 		assertTrue(sizeBefore + 1 == sizeAfter);
 		//test adding to retainer with different cards
-		sizeBefore = retainer.size();
-		retainer.add(aJack);
-		sizeAfter = retainer.size();
+		sizeBefore = p.handSize();
+		p.addToHand(aJack);
+		sizeAfter = p.handSize();
 		assertTrue(sizeBefore + 1 == sizeAfter);
-	}*/
+	}
 
 	/**
 	 * This test ensures that size() is accurate
