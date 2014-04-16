@@ -5,6 +5,31 @@ import org.junit.Test;
 
 
 public class RetainerTest {
+	/**
+	 * This test ensures that Retainer.empty() reports true when there are
+	 * no cards in the retainer, and never at any other time
+	 */
+	@Test
+	public void testRetainerEmpty(){
+		Card aJoker = new Card(0,0);
+		Retainer retainer = new Retainer();
+		//test initial size is empty
+		assertTrue(retainer.isEmpty());
+		//test after adding card
+		retainer.add(aJoker);
+		assertFalse(retainer.isEmpty());
+		//test after removing a card
+		retainer.remove(aJoker);
+		assertTrue(retainer.isEmpty());
+		//test after emptying a register with cards in it
+		retainer.add(aJoker);
+		retainer.empty();
+		assertTrue(retainer.isEmpty());
+		//test after emptying a empty register
+		retainer.empty();
+		assertTrue(retainer.isEmpty());
+	}
+
 
 	/**
 	 * This test ensures that Retainer.size() is accurate
