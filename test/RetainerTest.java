@@ -74,11 +74,44 @@ public class RetainerTest {
 	}
 
 	/**
-	 * This test ensures that Retainer.empty() reports true when there are
-	 * no cards in the retainer, and never at any other time
+	 * This test ensures that empty() removes all cards from the retainer.
 	 */
 	@Test
 	public void testRetainerEmpty(){
+		Card aJoker = new Card(0,0);
+		Card aJack = new Card(Card.JACK, Card.CLUBS);
+		Retainer retainer = new Retainer();
+		//test emptying the initial retainer
+		retainer.empty();
+		assertTrue(retainer.size() == 0);
+		assertTrue(retainer.isEmpty());
+		//test after adding to retainer
+		retainer = new Retainer();
+		retainer.add(aJoker);
+		retainer.empty();
+		assertTrue(retainer.size() == 0);
+		assertTrue(retainer.isEmpty());
+		//test after adding two different cards
+		retainer = new Retainer();
+		retainer.add(aJack);
+		retainer.add(aJoker);
+		retainer.empty();
+		assertTrue(retainer.size() == 0);
+		assertTrue(retainer.isEmpty());
+		//test after emptying and empty retainer
+		retainer = new Retainer();
+		retainer.empty();
+		retainer.empty();
+		assertTrue(retainer.size() == 0);
+		assertTrue(retainer.isEmpty());
+	}
+
+	/**
+	 * This test ensures that isEmpty() reports true when there are
+	 * no cards in the retainer, and never at any other time
+	 */
+	@Test
+	public void testRetainerIsEmpty(){
 		Card aJoker = new Card(0,0);
 		Retainer retainer = new Retainer();
 		//test initial size is empty
