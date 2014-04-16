@@ -103,7 +103,7 @@ public class Player {
 	public Card playFromHand(Card c){
 		if(this.handContains(c))
 			hand.remove(c);
-		else throw new NullPointerException("It is illeagal to attempt playing a card that is not in hand.");
+		else throw new IllegalStateException("There is no "+c.toString()+ " to play from hand.");
 		return c;
 	}
 
@@ -122,7 +122,7 @@ public class Player {
 			hand.remove(i);
 		}catch(IndexOutOfBoundsException e){
 			System.err.println("IndexOutOfBoundsException: " + e.getMessage());
-			throw new IndexOutOfBoundsException("It is illeagal to attempt playing a card that is not in hand.");
+			throw new IndexOutOfBoundsException("Index "+i+" is not within bounds: "+hand.size());
 		}
 		return c;
 	}

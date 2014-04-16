@@ -54,7 +54,7 @@ public class PlayerTest {
 	 * This test ensures that addToHand(Card) adds the correct card.
 	 */
 	@Test
-	public void testAddToHAnd(){
+	public void testAddToHand(){
 		Card aJoker = new Card(0, 0);
 		Card aJack = new Card(Card.JACK, Card.CLUBS);
 		Player p = new Player();
@@ -90,6 +90,59 @@ public class PlayerTest {
 		//test after removing a card
 		p.playFromHand(aJoker);
 		assertTrue(p.handSize() == 0);
+	}
+
+	/**
+	 * This test ensures that playingFromHand(Card) and (int),
+	 * removes the correct card from the hand, decrementing its size,
+	 * and throws an error if there are no cards or if that card didn't exist
+	 */
+	@Test
+	public void testPlayFromHand(){
+		Card aJoker = new Card(0, 0);
+		Card aJack = new Card(Card.JACK, Card.CLUBS);
+		Player p = new Player();
+		//test removing from initial hand
+		try{p.playFromHand(aJoker);}
+		catch(IllegalStateException e){
+			assertTrue(e instanceof IllegalStateException);}
+		try{p.playFromHand(0);}
+		catch(IndexOutOfBoundsException e){
+			assertTrue(e instanceof IndexOutOfBoundsException);}
+		//test playFromHand by Card after adding one card
+		p = new Player();
+		p.addToHand(aJoker);
+		assertTrue(p.playFromHand(aJoker).equals(aJoker));
+		//test playFromHand by index after adding one card
+		p = new Player();
+		p.addToHand(aJoker);
+		assertTrue(p.playFromHand(0).equals(aJoker));
+		//test playFromHand by card after adding a different card
+		p = new Player();
+		p.addToHand(aJack);
+		try{p.playFromHand(aJoker);}
+		catch(IllegalStateException e){
+			assertTrue(e instanceof IllegalStateException);}
+		//test playFromHand by card after adding two cards, one different
+		p = new Player();
+		p.addToHand(aJoker);
+		p.addToHand(aJack);
+		assertTrue(p.playFromHand(aJoker).equals(aJoker));
+		//test playFromHand by index after adding two cards, one different
+		p = new Player();
+		p.addToHand(aJoker);
+		p.addToHand(aJack);
+		assertTrue(p.playFromHand(0).equals(aJoker));
+		//test playFromHand by card after adding two cards, one different (different order)
+		p = new Player();
+		p.addToHand(aJack);
+		p.addToHand(aJoker);
+		assertTrue(p.playFromHand(aJoker).equals(aJoker));
+		//test playFromHand by index after adding two cards, one different (different order)
+		p = new Player();
+		p.addToHand(aJack);
+		p.addToHand(aJoker);
+		assertTrue(p.playFromHand(0).equals(aJack));
 	}
 
 
