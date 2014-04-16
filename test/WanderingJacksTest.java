@@ -212,4 +212,19 @@ public class WanderingJacksTest{
 		assertTrue(cardRemoved instanceof Card);
 		assertTrue(cardRemoved.equals(a9));
 	}
+
+	/**
+	 * Test that a player can play a card from hand to their retainer
+	 */
+	@Test
+	public void testPlayerPLayingCardFromHandToOwnedRetainer(){
+		WanderingJacks wj = new WanderingJacks();
+		Card aJoker = new Card(0, 0);
+		wj.player.addToHand(aJoker);
+		Card cardPlayed = wj.player.playFromHand(aJoker);
+		assertTrue(wj.player.handSize() == 0);
+		wj.playerRetainer[0].add(cardPlayed);
+		assertTrue(wj.playerRetainer[0].get(0).equals(cardPlayed));
+
+	}
 }
