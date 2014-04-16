@@ -62,4 +62,39 @@ public class DiscardPileTest {
 		assertTrue(dp.peekAtTopCard().equals(aJoker));
 	}
 
+	/**
+	 * This test ensures that when peeking at the top card,
+	 * the top card is returned
+	 * but is not removed
+	 * and that an error is thrown when there are no cards
+	 */
+	@Test
+	public void testPeeking(){
+		Card aJoker = new Card(0,0);
+		Card aJack = new Card(Card.JACK, Card.CLUBS);
+		Card cardPeeked;
+		DiscardPile dp = new DiscardPile();
+		//test peeking at the initial pile
+		try{cardPeeked = dp.peekAtTopCard();}
+		catch(IllegalStateException e){
+			assertTrue(e instanceof IllegalStateException);}
+		//test peeking after adding one card
+		dp.discard(aJoker);
+		int sizeBefore = dp.size();
+		cardPeeked = dp.peekAtTopCard();
+		int sizeAfter = dp.size();
+		assertTrue(sizeAfter == sizeBefore);
+		assertTrue(cardPeeked.equals(aJoker));
+		//test taking after adding two cards
+		dp.discard(aJack);
+		dp.discard(aJoker);
+		sizeBefore = dp.size();
+		cardPeeked = dp.peekAtTopCard();
+		sizeAfter = dp.size();
+		assertTrue(sizeAfter == sizeBefore);
+		assertTrue(cardPeeked.equals(aJoker));
+	}
+
+
+
 }

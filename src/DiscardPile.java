@@ -40,6 +40,8 @@ public class DiscardPile {
 	 * @See Card
 	 */
 	public Card peekAtTopCard(){
+		if(discardPile.size() <= 0)
+			throw new IllegalStateException("No cards to peek at in the discard pile.");
 		return discardPile.peek();
 	}
 
