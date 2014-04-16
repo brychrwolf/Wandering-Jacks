@@ -1,3 +1,4 @@
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -27,6 +28,25 @@ public class PlayerTest {
 		assertTrue(p.getHand() instanceof ArrayList<?>);
 		p.playFromHand(new Card(0,0));
 		assertTrue(p.getHand() instanceof ArrayList<?>);
+	}
+
+	/**
+	 * This test ensures that contains() returns true if a card with
+	 * the same value and suit is found in the deck
+	 */
+	@Test
+	public void testHandContains(){
+		Card aJoker = new Card(0,0);
+		Player p = new Player();
+		//test contains(Card)
+		assertFalse(p.handContains(aJoker));
+		p.addToHand(aJoker);
+		assertTrue(p.handContains(aJoker));
+		//test contains(String)
+		p = new Player();
+		assertFalse(p.handContains("Joker"));
+		p.addToHand(aJoker);
+		assertTrue(p.handContains("Joker"));
 	}
 
 
