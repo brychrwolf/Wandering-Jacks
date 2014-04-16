@@ -217,7 +217,7 @@ public class WanderingJacksTest{
 	 * Test that a player can discard from their hand
 	 */
 	@Test
-	public void testPlayerPLayingCardFromHandToOwnedRetainer(){
+	public void testPlayerPlayingCardFromHandToOwnedRetainer(){
 		WanderingJacks wj = new WanderingJacks();
 		Card aJoker = new Card(0, 0);
 		wj.player.addToHand(aJoker);
@@ -225,5 +225,21 @@ public class WanderingJacksTest{
 		assertTrue(wj.player.handSize() == 0);
 		wj.discardPile.discard(cardPlayed);
 		assertTrue(wj.discardPile.peekAtTopCard().equals(cardPlayed));
+	}
+
+	/**
+	 * Test that a player can take a card from the discard pile and put it in
+	 * their hand
+	 */
+	@Test
+	public void testPlayerTakingCardFromDiscardPileToHand(){
+		WanderingJacks wj = new WanderingJacks();
+		Card aJoker = new Card(0, 0);
+		wj.discardPile.discard(aJoker);
+		Card cardTaken = wj.discardPile.takeTopCard();
+		wj.player.addToHand(cardTaken);
+		assertTrue(wj.player.handSize() == 1);
+		assertTrue(wj.player.handContains(aJoker));
+		assertTrue(wj.discardPile.size() == 0);
 	}
 }
