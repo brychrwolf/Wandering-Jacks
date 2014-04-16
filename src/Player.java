@@ -41,7 +41,7 @@ public class Player {
 	 * @return the entire List<Card> of the Player's hand.
 	 * @see Card
 	 */
-	public List<Card> getHand() {
+	public List<Card> getHand(){
 		return hand;
 	}
 
@@ -67,6 +67,7 @@ public class Player {
 		else throw new NullPointerException("It is illeagal to attempt playing a card that is not in hand.");
 		return c;
 	}
+
 	/**
 	 * Removes and returns the card at the given index from the Player's hand,
 	 * if it exists.
