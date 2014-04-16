@@ -190,4 +190,26 @@ public class WanderingJacksTest{
 		assertTrue(dpSizeAfter == dpSizeBefore + 3);
 		assertTrue(wj.discardPile.peekAtTopCard() == cardRemoved);
 	}
+
+	/**
+	 * Test that a player can take a specific card from their register,
+	 * and put it elsewhere
+	 */
+	@Test
+	public void testPlayerTakeingCardFromRegisterPuttingElsehere(){
+		WanderingJacks wj = new WanderingJacks();
+		Card a10 = new Card(10, 1);
+		Card a9 = new Card(9, 1);
+		Card aJoker = new Card(0, 0);
+		wj.playerRetainer[0].add(a10);
+		wj.playerRetainer[0].add(a9);
+		wj.playerRetainer[0].add(aJoker);
+		Card cardRemoved = wj.playerRetainer[0].remove(a9);
+		//test that cardRemoved is no longer in retainer
+		assertFalse(wj.playerRetainer[0].contains(a9));
+		//test that cardRemoved is an actual card that can be placed elsewhere
+		//   and is the same card that was removed
+		assertTrue(cardRemoved instanceof Card);
+		assertTrue(cardRemoved.equals(a9));
+	}
 }
