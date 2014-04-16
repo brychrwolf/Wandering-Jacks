@@ -176,14 +176,18 @@ public class WanderingJacksTest{
 		WanderingJacks wj = new WanderingJacks();
 		Card a10 = new Card(10, 1);
 		Card aJoker = new Card(0, 0);
+		Card cardRemoved = new Card();
 		wj.playerRetainer[0].add(a10);
 		wj.playerRetainer[0].add(a10);
 		wj.playerRetainer[0].add(aJoker);
 		int dpSizeBefore = wj.discardPile.size();
-		while(wj.playerRetainer[0].size() > 0)
-			wj.discardPile.discard(wj.playerRetainer[0].remove(0));
+		while(wj.playerRetainer[0].size() > 0){
+			cardRemoved = wj.playerRetainer[0].remove(0);
+			wj.discardPile.discard(cardRemoved);
+		}
 		int dpSizeAfter = wj.discardPile.size();
 		assertTrue(wj.playerRetainer[0].size() == 0);
 		assertTrue(dpSizeAfter == dpSizeBefore + 3);
+		assertTrue(wj.discardPile.peekAtTopCard() == cardRemoved);
 	}
 }
