@@ -6,6 +6,31 @@ import org.junit.Test;
 
 public class RetainerTest {
 	/**
+	 * This test ensures that add(Card) adds the correct card to the retainer.
+	 */
+	@Test
+	public void testRetainerAdd(){
+		Card aJoker = new Card(0, 0);
+		Card aJack = new Card(Card.JACK, Card.CLUBS);
+		Retainer retainer = new Retainer();
+		//test adding to initial retainer
+		int sizeBefore = retainer.size();
+		retainer.add(aJoker);
+		int sizeAfter = retainer.size();
+		assertTrue(sizeBefore + 1 == sizeAfter);
+		//test adding to retainer with same card
+		sizeBefore = retainer.size();
+		retainer.add(aJoker);
+		sizeAfter = retainer.size();
+		assertTrue(sizeBefore + 1 == sizeAfter);
+		//test adding to retainer with different cards
+		sizeBefore = retainer.size();
+		retainer.add(aJack);
+		sizeAfter = retainer.size();
+		assertTrue(sizeBefore + 1 == sizeAfter);
+	}
+
+	/**
 	 * This test ensures that remove(Card) removes the correct card from the
 	 * retainer, and throws an error if there are no cards or if that card
 	 * didn't exist in the retainer.
