@@ -7,6 +7,30 @@ import org.junit.Test;
 public class RetainerTest {
 
 	/**
+	 * This test ensures that Retainer.size() is accurate
+	 */
+	@Test
+	public void testRetainerSize(){
+		Card aJoker = new Card(0,0);
+		Retainer retainer = new Retainer();
+		//test initial size is empty
+		assertTrue(retainer.size() == 0);
+		//test after adding card
+		retainer.add(aJoker);
+		assertTrue(retainer.size() == 1);
+		//test after removing a card
+		retainer.remove(aJoker);
+		assertTrue(retainer.size() == 0);
+		//test after emptying a register with cards in it
+		retainer.add(aJoker);
+		retainer.empty();
+		assertTrue(retainer.size() == 0);
+		//test after emptying a empty register
+		retainer.empty();
+		assertTrue(retainer.size() == 0);
+	}
+
+	/**
 	 * This test ensures that Retainer.contains() returns true if a card with
 	 * the same value and suit is found in the deck
 	 */
@@ -63,5 +87,4 @@ public class RetainerTest {
 		assertFalse(retainer.retainsJack());
 
 	}
-
 }
