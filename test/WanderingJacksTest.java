@@ -214,7 +214,7 @@ public class WanderingJacksTest{
 	}
 
 	/**
-	 * Test that a player can play a card from hand to their retainer
+	 * Test that a player can discard from their hand
 	 */
 	@Test
 	public void testPlayerPLayingCardFromHandToOwnedRetainer(){
@@ -223,8 +223,7 @@ public class WanderingJacksTest{
 		wj.player.addToHand(aJoker);
 		Card cardPlayed = wj.player.playFromHand(aJoker);
 		assertTrue(wj.player.handSize() == 0);
-		wj.playerRetainer[0].add(cardPlayed);
-		assertTrue(wj.playerRetainer[0].get(0).equals(cardPlayed));
-
+		wj.discardPile.discard(cardPlayed);
+		assertTrue(wj.discardPile.peekAtTopCard().equals(cardPlayed));
 	}
 }
