@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 /**
@@ -44,9 +43,7 @@ public class Deck{
 	 * @see Card
 	 */
 	public void shuffle(){
-		List<Card> tempDeck = new ArrayList<Card>();
-		for(Card c: deck)
-			tempDeck.add(c);
+		List<Card> tempDeck = deck;
 		deck = new Stack<Card>();
 		for(int i = tempDeck.size()-1; i >= 0; i--){
 			int rand = (int)(Math.random()*(i+1));
@@ -63,9 +60,10 @@ public class Deck{
 	 */
 	public void shuffleWithOtherCards(Stack<Card> otherCards){
 		Stack<Card> tempDeck = deck;
-		for(Card card : otherCards) tempDeck.push(card);
+		for(Card card : otherCards)
+			tempDeck.push(card);
 		deck = new Stack<Card>();
-		for(int i = tempDeck.size()-1; i > 0; i--){
+		for(int i = tempDeck.size()-1; i >= 0; i--){
 			int rand = (int)(Math.random()*(i+1));
 			deck.push(tempDeck.get(rand));
 			tempDeck.remove(rand);
