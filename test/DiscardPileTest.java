@@ -152,27 +152,24 @@ public class DiscardPileTest {
 
 
 	/**
-	 * This test ensures that Retainer.size() is accurate
+	 * This test ensures that size() is accurate
 	 */
-	/*@Test
+	@Test
 	public void testRetainerSize(){
 		Card aJoker = new Card(0,0);
-		Retainer retainer = new Retainer();
+		DiscardPile dp = new DiscardPile();
 		//test initial size is empty
-		assertTrue(retainer.size() == 0);
+		assertTrue(dp.size() == 0);
 		//test after adding card
-		retainer.add(aJoker);
-		assertTrue(retainer.size() == 1);
+		dp.discard(aJoker);
+		assertTrue(dp.size() == 1);
 		//test after removing a card
-		retainer.remove(aJoker);
-		assertTrue(retainer.size() == 0);
+		dp.takeTopCard();
+		assertTrue(dp.size() == 0);
 		//test after emptying a register with cards in it
-		retainer.add(aJoker);
-		retainer.empty();
-		assertTrue(retainer.size() == 0);
-		//test after emptying a empty register
-		retainer.empty();
-		assertTrue(retainer.size() == 0);
-	}*/
+		dp.discard(aJoker);
+		dp.takeAllCards();
+		assertTrue(dp.size() == 0);
+	}
 
 }
