@@ -1,4 +1,5 @@
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
@@ -62,14 +63,18 @@ public class WanderingJacksTest{
 			assertTrue(pr.get(0) != null);
 			assertTrue(pr.get(0) instanceof Card);
 			for(int i = 1; i < pr.size(); i++){
-				assertTrue(pr.get(i) == null);
+				try{pr.get(i);}
+				catch(IllegalStateException e){
+					assertTrue(e instanceof IllegalStateException);}
 			}
 		}
 		for(Retainer dr : wj.dealerRetainer){
 			assertTrue(dr.get(0) != null);
 			assertTrue(dr.get(0) instanceof Card);
 			for(int i = 1; i < dr.size(); i++){
-				assertTrue(dr.get(i) == null);
+				try{dr.get(i);}
+				catch(IllegalStateException e){
+					assertTrue(e instanceof IllegalStateException);}
 			}
 		}
 	}
@@ -132,4 +137,32 @@ public class WanderingJacksTest{
 		assertEquals(wj.discardPile.size(), 1);
 	}
 
+	/**
+	 * This test ensures that the referee can detect when the game is over by
+	 * detecting when player1 has a jack in all four registers
+	 * detecting when player2 has a jack in all four registers
+	 * detecting when player1's bankroll
+	 */
+	@Test
+	public void testDetectingGameOver(){
+		WanderingJacks wj = new WanderingJacks();
+		Card aJack = new Card(Card.JACK, 1);
+		//test with initial retainers and bankroll
+		assertFalse(wj.isGameOver());
+		//test with player 1 having 4 jacks
+		for(int i = 0; i < 4; i++)
+			wj.playerRetainer[i].add(aJack);
+		assertTrue(wj.isGameOver());
+		//test with player 2 having 4 jacks
+		wj = new WanderingJacks();
+		for(int i = 0; i < 4; i++)
+			wj.dealerRetainer[i].add(aJack);
+		assertTrue(wj.isGameOver());
+		//test with player 1 running out of money
+		wj = new WanderingJacks();
+		wj.player.setBankroll(0);
+		assertTrue(wj.isGameOver());
+		wj.player.setBankroll(-10);
+		assertTrue(wj.isGameOver());
+	}
 }
