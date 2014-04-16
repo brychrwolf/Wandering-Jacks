@@ -7,6 +7,28 @@ import org.junit.Test;
 
 public class DeckTest {
 	/**
+	 * This test ensures that a deck reports the correct number of cards
+	 * <p>
+	 * This test relies on dealCard decrementing a card from the deck, and
+	 * throwing a IllegalStateException when there are no cards left to deal.
+	 */
+	@Test
+	public void testDeckCardsLeft(){
+		Deck seedDeck = new Deck();
+		int initialCardsLeft = seedDeck.cardsLeft();
+		int countedCards = 0;
+		while(true){
+			try{
+				seedDeck.dealCard();
+				countedCards++;
+			}catch(IllegalStateException e){
+				assertTrue(initialCardsLeft == countedCards);
+				break;
+			}
+		}
+	}
+
+	/**
 	 * This test ensures that new decks are constructed with either 52
 	 * (standard) or 54 (Standard+Jokers) cards
 	 */
