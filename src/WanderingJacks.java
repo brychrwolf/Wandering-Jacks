@@ -39,7 +39,7 @@ public class WanderingJacks {
 	 * bankroll with which to bet. Plays the part of the house.
 	 * @see Player
 	 */
-	public Player dealer;
+	public Player house;
 	/**
 	 * An array of the player's 4 retainers.
 	 * @see Retainer
@@ -49,7 +49,7 @@ public class WanderingJacks {
 	 * An array of the dealer's 4 retainers.
 	 * @see Retainer
 	 */
-	public Retainer[] dealerRetainer;
+	public Retainer[] houseRetainer;
 
 	/**
 	 * Creates the game environment with two players, their array of 4
@@ -60,12 +60,12 @@ public class WanderingJacks {
 		deck = new Deck(includeJokers);
 		discardPile = new DiscardPile();
 		player = new Player();
-		dealer = new Player();
+		house = new Player();
 		playerRetainer = new Retainer[4];
-		dealerRetainer = new Retainer[4];
+		houseRetainer = new Retainer[4];
 		for(int i = 0; i < 4; i++){
 			playerRetainer[i] = new Retainer();
-			dealerRetainer[i] = new Retainer();
+			houseRetainer[i] = new Retainer();
 		}
 	}
 
@@ -107,10 +107,10 @@ public class WanderingJacks {
 				&& playerRetainer[3].retainsJack()){
 			return true;
 		// Dealer wins
-		}else if(dealerRetainer[0].retainsJack()
-					&& dealerRetainer[1].retainsJack()
-					&& dealerRetainer[2].retainsJack()
-					&& dealerRetainer[3].retainsJack()){
+		}else if(houseRetainer[0].retainsJack()
+					&& houseRetainer[1].retainsJack()
+					&& houseRetainer[2].retainsJack()
+					&& houseRetainer[3].retainsJack()){
 			return true;
 		// Player loses by running out of money
 		}else if(player.getBankroll() <= 0){
@@ -132,11 +132,11 @@ public class WanderingJacks {
 				if(rcard.getValue() == Card.JACK || rcard.getValue() == Card.ACE || rcard.getValue() == Card.JOKER || rcard.getValue() == Card.KING)
 					discardPile.discard(rcard);
 				else playerRetainer[i].add(rcard);}
-			while(dealerRetainer[i].isEmpty() == true){
+			while(houseRetainer[i].isEmpty() == true){
 				rcard = deck.dealCard();
 				if(rcard.getValue() == Card.JACK || rcard.getValue() == Card.ACE || rcard.getValue() == Card.JOKER || rcard.getValue() == Card.KING)
 					discardPile.discard(rcard);
-				else dealerRetainer[i].add(rcard);
+				else houseRetainer[i].add(rcard);
 			}
 		}
 		// deal 3 cards one player's hand, then the other, discarding Jokers
@@ -145,11 +145,11 @@ public class WanderingJacks {
 			if(rcard.getSuit() == Card.JOKER)
 				discardPile.discard(rcard);
 			else player.getHand().add(rcard);}
-		while(dealer.getHand().size() < 3){
+		while(house.getHand().size() < 3){
 			rcard = deck.dealCard();
 			if(rcard.getSuit() == Card.JOKER)
 				discardPile.discard(rcard);
-			else dealer.getHand().add(rcard);}
+			else house.getHand().add(rcard);}
 		// shuffle discard stack into deck, discard top card from the deck
 		deck.shuffleWithOtherCards(discardPile.takeAllCards());
 		discardPile.discard(deck.dealCard());

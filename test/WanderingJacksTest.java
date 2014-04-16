@@ -42,12 +42,12 @@ public class WanderingJacksTest{
 		assertTrue(wj.deck instanceof Deck);
 		assertTrue(wj.discardPile instanceof DiscardPile);
 		assertTrue(wj.player instanceof Player);
-		assertTrue(wj.dealer instanceof Player);
+		assertTrue(wj.house instanceof Player);
 		assertTrue(wj.playerRetainer instanceof Retainer[]);
-		assertTrue(wj.dealerRetainer instanceof Retainer[]);
+		assertTrue(wj.houseRetainer instanceof Retainer[]);
 		for(int i = 0; i < 4; i++){
 			assertTrue(wj.playerRetainer[i] instanceof Retainer);
-			assertTrue(wj.dealerRetainer[i] instanceof Retainer);
+			assertTrue(wj.houseRetainer[i] instanceof Retainer);
 		}
 	}
 
@@ -68,7 +68,7 @@ public class WanderingJacksTest{
 					assertTrue(e instanceof IllegalStateException);}
 			}
 		}
-		for(Retainer dr : wj.dealerRetainer){
+		for(Retainer dr : wj.houseRetainer){
 			assertTrue(dr.get(0) != null);
 			assertTrue(dr.get(0) instanceof Card);
 			for(int i = 1; i < dr.size(); i++){
@@ -108,7 +108,7 @@ public class WanderingJacksTest{
 		WanderingJacks wj = new WanderingJacks();
 		wj.setUpGameEnvironment();
 		assertEquals(wj.player.getHand().size(), 3);
-		assertEquals(wj.dealer.getHand().size(), 3);
+		assertEquals(wj.house.getHand().size(), 3);
 	}
 
 	/**
@@ -122,7 +122,7 @@ public class WanderingJacksTest{
 		wj.setUpGameEnvironment();
 		for(Card c : wj.player.getHand())
 			assertTrue(c.getValue() != Card.JOKER);
-		for(Card c : wj.dealer.getHand())
+		for(Card c : wj.house.getHand())
 			assertTrue(c.getValue() != Card.JOKER);
 	}
 
@@ -156,7 +156,7 @@ public class WanderingJacksTest{
 		//test with player 2 having 4 jacks
 		wj = new WanderingJacks();
 		for(int i = 0; i < 4; i++)
-			wj.dealerRetainer[i].add(aJack);
+			wj.houseRetainer[i].add(aJack);
 		assertTrue(wj.isGameOver());
 		//test with player 1 running out of money
 		wj = new WanderingJacks();
