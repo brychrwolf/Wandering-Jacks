@@ -37,4 +37,29 @@ public class DiscardPileTest {
 		assertTrue(cardTaken.equals(aJoker));
 	}
 
+	/**
+	 * This test ensures that when discarded cards are added to the pile, that
+	 * the size of the pile increases,
+	 * and the top card becomes the discarded card.
+	 */
+	@Test
+	public void testDiscarding(){
+		Card aJoker = new Card(0,0);
+		Card aJack = new Card(Card.JACK, Card.CLUBS);
+		DiscardPile dp = new DiscardPile();
+		//test discarding to the initial pile
+		int sizeBefore = dp.size();
+		dp.discard(aJoker);
+		int sizeAfter = dp.size();
+		assertTrue(sizeAfter == sizeBefore + 1);
+		assertTrue(dp.peekAtTopCard().equals(aJoker));
+		//test taking after adding two cards
+		sizeBefore = dp.size();
+		dp.discard(aJack);
+		dp.discard(aJoker);
+		sizeAfter = dp.size();
+		assertTrue(sizeAfter == sizeBefore + 2);
+		assertTrue(dp.peekAtTopCard().equals(aJoker));
+	}
+
 }

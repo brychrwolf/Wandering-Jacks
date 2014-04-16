@@ -79,7 +79,7 @@ public class WanderingJacks {
 		//	player is dealt a card from the deck or discard pile
 			if(takeFromDeck)
 				wj.player.addToHand(wj.deck.dealCard());
-			else wj.player.addToHand(wj.discardPile.takeCard());
+			else wj.player.addToHand(wj.discardPile.takeTopCard());
 		//	if Joker is drawn, it must be played immediately
 		//	player decides how to play, discard 1 or play at least 1 to retainers
 			int cardIndex = 0;
