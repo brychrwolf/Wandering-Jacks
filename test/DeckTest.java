@@ -38,7 +38,7 @@ public class DeckTest {
 	 * the deck repeating.
 	 */
 	@Test
-	public void testShuffleSize(){
+	public void testShuffleSizeStaysConstant(){
 		Deck seedDeck = new Deck(true);
 		int sizeBefore;
 		int sizeAfter;
@@ -59,7 +59,7 @@ public class DeckTest {
 	 * the deck repeating.
 	 */
 	@Test
-	public void testShuffleContents(){
+	public void testShuffleContentStaysConstant(){
 		// get two initial contents
 		Deck initialDeck1 = new Deck(true);
 		Deck initialDeck2 = new Deck(true);
@@ -84,7 +84,7 @@ public class DeckTest {
 	 * </ul>
 	 */
 	@Test
-	public void testShuffle() {
+	public void testShuffleRandomizesCardOrder() {
 		// Store the initial deck in an array
 		Deck seedDeck = new Deck(true);
 		int deckSize = seedDeck.cardsLeft();
