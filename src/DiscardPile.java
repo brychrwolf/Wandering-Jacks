@@ -18,7 +18,7 @@ public class DiscardPile {
 	 * @throws IllegalStateException if there are now cards in the pile to take
 	 * @see Card
 	 */
-	public Card takeCard(){
+	public Card takeTopCard(){
 		if(discardPile.size() <= 0)
 			throw new IllegalStateException("No cards to take in the discard pile.");
 		return discardPile.pop();
@@ -66,4 +66,13 @@ public class DiscardPile {
 	public boolean isEmpty(){
 		return discardPile.isEmpty();
 	}
+
+	/**
+	 * Returns the size of the discard pile.
+	 * @return the size of the discard pile.
+	 */
+	public int size(){
+		return discardPile.size();
+	}
+
 }
