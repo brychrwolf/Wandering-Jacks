@@ -13,14 +13,12 @@ public class ConsoleUITest {
 	private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
 	private final String newLine = System.getProperty("line.separator");
 
-	ConsoleUI cui;
 	WanderingJacks wj;
 
 	@Before
 	public void init(){
 	    System.setOut(new PrintStream(outContent));
 	    System.setErr(new PrintStream(errContent));
-		cui = new ConsoleUI();
 		wj = new WanderingJacks();
 	}
 
@@ -41,7 +39,7 @@ public class ConsoleUITest {
 			oRets += newLine;
 		}
 
-		cui.draw(wj);
+		ConsoleUI.draw(wj);
 	    assertEquals(oRets, outContent.toString());
 	}
 

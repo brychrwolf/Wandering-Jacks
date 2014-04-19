@@ -193,6 +193,8 @@ public class WanderingJacks {
 		if(discardPile.size() > 0)
 			deck.shuffleWithOtherCards(discardPile.takeAllCards());
 		discardPile.discard(deck.dealCard());
+		// Display game state
+		ConsoleUI.draw(this);
 	}
 
 	/**
