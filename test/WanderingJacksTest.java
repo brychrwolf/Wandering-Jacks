@@ -7,6 +7,12 @@ import java.util.HashSet;
 import org.junit.Test;
 
 public class WanderingJacksTest{
+	Card aJoker = new Card(0, 0);
+	Card aAce = new Card(1, 1);
+	Card aQueen = new Card(12, 1);
+	Card aJack = new Card(11, 1);
+	Card a10 = new Card(10, 1);
+	Card a9 = new Card(9, 1);
 
 	/**
 	 * This test ensures that at the beginning of the game, the deck has 54
@@ -146,7 +152,6 @@ public class WanderingJacksTest{
 	@Test
 	public void testDetectingGameOver(){
 		WanderingJacks wj = new WanderingJacks();
-		Card aJack = new Card(Card.JACK, 1);
 		//test with initial retainers and bankroll
 		assertFalse(wj.isGameOver());
 		//test with player 1 having 4 jacks
@@ -174,8 +179,6 @@ public class WanderingJacksTest{
 	@Test
 	public void testDiscardingEntireRegister(){
 		WanderingJacks wj = new WanderingJacks();
-		Card a10 = new Card(10, 1);
-		Card aJoker = new Card(0, 0);
 		Card cardRemoved = new Card();
 		wj.playerRetainer[0].add(a10);
 		wj.playerRetainer[0].add(a10);
@@ -198,9 +201,6 @@ public class WanderingJacksTest{
 	@Test
 	public void testPlayerTakeingCardFromRegisterPuttingElsehere(){
 		WanderingJacks wj = new WanderingJacks();
-		Card a10 = new Card(10, 1);
-		Card a9 = new Card(9, 1);
-		Card aJoker = new Card(0, 0);
 		wj.playerRetainer[0].add(a10);
 		wj.playerRetainer[0].add(a9);
 		wj.playerRetainer[0].add(aJoker);
@@ -219,7 +219,6 @@ public class WanderingJacksTest{
 	@Test
 	public void testPlayerPlayingCardFromHandToOwnedRetainer(){
 		WanderingJacks wj = new WanderingJacks();
-		Card aJoker = new Card(0, 0);
 		wj.player.addToHand(aJoker);
 		Card cardPlayed = wj.player.playFromHand(aJoker);
 		assertTrue(wj.player.handSize() == 0);
@@ -234,12 +233,83 @@ public class WanderingJacksTest{
 	@Test
 	public void testPlayerTakingCardFromDiscardPileToHand(){
 		WanderingJacks wj = new WanderingJacks();
-		Card aJoker = new Card(0, 0);
 		wj.discardPile.discard(aJoker);
 		Card cardTaken = wj.discardPile.takeTopCard();
 		wj.player.addToHand(cardTaken);
 		assertTrue(wj.player.handSize() == 1);
 		assertTrue(wj.player.handContains(aJoker));
 		assertTrue(wj.discardPile.size() == 0);
+	}
+
+	/**
+	 * Test that a player can swap a retainer with 3oak+A
+	 */
+	@Test(expected=IllegalStateException.class)
+	public void exceptionThrown_PlayerHasNo3oak(){
+		WanderingJacks wj = new WanderingJacks();
+		wj.threeOfAKind('p', aAce, 0, 0);
+	}
+
+	@Test(expected=IllegalStateException.class)
+	public void exceptionThrown_ORcontainsAJack(){
+		WanderingJacks wj = new WanderingJacks();
+		wj.playerRetainer[0].add(a9);
+		wj.playerRetainer[0].add(a9);
+		wj.playerRetainer[0].add(a9);
+		wj.houseRetainer[0].add(aJack);
+		wj.threeOfAKind('p', aAce, 0, 0);
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void exceptionThrown_PHisNotPorH(){
+		WanderingJacks wj = new WanderingJacks();
+		wj.playerRetainer[0].add(a9);
+		wj.playerRetainer[0].add(a9);
+		wj.playerRetainer[0].add(a9);
+		wj.threeOfAKind('f', aAce, 0, 0);
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void exceptionThrown_AceIsNotAnAce(){
+		WanderingJacks wj = new WanderingJacks();
+		wj.playerRetainer[0].add(a9);
+		wj.playerRetainer[0].add(a9);
+		wj.playerRetainer[0].add(a9);
+		wj.threeOfAKind('p', a9, 0, 0);
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void exceptionThrown_PIndexOutOfBounds(){
+		WanderingJacks wj = new WanderingJacks();
+		wj.playerRetainer[0].add(a9);
+		wj.playerRetainer[0].add(a9);
+		wj.playerRetainer[0].add(a9);
+		wj.threeOfAKind('p', aAce, 5, 0);
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void exceptionThrown_OIndexOutOfBounds(){
+		WanderingJacks wj = new WanderingJacks();
+		wj.playerRetainer[0].add(a9);
+		wj.playerRetainer[0].add(a9);
+		wj.playerRetainer[0].add(a9);
+		wj.threeOfAKind('p', aAce, 0, 5);
+	}
+
+	@Test
+	public void threeOfAKindSwapsRetainers(){
+		WanderingJacks wj = new WanderingJacks();
+		wj.playerRetainer[0].add(a9);
+		wj.playerRetainer[0].add(a9);
+		wj.playerRetainer[0].add(a9);
+		wj.houseRetainer[0].add(aQueen);
+		wj.houseRetainer[0].add(aQueen);
+		wj.threeOfAKind('p', aAce, 0, 0);
+		assertTrue(wj.playerRetainer[0].size() == 2);
+		assertTrue(wj.playerRetainer[0].get(0).equals(aQueen));
+		assertTrue(wj.playerRetainer[0].get(1).equals(aQueen));
+		assertTrue(wj.houseRetainer[0].size() == 1);
+		assertTrue(wj.houseRetainer[0].get(0).equals(a9));
+		assertTrue(wj.discardPile.peekAtTopCard().equals(aAce));
 	}
 }
