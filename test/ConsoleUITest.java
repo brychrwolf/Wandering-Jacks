@@ -29,6 +29,19 @@ public class ConsoleUITest {
 	}
 
 	@Test
+	public void canDrawPlayersHand(){
+		Player p = wj.player[wj.activePlayer];
+
+		String outString = "";
+		for(int i = 0; i < p.handSize(); i++){
+			outString += "["+i+"] = "+p.getFromHand(i) .toString()+" ";
+		}
+		outString += newLine;
+		ConsoleUI.drawPlayersHand(p);
+	    assertEquals(outString, outContent.toString());
+	}
+
+	@Test
 	public void canDrawPlayersRetainers(){
 		Retainer[] pRets = wj.retainer[wj.activePlayer];
 		String outString = "";
