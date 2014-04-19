@@ -94,6 +94,10 @@ public class WanderingJacks {
 		}System.out.println("Game Over.");
 	}
 
+	public void stealJack(int r1, int r2){
+
+	}
+
 	/**
 	 * Returns true if the game is over.
 	 * <p>
