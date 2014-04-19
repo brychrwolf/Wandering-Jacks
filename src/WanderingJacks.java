@@ -95,7 +95,10 @@ public class WanderingJacks {
 	}
 
 	public void stealJack(int r1, int r2){
-
+		//Need way of getting Jack's suit, or its index
+		//Card opponentsJack = retainerGroup[(activePlayer == 1 ? 1 : 0)][r2].
+		//Card stolenCard = retainerGroup[(activePlayer == 1 ? 1 : 0)][r2].remove()
+		//retainerGroup[activePlayer][r1].add();
 	}
 
 	/**
