@@ -47,6 +47,7 @@ public class WanderingJacks {
 	 * <p>
 	 * RetainerGroup[0] = the gambler's 4 retainers
 	 * RetainerGroup[0][0] = the gambler's first retainer
+	 * RetainerGroup[0][0].get(0) = the first card in the gambler's first retainer
 	 * RetainerGroup[1] = the house's 4 retainers
 	 * @see Retainer
 	 */
@@ -354,57 +355,4 @@ public class WanderingJacks {
 		retainer[activePlayer][prIndex] = r2;
 		retainer[(activePlayer == 0 ? 1 : 0)][orIndex] = r1;
 	}
-
-	/*public Double probabilityOfDrawingA(char pOrD, String target){
-		//total cards = 54
-		int tc = 54;
-		//known cards = 0-3 my hand, 0-13 my retainers, 0-13 opponant's retainers, 0-54 discard pile
-		int kc = 0;
-		int st = 0;
-		for(Card[] i : pr){
-			for(Card j : i){
-				if(j != null){
-					kc++;
-					if(j.getValueAsString() == target) st++;
-				}
-			}
-		}
-		for(Card[] i : dr){
-			for(Card j : i){
-				if(j != null){
-					kc++;
-					if(j.getValueAsString() == target) st++;
-				}
-			}
-		}
-		if(pOrD == 'p'){
-			for(Card i : p.getHand()){
-				kc++;
-				if(i.getValueAsString() == target) st++;
-			}
-		}else if(pOrD == 'd'){
-			for(Card i : d.getHand()){
-				kc++;
-				if(i.getValueAsString() == target) st++;
-			}
-		}else{
-			throw new IllegalArgumentException("Invalid (p)layer or (d)ealer parameter.");
-		}
-		for(Card i : discard_pile){
-			kc++;
-			if(i.getValueAsString() == target) st++;
-		}
-		//unknown cards = total cards - known cards
-		int uc = tc - kc;
-		//total targets = 4 (unless joker)
-		int tt = (target == "Joker" ? 2 : 4);
-		//seen targets = targets within known cards
-		//hidden targets = total targets - seen targets
-		System.out.println("Seen "+target+"s = "+st);
-		int ht = tt - st;
-		//Probability of drawing target = hidden targets / unknown cards
-		return (double) ht / uc;
-	}*/
-
-
 }
