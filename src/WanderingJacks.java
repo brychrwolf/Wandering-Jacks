@@ -300,9 +300,11 @@ public class WanderingJacks {
 			r2 = playerRetainer[prIndex];
 		}else throw new IllegalArgumentException("The player's first initial must be either 'p' or 'h', not '"+i+"'");
 		// Check if player has a three a kind in that retainer
-		if(r1.get(0).getValueAsString() != r1.get(1).getValueAsString() ||
-			r1.get(0).getValueAsString() != r1.get(2).getValueAsString())
-			throw new IllegalStateException("The player's retainer must not contain a 3-of-a-kind.");
+		try{if(r1.get(0).getValueAsString() != r1.get(1).getValueAsString() ||
+				r1.get(0).getValueAsString() != r1.get(2).getValueAsString())
+					throw new IllegalStateException("The player's retainer must not contain a 3-of-a-kind.");
+		}catch(IndexOutOfBoundsException e){
+			throw new IllegalStateException("The player's retainer must not contain a 3-of-a-kind.");}
 		// Check for a Jack in the opponent's retainer
 		if(r2.retainsJack()) throw new IllegalStateException("The opponent's retainer must not contain a Jack");
 		// Play the Ace
