@@ -56,6 +56,23 @@ public class Player {
 	}
 
 	/**
+	 * Returns the card from the hand at the specified index. Does NOT remove
+	 * the card from the hand, so the hand size will remain the same.
+	 * @param index the index from which to get the card
+	 * @return the card at that index
+	 * @throws IndexOutOfBoundsException when index is out of bounds.
+	 */
+	public Card getFromHand(int index){
+		try{
+			return hand.get(index);
+		}catch (IndexOutOfBoundsException e){
+		    System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+		    System.err.println("Index " + index + " not within {0 - " + (hand.size() - 1) + "}");
+			throw new IndexOutOfBoundsException(e + "Index " + index + " not within {0 - " + (hand.size() - 1) + "}");
+		}
+	}
+
+	/**
 	 * Returns true only if the target card is found within the hand.
 	 * @param target is the card that is searched for in the hand.
 	 * @return true only if the target card is found within the hand, and

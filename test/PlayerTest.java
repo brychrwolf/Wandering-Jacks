@@ -153,5 +153,22 @@ public class PlayerTest {
 		assertTrue(p.playFromHand(0).equals(aJack));
 	}
 
+	/**
+	 * Test getFromHand(index) returns a card if one exists in that
+	 * index, and throws and exception otherwise
+	 */
+	@Test
+	public void getFromHandReturnsCardFromIndex(){
+		p.addToHand(aJack);
+		p.addToHand(aJoker);
+		assertTrue(p.getFromHand(0).equals(aJack));
+		assertTrue(p.getFromHand(1).equals(aJoker));
+	}
+	@Test
+	public void getFromHandThrowsIndexOoBException(){
+		try{p.getFromHand(0);}
+		catch(IndexOutOfBoundsException e){
+			assertTrue(e instanceof IndexOutOfBoundsException);}
+	}
 
 }
