@@ -94,6 +94,18 @@ public class WanderingJacks {
 		}System.out.println("Game Over.");
 	}
 
+	/**
+	 * Attempts to steal Jack to player's retainer from an opponent's retainer
+	 * <ul>
+	 * <li>A opponent's King will be taken first.</li>
+	 * <li>Having a King will prevent from taking a second king.</li>
+	 * <li>There must be a Jack in the opponent's retainer to make attempt.</li>
+	 * <li>Player must have no JAcks in the retainer to receive stolen card.</li>
+	 *
+	 *
+	 * @param rIdx1
+	 * @param rIdx2
+	 */
 	public void stealJack(int rIdx1, int rIdx2){
 		Retainer r1 = retainer[activePlayer][rIdx1];
 		Retainer r2 = retainer[(activePlayer == 1 ? 0 : 1)][rIdx2];

@@ -235,7 +235,7 @@ public class WanderingJacksTest{
 		assertTrue(wj.discardPile.peekAtTopCard().equals(cardPlayed));
 	}
 
-	/**
+	/*
 	 * Test that a player can take a card from the discard pile and put it in
 	 * their hand
 	 */
@@ -249,7 +249,14 @@ public class WanderingJacksTest{
 		assertTrue(wj.discardPile.size() == 0);
 	}
 
-	/**
+	@Test
+	public void playerDealtCardAddsItToHand(){
+		Card dealtCard = wj.deck.dealCard();
+		wj.player[wj.activePlayer].addToHand(dealtCard);
+		assertTrue(wj.player[wj.activePlayer].handContains(dealtCard));
+	}
+
+	/*
 	 * Test that a player can swap a retainer with 3oak+A
 	 */
 	@Test(expected=IllegalStateException.class)
