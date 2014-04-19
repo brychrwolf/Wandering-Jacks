@@ -39,20 +39,19 @@ public class Retainer {
 	}
 
 	/**
-	 * Returns true only if any of the cards in the retainer have a value that
-	 * matches the given target value string.
+	 * Returns the index of the card first card in the retainer to have a value
+	 * that matches the given target value string.
 	 * @param targetValue the string to search for among all the cards' values
 	 * in the retainer
-	 * @return true only if the target value is found within the retainer, and
-	 * false if otherwise.
+	 * @return the index of the first matched card, or -1
 	 * @see Card
 	 */
-	public boolean contains(String targetValue){
-		boolean found = false;
+	public int indexOf(String targetValue){
+		int index = -1;
 		for(Card card : retainer)
 			if(card.getValueAsString() == targetValue)
-				found = true;
-		return found;
+				index = retainer.indexOf(card);
+		return index;
 	}
 
 	/**

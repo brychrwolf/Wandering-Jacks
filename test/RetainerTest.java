@@ -214,9 +214,9 @@ public class RetainerTest {
 		assertTrue(retainer.contains(aJoker));
 		//test contains(String)
 		retainer = new Retainer();
-		assertFalse(retainer.contains("Joker"));
+		assertTrue(retainer.indexOf("Joker") == -1);
 		retainer.add(aJoker);
-		assertTrue(retainer.contains("Joker"));
+		assertTrue(retainer.indexOf("Joker") == 0);
 	}
 
 	/**
