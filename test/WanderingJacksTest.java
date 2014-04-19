@@ -301,6 +301,10 @@ public class WanderingJacksTest{
 		assertTrue(wj.discardPile.peekAtTopCard().equals(aAce));
 	}
 
+	/*
+	 * Jack Stealing
+	 */
+
 	@Test
 	public void stealingUnprotectedJackGainsJack(){
 		wj.retainer[0][0] = twoQueens;
@@ -309,6 +313,19 @@ public class WanderingJacksTest{
 		wj.stealJack(0, 0);
 		assertTrue(wj.retainer[0][0].size() == 3);
 		assertTrue(wj.retainer[0][0].get(2).equals(aJack));
+		assertTrue(wj.retainer[1][0].size() == 1);
+	}
+
+	@Test
+	public void stealingUnprotectedJackWithKingGainsJack(){
+		wj.retainer[0][0] = twoQueens;
+		wj.retainer[0][0].add(aKing);
+		wj.retainer[1][0].add(a10);
+		wj.retainer[1][0].add(aJack);
+		wj.stealJack(0, 0);
+		assertTrue(wj.retainer[0][0].size() == 4);
+		assertTrue(wj.retainer[0][0].get(2).equals(aKing));
+		assertTrue(wj.retainer[0][0].get(3).equals(aJack));
 		assertTrue(wj.retainer[1][0].size() == 1);
 	}
 
@@ -324,6 +341,12 @@ public class WanderingJacksTest{
 		assertTrue(wj.retainer[1][0].size() == 2);
 		assertTrue(wj.retainer[1][0].size() == 2);
 	}
+
+
+
+	/*
+	 * End of turn
+	 */
 
 	@Test
 	public void endingTurnTogglesActivePlayer(){
