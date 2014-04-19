@@ -29,6 +29,15 @@ public class ConsoleUITest {
 	}
 
 	@Test
+	public void canDrawDiscardPile(){
+		wj.discardPile.discard(wj.deck.dealCard());
+		String outString = wj.discardPile.peekAtTopCard().toString();
+		outString += newLine;
+		ConsoleUI.drawDiscardPile(wj.discardPile);
+	    assertEquals(outString, outContent.toString());
+	}
+
+	@Test
 	public void canDrawPlayersHand(){
 		Player p = wj.player[wj.activePlayer];
 
