@@ -215,7 +215,7 @@ public class WanderingJacksTest{
 		wj.retainerGroup[0][0].add(aJoker);
 		Card cardRemoved = wj.retainerGroup[0][0].remove(a9);
 		//test that cardRemoved is no longer in retainer
-		assertFalse(wj.retainerGroup[0][0].contains(a9));
+		assertFalse(wj.retainerGroup[0][0].contains(9));
 		//test that cardRemoved is an actual card that can be placed elsewhere
 		//   and is the same card that was removed
 		assertTrue(cardRemoved instanceof Card);
@@ -306,6 +306,17 @@ public class WanderingJacksTest{
 	 */
 	@Test
 	public void stealingUnprotectedJackGainsJack(){
+		wj.retainerGroup[0][0] = twoQueens;
+		wj.retainerGroup[1][0].add(a10);
+		wj.retainerGroup[1][0].add(aJack);
+		wj.stealJack(0, 0);
+		assertTrue(wj.retainerGroup[0][0].size() == 3);
+		assertTrue(wj.retainerGroup[0][0].get(2).equals(aJack));
+		assertTrue(wj.retainerGroup[1][0].size() == 1);
+	}
+
+	@Test
+	public void stealingKingProtectedJackGainsKing(){
 		wj.retainerGroup[0][0] = twoQueens;
 		wj.retainerGroup[1][0].add(a10);
 		wj.retainerGroup[1][0].add(aJack);

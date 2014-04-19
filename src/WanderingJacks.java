@@ -94,10 +94,14 @@ public class WanderingJacks {
 		}System.out.println("Game Over.");
 	}
 
-	public void stealJack(int r1, int r2){
-		int theJack = retainerGroup[(activePlayer == 1 ? 0 : 1)][r2].indexOf("Jack");
-		Card stolenCard = retainerGroup[(activePlayer == 1 ? 0 : 1)][r2].remove(theJack);
-		retainerGroup[activePlayer][r1].add(stolenCard);
+	public void stealJack(int rIdx1, int rIdx2){
+		Retainer r1 = retainerGroup[activePlayer][rIdx1];
+		Retainer r2 = retainerGroup[(activePlayer == 1 ? 0 : 1)][rIdx2];
+		// if jack is king protected, take king instead
+		//if(r2.))
+		int theJack = r2.indexOf(Card.JACK);
+		Card stolenCard = r2.remove(theJack);
+		r1.add(stolenCard);
 	}
 
 	/**

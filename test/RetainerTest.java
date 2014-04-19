@@ -209,14 +209,14 @@ public class RetainerTest {
 		Card aJoker = new Card(0,0);
 		//test contains(Card)
 		Retainer retainer = new Retainer();
-		assertFalse(retainer.contains(aJoker));
+		assertFalse(retainer.contains(Card.JOKER));
 		retainer.add(aJoker);
-		assertTrue(retainer.contains(aJoker));
-		//test contains(String)
+		assertTrue(retainer.contains(Card.JOKER));
+		//test indexOf(int)
 		retainer = new Retainer();
-		assertTrue(retainer.indexOf("Joker") == -1);
+		assertTrue(retainer.indexOf(Card.JOKER) == -1);
 		retainer.add(aJoker);
-		assertTrue(retainer.indexOf("Joker") == 0);
+		assertTrue(retainer.indexOf(Card.JOKER) == 0);
 	}
 
 	/**

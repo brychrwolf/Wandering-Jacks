@@ -28,28 +28,31 @@ public class Retainer {
 	}
 
 	/**
-	 * Returns true only if the target card is found within the retainer.
-	 * @param target is the card that is searched for in the retainer.
-	 * @return true only if the target card is found within the retainer, and
-	 * false if otherwise.
+	 * Returns true only if at least one card that has the same value as the
+	 * target is found within the retainer.
+	 * @param target is the value of the card to find
+	 * @return true only if a card with the value of target is found
 	 * @see Card
 	 */
-	public boolean contains(Card target){
-		return retainer.contains(target);
+	public boolean contains(int targetValue){
+		for(Card card : retainer)
+			if(card.getValue() == targetValue)
+				return true;
+		return false;
 	}
 
 	/**
 	 * Returns the index of the card first card in the retainer to have a value
 	 * that matches the given target value string.
-	 * @param targetValue the string to search for among all the cards' values
+	 * @param targetValue the value to search for among all the cards' values
 	 * in the retainer
 	 * @return the index of the first matched card, or -1
 	 * @see Card
 	 */
-	public int indexOf(String targetValue){
+	public int indexOf(int targetValue){
 		int index = -1;
 		for(Card card : retainer)
-			if(card.getValueAsString() == targetValue)
+			if(card.getValue() == targetValue)
 				index = retainer.indexOf(card);
 		return index;
 	}
