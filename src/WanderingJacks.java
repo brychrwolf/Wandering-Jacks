@@ -76,19 +76,20 @@ public class WanderingJacks {
 		wj.setUpGameEnvironment();
 		//while the game is not over
 		while(!wj.isGameOver()){
-		//	player decides if he wants a card from the deck or the discard pile
-			boolean takeFromDeck = true;
-		//	player is dealt a card from the deck or discard pile
-			if(takeFromDeck)
-				wj.player[0].addToHand(wj.deck.dealCard());
-			else wj.player[0].addToHand(wj.discardPile.takeTopCard());
-		//	if Joker is drawn, it must be played immediately
-		//	player decides how to play, discard 1 or play at least 1 to retainers
+			// player decides if he wants a card from the deck or the discard pile
+			// currently random
+			boolean takeFromDeck = false;
+			if(Math.random() >= .5)	takeFromDeck = true;
+			// player is dealt a card from the deck or discard pile
+			Card cardTaken = (takeFromDeck ? wj.deck.dealCard() : wj.discardPile.takeTopCard());
+			// if Joker is drawn, it must be played immediately (not yet implemented)
+			wj.player[0].addToHand(cardTaken);
+			// player decides how to play (discard 1 or play at least 1 to retainers)
 			int cardIndex = 0;
 			int retainerIndex = 0;
-		//	player plays
+			// player plays
 			wj.retainer[0][retainerIndex].add(wj.player[0].playFromHand(cardIndex));
-		//	End of Turn maintenance
+			// End of Turn maintenance
 			wj.endTurn();
 			wj.player[0].setBankroll(0);
 		}System.out.println("Game Over.");
