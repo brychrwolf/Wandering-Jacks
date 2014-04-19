@@ -13,10 +13,20 @@ public class Player {
 	private List<Card> hand;
 
 	/**
-	 * Creates a player with an empty hand, and a bankroll of 100.
+	 * Creates a player with an empty hand, and a bankroll of 100 units.
+	 * <p>
+	 * Is the same as calling Player(100);
 	 */
 	Player(){
-		bankroll = 100;
+		this(100);
+	}
+
+	/**
+	 * Creates a player with an empty hand, and a bankroll specified amount.
+	 * @param bankroll
+	 */
+	Player(int bankroll){
+		this.bankroll = bankroll;
 		hand = new ArrayList<Card>();
 	}
 

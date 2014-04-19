@@ -317,7 +317,6 @@ public class WanderingJacks {
 	 * This swaps completes the 3oak+A play by discarding all but the bottom
 	 * card in the player's retainer, then swapping that retainer with any of
 	 * the opponent's (that does not contain a Jack)
-	 * @param i is the player's first initial, either (p)layer or (h)ouse
 	 * @param ace is the card to play on the player's retainer
 	 * @param prIndex is the index for which player's retainer to swap
 	 * @param orIndex is the index for which opponent's retainer to swap
@@ -326,21 +325,15 @@ public class WanderingJacks {
 	 * @throws IllegalStateException if the opponent's retainer contains a Jack
 	 * @throws IllegalStateException if the player's retainer does not contain a 3-of-a-kind
 	 */
-	public void threeOfAKind(char i, Card ace, int prIndex, int orIndex){
+	public void threeOfAKindPlusAce(Card ace, int prIndex, int orIndex){
 		// Check if both indexes are within bounds
 		if(prIndex > 3 || prIndex < 0) throw new IllegalArgumentException(prIndex + " is not within the range of valid retainers, 0-3");
 		if(orIndex > 3 || orIndex < 0) throw new IllegalArgumentException(orIndex + " is not within the range of valid retainers, 0-3");
 		// Check if the ace is an ace
 		if(!ace.getValueAsString().equals("Ace")) throw new IllegalArgumentException("The ace is not an ace");
 		// normalize retainer references
-		Retainer r1, r2;
-		if(i == 'p' || i == 'P'){
-			r1 = retainer[0][prIndex];
-			r2 = retainer[1][orIndex];
-		}else if(i == 'p' || i == 'P'){
-			r1 = retainer[1][orIndex];
-			r2 = retainer[0][prIndex];
-		}else throw new IllegalArgumentException("The player's first initial must be either 'p' or 'h', not '"+i+"'");
+		Retainer r1 = retainer[activePlayer][prIndex];
+		Retainer r2 = retainer[(activePlayer == 0 ? 1 : 0)][orIndex];
 		// Check if player has a three a kind in that retainer
 		try{if(r1.get(0).getValueAsString() != r1.get(1).getValueAsString() ||
 				r1.get(0).getValueAsString() != r1.get(2).getValueAsString())
@@ -355,16 +348,8 @@ public class WanderingJacks {
 		while(r1.size() > 1)
 			discardPile.discard(r1.remove(1));
 		// Swap retainers
-		Retainer rt = r1;
-		r1 = r2;
-		r2 = rt;
-		if(i == 'p' || i == 'P'){
-			retainer[0][prIndex] = r1;
-			retainer[1][orIndex]= r2;
-		}else if(i == 'p' || i == 'P'){
-			retainer[1][orIndex] = r1;
-			retainer[0][prIndex] = r2;
-		}else throw new IllegalArgumentException("The player's first initial must be either 'p' or 'h', not '"+i+"'");
+		retainer[activePlayer][prIndex] = r2;
+		retainer[(activePlayer == 0 ? 1 : 0)][orIndex] = r1;
 	}
 
 	/*public Double probabilityOfDrawingA(char pOrD, String target){

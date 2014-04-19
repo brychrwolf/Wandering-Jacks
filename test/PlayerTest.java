@@ -3,18 +3,37 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
+import org.junit.Before;
 import org.junit.Test;
 
 
 public class PlayerTest {
+	Player p = new Player();
+	Card aJoker = new Card(0,0);
+	Card aJack = new Card(Card.JACK, Card.CLUBS);
 
-	/**
-	 * This test ensures that all players are constructed with an empty hand.
+	@Before
+	public void init(){
+	}
+
+	/*
+	 * Test constructors
 	 */
 	@Test
-	public void testBeginWithEmptyHand() {
-		Player p = new Player();
+	public void constructedWithEmptyHand(){
 		assertTrue(p.getHand().size() == 0);
+	}
+
+	@Test
+	public void constructedBankrollDefaultGreaterThan0(){
+		assertTrue(p.getBankroll() > 0);
+	}
+
+	@Test
+	public void constructedBankrollSetsBankroll(){
+		int bValue = 999;
+		p = new Player(bValue);
+		assertTrue(p.getBankroll() == bValue);
 	}
 
 	/**
@@ -22,7 +41,6 @@ public class PlayerTest {
 	 */
 	@Test
 	public void testGettingHand() {
-		Player p = new Player();
 		assertTrue(p.getHand() instanceof ArrayList<?>);
 		p.addToHand(new Card(0,0));
 		assertTrue(p.getHand() instanceof ArrayList<?>);
@@ -36,8 +54,6 @@ public class PlayerTest {
 	 */
 	@Test
 	public void testHandContains(){
-		Card aJoker = new Card(0,0);
-		Player p = new Player();
 		//test contains(Card)
 		assertFalse(p.handContains(aJoker));
 		p.addToHand(aJoker);
@@ -55,9 +71,6 @@ public class PlayerTest {
 	 */
 	@Test
 	public void testAddToHand(){
-		Card aJoker = new Card(0, 0);
-		Card aJack = new Card(Card.JACK, Card.CLUBS);
-		Player p = new Player();
 		//test adding to initial retainer
 		int sizeBefore = p.handSize();
 		p.addToHand(aJoker);
@@ -80,8 +93,6 @@ public class PlayerTest {
 	 */
 	@Test
 	public void testHandSize(){
-		Card aJoker = new Card(0,0);
-		Player p = new Player();
 		//test initial size is empty
 		assertTrue(p.handSize() == 0);
 		//test after adding card
@@ -99,9 +110,6 @@ public class PlayerTest {
 	 */
 	@Test
 	public void testPlayFromHand(){
-		Card aJoker = new Card(0, 0);
-		Card aJack = new Card(Card.JACK, Card.CLUBS);
-		Player p = new Player();
 		//test removing from initial hand
 		try{p.playFromHand(aJoker);}
 		catch(IllegalStateException e){

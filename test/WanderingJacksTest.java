@@ -268,45 +268,39 @@ public class WanderingJacksTest{
 	 */
 	@Test(expected=IllegalStateException.class)
 	public void exceptionThrown_PlayerHasNo3oak(){
-		wj.threeOfAKind('p', aAce, 0, 0);
+		wj.threeOfAKindPlusAce(aAce, 0, 0);
 	}
 
 	@Test(expected=IllegalStateException.class)
 	public void exceptionThrown_ORcontainsAJack(){
 		wj.retainer[0][0] = three9s;
 		wj.retainer[1][0].add(aJack);
-		wj.threeOfAKind('p', aAce, 0, 0);
-	}
-
-	@Test(expected=IllegalArgumentException.class)
-	public void exceptionThrown_PHisNotPorH(){
-		wj.retainer[0][0] = three9s;
-		wj.threeOfAKind('f', aAce, 0, 0);
+		wj.threeOfAKindPlusAce(aAce, 0, 0);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	public void exceptionThrown_AceIsNotAnAce(){
 		wj.retainer[0][0] = three9s;
-		wj.threeOfAKind('p', a9, 0, 0);
+		wj.threeOfAKindPlusAce(a9, 0, 0);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	public void exceptionThrown_PIndexOutOfBounds(){
 		wj.retainer[0][0] = three9s;
-		wj.threeOfAKind('p', aAce, 5, 0);
+		wj.threeOfAKindPlusAce(aAce, 5, 0);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	public void exceptionThrown_OIndexOutOfBounds(){
 		wj.retainer[0][0] = three9s;
-		wj.threeOfAKind('p', aAce, 0, 5);
+		wj.threeOfAKindPlusAce(aAce, 0, 5);
 	}
 
 	@Test
 	public void threeOfAKindSwapsRetainers(){
 		wj.retainer[0][0] = three9s;
 		wj.retainer[1][0] = twoQueens;
-		wj.threeOfAKind('p', aAce, 0, 0);
+		wj.threeOfAKindPlusAce(aAce, 0, 0);
 		assertTrue(wj.retainer[0][0].size() == 2);
 		assertTrue(wj.retainer[0][0].get(0).equals(aQueen));
 		assertTrue(wj.retainer[0][0].get(1).equals(aQueen));
