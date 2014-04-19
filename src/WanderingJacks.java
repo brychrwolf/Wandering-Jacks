@@ -262,6 +262,7 @@ public class WanderingJacks {
 	 */
 	public void endTurn(){
 		// ensure that player's hand has 3 cards
+		//
 		// ensure that player's registers all have at least one card
 		// Attempts to steal Jacks are made in order of Player's choice
 		// 	* multiple queens steal Jacks (or Kings) from stacks built on 10s
