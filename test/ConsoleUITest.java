@@ -20,6 +20,7 @@ public class ConsoleUITest {
 	    System.setOut(new PrintStream(outContent));
 	    System.setErr(new PrintStream(errContent));
 		wj = new WanderingJacks();
+		wj.setUpGameEnvironment();
 	}
 
 	@After
@@ -30,7 +31,6 @@ public class ConsoleUITest {
 
 	@Test
 	public void canDrawDiscardPile(){
-		wj.discardPile.discard(wj.deck.dealCard());
 		String outString = wj.discardPile.peekAtTopCard().toString();
 		outString += newLine;
 		ConsoleUI.drawDiscardPile(wj.discardPile);
@@ -73,6 +73,23 @@ public class ConsoleUITest {
 			outString += newLine;
 		}
 		ConsoleUI.drawRetainerGroup(oRets);
+		assertEquals(outString, outContent.toString());
+	}
+
+	@Test
+	public void canDrawEmptyRetainers(){
+		Retainer[] retainer = wj.retainer[wj.activePlayer];
+		retainer[0].remove(0);
+
+		String outString = "";
+		for(int i = 0; i < retainer.length; i++){
+			if(retainer[i].isEmpty())
+				outString += "["+i+"][0] = empty";
+			else for(int j = 0; j < retainer[i].size(); j++)
+				outString += "["+i+"]["+j+"] = "+retainer[i].get(j).toString()+" ";
+			outString += newLine;
+		}
+		ConsoleUI.drawRetainerGroup(retainer);
 		assertEquals(outString, outContent.toString());
 	}
 

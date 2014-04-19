@@ -21,7 +21,9 @@ public class ConsoleUI {
 	public static void drawRetainerGroup(Retainer[] retainer){
 		String outString = "";
 		for(int i = 0; i < retainer.length; i++){
-			for(int j = 0; j < retainer[i].size(); j++)
+			if(retainer[i].isEmpty())
+				outString += "["+i+"][0] = empty";
+			else for(int j = 0; j < retainer[i].size(); j++)
 				outString += "["+i+"]["+j+"] = "+retainer[i].get(j).toString()+" ";
 			outString += newLine;
 		}

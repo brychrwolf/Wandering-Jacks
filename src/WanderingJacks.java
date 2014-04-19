@@ -76,6 +76,8 @@ public class WanderingJacks {
 		wj.setUpGameEnvironment();
 		//while the game is not over
 		while(!wj.isGameOver()){
+			// Display game state
+			ConsoleUI.draw(wj);
 			// player decides if he wants a card from the deck or the discard pile
 			// currently random
 			boolean takeFromDeck = false;
@@ -193,8 +195,6 @@ public class WanderingJacks {
 		if(discardPile.size() > 0)
 			deck.shuffleWithOtherCards(discardPile.takeAllCards());
 		discardPile.discard(deck.dealCard());
-		// Display game state
-		ConsoleUI.draw(this);
 	}
 
 	/**
