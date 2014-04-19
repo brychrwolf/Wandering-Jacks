@@ -50,7 +50,7 @@ public class WanderingJacks {
 	 * RetainerGroup[1] = the house's 4 retainers
 	 * @see Retainer
 	 */
-	public Retainer[][] retainerGroup;
+	public Retainer[][] retainer;
 
 	/**
 	 * Creates the game environment with two players, their array of 4
@@ -63,11 +63,11 @@ public class WanderingJacks {
 		discardPile = new DiscardPile();
 		activePlayer = 0;
 		player = new Player[2];
-		retainerGroup = new Retainer[2][4];
+		retainer = new Retainer[2][4];
 		for(int i = 0; i < 2; i++){
 			player[i] = new Player();
 			for(int j = 0; j < 4; j++)
-				retainerGroup[i][j] = new Retainer();
+				retainer[i][j] = new Retainer();
 		}
 	}
 
@@ -87,7 +87,7 @@ public class WanderingJacks {
 			int cardIndex = 0;
 			int retainerIndex = 0;
 		//	player plays
-			wj.retainerGroup[0][retainerIndex].add(wj.player[0].playFromHand(cardIndex));
+			wj.retainer[0][retainerIndex].add(wj.player[0].playFromHand(cardIndex));
 		//	End of Turn maintenance
 			wj.endTurn();
 			wj.player[0].setBankroll(0);
@@ -95,13 +95,18 @@ public class WanderingJacks {
 	}
 
 	public void stealJack(int rIdx1, int rIdx2){
-		Retainer r1 = retainerGroup[activePlayer][rIdx1];
-		Retainer r2 = retainerGroup[(activePlayer == 1 ? 0 : 1)][rIdx2];
+		Retainer r1 = retainer[activePlayer][rIdx1];
+		Retainer r2 = retainer[(activePlayer == 1 ? 0 : 1)][rIdx2];
+		int indexOfCard;
+		Card cardStolen;
 		// if jack is king protected, take king instead
-		//if(r2.))
-		int theJack = r2.indexOf(Card.JACK);
-		Card stolenCard = r2.remove(theJack);
-		r1.add(stolenCard);
+		if(r2.contains(Card.KING)){
+			indexOfCard = r2.indexOf(Card.KING);
+		}else{
+			indexOfCard = r2.indexOf(Card.JACK);
+		}
+		cardStolen = r2.remove(indexOfCard);
+		r1.add(cardStolen);
 	}
 
 	/**
@@ -113,16 +118,16 @@ public class WanderingJacks {
 	 */
 	public boolean isGameOver(){
 		// Player wins
-		if(retainerGroup[0][0].retainsJack()
-				&& retainerGroup[0][1].retainsJack()
-				&& retainerGroup[0][2].retainsJack()
-				&& retainerGroup[0][3].retainsJack()){
+		if(retainer[0][0].retainsJack()
+				&& retainer[0][1].retainsJack()
+				&& retainer[0][2].retainsJack()
+				&& retainer[0][3].retainsJack()){
 			return true;
 		// Dealer wins
-		}else if(retainerGroup[1][0].retainsJack()
-					&& retainerGroup[1][1].retainsJack()
-					&& retainerGroup[1][2].retainsJack()
-					&& retainerGroup[1][3].retainsJack()){
+		}else if(retainer[1][0].retainsJack()
+					&& retainer[1][1].retainsJack()
+					&& retainer[1][2].retainsJack()
+					&& retainer[1][3].retainsJack()){
 			return true;
 		// Player loses by running out of money
 		}else if(player[0].getBankroll() <= 0){
@@ -139,16 +144,16 @@ public class WanderingJacks {
 		// deal a card to each players' retainers, alternating between each player, discarding Jacks, Aces, Jokers, and Kings
 		Card rcard;
 		for(int i = 0; i < 4; i++){
-			while(retainerGroup[0][i].isEmpty() == true){
+			while(retainer[0][i].isEmpty() == true){
 				rcard = deck.dealCard();
 				if(rcard.getValue() == Card.JACK || rcard.getValue() == Card.ACE || rcard.getValue() == Card.JOKER || rcard.getValue() == Card.KING)
 					discardPile.discard(rcard);
-				else retainerGroup[0][i].add(rcard);}
-			while(retainerGroup[1][i].isEmpty() == true){
+				else retainer[0][i].add(rcard);}
+			while(retainer[1][i].isEmpty() == true){
 				rcard = deck.dealCard();
 				if(rcard.getValue() == Card.JACK || rcard.getValue() == Card.ACE || rcard.getValue() == Card.JOKER || rcard.getValue() == Card.KING)
 					discardPile.discard(rcard);
-				else retainerGroup[1][i].add(rcard);
+				else retainer[1][i].add(rcard);
 			}
 		}
 		// deal 3 cards one player's hand, then the other, discarding Jokers
@@ -309,11 +314,11 @@ public class WanderingJacks {
 		// normalize retainer references
 		Retainer r1, r2;
 		if(i == 'p' || i == 'P'){
-			r1 = retainerGroup[0][prIndex];
-			r2 = retainerGroup[1][orIndex];
+			r1 = retainer[0][prIndex];
+			r2 = retainer[1][orIndex];
 		}else if(i == 'p' || i == 'P'){
-			r1 = retainerGroup[1][orIndex];
-			r2 = retainerGroup[0][prIndex];
+			r1 = retainer[1][orIndex];
+			r2 = retainer[0][prIndex];
 		}else throw new IllegalArgumentException("The player's first initial must be either 'p' or 'h', not '"+i+"'");
 		// Check if player has a three a kind in that retainer
 		try{if(r1.get(0).getValueAsString() != r1.get(1).getValueAsString() ||
@@ -333,11 +338,11 @@ public class WanderingJacks {
 		r1 = r2;
 		r2 = rt;
 		if(i == 'p' || i == 'P'){
-			retainerGroup[0][prIndex] = r1;
-			retainerGroup[1][orIndex]= r2;
+			retainer[0][prIndex] = r1;
+			retainer[1][orIndex]= r2;
 		}else if(i == 'p' || i == 'P'){
-			retainerGroup[1][orIndex] = r1;
-			retainerGroup[0][prIndex] = r2;
+			retainer[1][orIndex] = r1;
+			retainer[0][prIndex] = r2;
 		}else throw new IllegalArgumentException("The player's first initial must be either 'p' or 'h', not '"+i+"'");
 	}
 
