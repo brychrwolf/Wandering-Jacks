@@ -321,11 +321,19 @@ public class WanderingJacksTest{
 
 
 	/**
-	 * Test that a player can attempt to steal a Jack from opponant
+	 * Test that a player can attempt to steal a Jack from opponent
 	 */
 
-	/**
-	 * Test that when a player declares their turn is over, that referee knows
-	 * whose turn it is at all times.
-	 */
+	@Test
+	public void endingTurnTogglesActivePlayer(){
+		WanderingJacks wj = new WanderingJacks();
+		// test 0 to 1
+		int previousPlayer = wj.activePlayer;
+		wj.endTurn();
+		assertTrue(previousPlayer == 0 && wj.activePlayer == 1);
+		// test 1 to 0
+		previousPlayer = wj.activePlayer;
+		wj.endTurn();
+		assertTrue(previousPlayer == 1 && wj.activePlayer == 0);
+	}
 }

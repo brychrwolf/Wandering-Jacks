@@ -54,7 +54,8 @@ public class WanderingJacks {
 
 	/**
 	 * Creates the game environment with two players, their array of 4
-	 * retainers each, the deck, and discard pile.
+	 * retainers each, the deck, the discard pile, and activePlayer, the
+	 * record of whose turn it is.
 	 */
 	WanderingJacks(){
 		boolean includeJokers = true;
@@ -260,16 +261,19 @@ public class WanderingJacks {
 	 * as provided by the rules of the game.
 	 */
 	public void endTurn(){
-		//multiple queens steal Jacks (or Kings) from stacks built on 10s
-		//multiple 10s steal Jacks (or Kings) from stacks built on Queens
-		//den of thieves steal Jacks (or Kings)
-		//Jacks on Q,10,DoT stacks, burn stack
-		//ensure that player's hand has 3 cards
-		while(player[0].getHand().size() < 3)
-			player[0].addToHand(deck.dealCard());
-		//If discardPile is empty, discard one from deck
+		// ensure that player's hand has 3 cards
+		// ensure that player's registers all have at least one card
+		// Attempts to steal Jacks are made in order of Player's choice
+		// 	* multiple queens steal Jacks (or Kings) from stacks built on 10s
+		// 	* multiple 10s steal Jacks (or Kings) from stacks built on Queens
+		//  * den of thieves steal Jacks (or Kings)
+		// Jacks on Q, 10, DoT stacks, burn one from stack
+		// If discardPile is empty, or if any card was discarded from any retainer,
+		//	discard one from deck
 		if(discardPile.isEmpty())
 			discardPile.discard(deck.dealCard());
+		// toggle active player
+		activePlayer = activePlayer == 1 ? 0 : 1;
 	}
 
 	/**
