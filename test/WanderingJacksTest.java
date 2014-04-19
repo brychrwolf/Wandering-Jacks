@@ -256,6 +256,13 @@ public class WanderingJacksTest{
 		assertTrue(wj.player[wj.activePlayer].handContains(dealtCard));
 	}
 
+	@Test
+	public void playerDealtCardToRetainerStaysInRetainer(){
+		Card dealtCard = wj.deck.dealCard();
+		wj.retainer[0][0].add(dealtCard);
+		assertTrue(wj.retainer[0][0].contains(dealtCard.getValue()));
+	}
+
 	/*
 	 * Test that a player can swap a retainer with 3oak+A
 	 */
