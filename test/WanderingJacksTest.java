@@ -342,6 +342,16 @@ public class WanderingJacksTest{
 		assertTrue(wj.retainer[1][0].size() == 2);
 	}
 
+	@Test(expected=IllegalStateException.class)
+	public void exThrown_stealingKingProtectedJackWithKing(){
+		wj.retainer[0][0] = twoQueens;
+		wj.retainer[0][0].add(aKing);
+		wj.retainer[1][0].add(a10);
+		wj.retainer[1][0].add(aJack);
+		wj.retainer[1][0].add(aKing);
+		wj.stealJack(0, 0);
+	}
+
 
 
 	/*

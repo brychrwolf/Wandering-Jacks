@@ -101,7 +101,10 @@ public class WanderingJacks {
 		Card cardStolen;
 		// if jack is king protected, take king instead
 		if(r2.contains(Card.KING)){
-			indexOfCard = r2.indexOf(Card.KING);
+			// if player already has a king, throw exception
+			if(r1.contains(Card.KING))
+				throw new IllegalStateException("Theft attempt, would net a King, but it is illegal to have two Kings in a single register.");
+			else indexOfCard = r2.indexOf(Card.KING);
 		}else{
 			indexOfCard = r2.indexOf(Card.JACK);
 		}
