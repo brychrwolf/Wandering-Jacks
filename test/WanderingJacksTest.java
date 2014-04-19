@@ -38,6 +38,12 @@ public class WanderingJacksTest{
 		assertTrue(numJokers == 2);
 	}
 
+	@Test
+	public void playerGoesFirstInNewGame(){
+		WanderingJacks wj = new WanderingJacks();
+		assertTrue(wj.activePlayer == 0);
+	}
+
 	/**
 	 * This test ensures that at the beginning of the game, the appropriate
 	 * objects are created.
@@ -47,13 +53,13 @@ public class WanderingJacksTest{
 		WanderingJacks wj = new WanderingJacks();
 		assertTrue(wj.deck instanceof Deck);
 		assertTrue(wj.discardPile instanceof DiscardPile);
-		assertTrue(wj.player instanceof Player);
-		assertTrue(wj.house instanceof Player);
-		assertTrue(wj.playerRetainer instanceof Retainer[]);
-		assertTrue(wj.houseRetainer instanceof Retainer[]);
+		assertTrue(wj.player[0] instanceof Player);
+		assertTrue(wj.player[1] instanceof Player);
+		assertTrue(wj.retainerGroup[0] instanceof Retainer[]);
+		assertTrue(wj.retainerGroup[1] instanceof Retainer[]);
 		for(int i = 0; i < 4; i++){
-			assertTrue(wj.playerRetainer[i] instanceof Retainer);
-			assertTrue(wj.houseRetainer[i] instanceof Retainer);
+			assertTrue(wj.retainerGroup[0][i] instanceof Retainer);
+			assertTrue(wj.retainerGroup[1][i] instanceof Retainer);
 		}
 	}
 
@@ -65,7 +71,7 @@ public class WanderingJacksTest{
 	public void testAllRegistersHaveOneCard(){
 		WanderingJacks wj = new WanderingJacks();
 		wj.setUpGameEnvironment();
-		for(Retainer pr : wj.playerRetainer){
+		for(Retainer pr : wj.retainerGroup[0]){
 			assertTrue(pr.get(0) != null);
 			assertTrue(pr.get(0) instanceof Card);
 			for(int i = 1; i < pr.size(); i++){
@@ -74,7 +80,7 @@ public class WanderingJacksTest{
 					assertTrue(e instanceof IllegalStateException);}
 			}
 		}
-		for(Retainer dr : wj.houseRetainer){
+		for(Retainer dr : wj.retainerGroup[1]){
 			assertTrue(dr.get(0) != null);
 			assertTrue(dr.get(0) instanceof Card);
 			for(int i = 1; i < dr.size(); i++){
@@ -99,7 +105,7 @@ public class WanderingJacksTest{
 		forbiddenValues.add(Card.KING);
 		WanderingJacks wj = new WanderingJacks();
 		wj.setUpGameEnvironment();
-		for(Retainer r : wj.playerRetainer)
+		for(Retainer r : wj.retainerGroup[0])
 			assertTrue(!forbiddenValues.contains(r.get(0).getValue()));
 	}
 
@@ -113,8 +119,8 @@ public class WanderingJacksTest{
 	public void testInitialPlayersHandsHave3Cards(){
 		WanderingJacks wj = new WanderingJacks();
 		wj.setUpGameEnvironment();
-		assertEquals(wj.player.getHand().size(), 3);
-		assertEquals(wj.house.getHand().size(), 3);
+		assertEquals(wj.player[0].getHand().size(), 3);
+		assertEquals(wj.player[1].getHand().size(), 3);
 	}
 
 	/**
@@ -126,9 +132,9 @@ public class WanderingJacksTest{
 	public void testInitialPlayersHandsHaveNoJokers(){
 		WanderingJacks wj = new WanderingJacks();
 		wj.setUpGameEnvironment();
-		for(Card c : wj.player.getHand())
+		for(Card c : wj.player[0].getHand())
 			assertTrue(c.getValue() != Card.JOKER);
-		for(Card c : wj.house.getHand())
+		for(Card c : wj.player[1].getHand())
 			assertTrue(c.getValue() != Card.JOKER);
 	}
 
@@ -156,18 +162,18 @@ public class WanderingJacksTest{
 		assertFalse(wj.isGameOver());
 		//test with player 1 having 4 jacks
 		for(int i = 0; i < 4; i++)
-			wj.playerRetainer[i].add(aJack);
+			wj.retainerGroup[0][i].add(aJack);
 		assertTrue(wj.isGameOver());
 		//test with player 2 having 4 jacks
 		wj = new WanderingJacks();
 		for(int i = 0; i < 4; i++)
-			wj.houseRetainer[i].add(aJack);
+			wj.retainerGroup[1][i].add(aJack);
 		assertTrue(wj.isGameOver());
 		//test with player 1 running out of money
 		wj = new WanderingJacks();
-		wj.player.setBankroll(0);
+		wj.player[0].setBankroll(0);
 		assertTrue(wj.isGameOver());
-		wj.player.setBankroll(-10);
+		wj.player[0].setBankroll(-10);
 		assertTrue(wj.isGameOver());
 	}
 
@@ -180,16 +186,16 @@ public class WanderingJacksTest{
 	public void testDiscardingEntireRegister(){
 		WanderingJacks wj = new WanderingJacks();
 		Card cardRemoved = new Card();
-		wj.playerRetainer[0].add(a10);
-		wj.playerRetainer[0].add(a10);
-		wj.playerRetainer[0].add(aJoker);
+		wj.retainerGroup[0][0].add(a10);
+		wj.retainerGroup[0][0].add(a10);
+		wj.retainerGroup[0][0].add(aJoker);
 		int dpSizeBefore = wj.discardPile.size();
-		while(wj.playerRetainer[0].size() > 0){
-			cardRemoved = wj.playerRetainer[0].remove(0);
+		while(wj.retainerGroup[0][0].size() > 0){
+			cardRemoved = wj.retainerGroup[0][0].remove(0);
 			wj.discardPile.discard(cardRemoved);
 		}
 		int dpSizeAfter = wj.discardPile.size();
-		assertTrue(wj.playerRetainer[0].size() == 0);
+		assertTrue(wj.retainerGroup[0][0].size() == 0);
 		assertTrue(dpSizeAfter == dpSizeBefore + 3);
 		assertTrue(wj.discardPile.peekAtTopCard() == cardRemoved);
 	}
@@ -201,12 +207,12 @@ public class WanderingJacksTest{
 	@Test
 	public void testPlayerTakeingCardFromRegisterPuttingElsehere(){
 		WanderingJacks wj = new WanderingJacks();
-		wj.playerRetainer[0].add(a10);
-		wj.playerRetainer[0].add(a9);
-		wj.playerRetainer[0].add(aJoker);
-		Card cardRemoved = wj.playerRetainer[0].remove(a9);
+		wj.retainerGroup[0][0].add(a10);
+		wj.retainerGroup[0][0].add(a9);
+		wj.retainerGroup[0][0].add(aJoker);
+		Card cardRemoved = wj.retainerGroup[0][0].remove(a9);
 		//test that cardRemoved is no longer in retainer
-		assertFalse(wj.playerRetainer[0].contains(a9));
+		assertFalse(wj.retainerGroup[0][0].contains(a9));
 		//test that cardRemoved is an actual card that can be placed elsewhere
 		//   and is the same card that was removed
 		assertTrue(cardRemoved instanceof Card);
@@ -219,9 +225,9 @@ public class WanderingJacksTest{
 	@Test
 	public void testPlayerPlayingCardFromHandToOwnedRetainer(){
 		WanderingJacks wj = new WanderingJacks();
-		wj.player.addToHand(aJoker);
-		Card cardPlayed = wj.player.playFromHand(aJoker);
-		assertTrue(wj.player.handSize() == 0);
+		wj.player[0].addToHand(aJoker);
+		Card cardPlayed = wj.player[0].playFromHand(aJoker);
+		assertTrue(wj.player[0].handSize() == 0);
 		wj.discardPile.discard(cardPlayed);
 		assertTrue(wj.discardPile.peekAtTopCard().equals(cardPlayed));
 	}
@@ -235,9 +241,9 @@ public class WanderingJacksTest{
 		WanderingJacks wj = new WanderingJacks();
 		wj.discardPile.discard(aJoker);
 		Card cardTaken = wj.discardPile.takeTopCard();
-		wj.player.addToHand(cardTaken);
-		assertTrue(wj.player.handSize() == 1);
-		assertTrue(wj.player.handContains(aJoker));
+		wj.player[0].addToHand(cardTaken);
+		assertTrue(wj.player[0].handSize() == 1);
+		assertTrue(wj.player[0].handContains(aJoker));
 		assertTrue(wj.discardPile.size() == 0);
 	}
 
@@ -253,63 +259,73 @@ public class WanderingJacksTest{
 	@Test(expected=IllegalStateException.class)
 	public void exceptionThrown_ORcontainsAJack(){
 		WanderingJacks wj = new WanderingJacks();
-		wj.playerRetainer[0].add(a9);
-		wj.playerRetainer[0].add(a9);
-		wj.playerRetainer[0].add(a9);
-		wj.houseRetainer[0].add(aJack);
+		wj.retainerGroup[0][0].add(a9);
+		wj.retainerGroup[0][0].add(a9);
+		wj.retainerGroup[0][0].add(a9);
+		wj.retainerGroup[1][0].add(aJack);
 		wj.threeOfAKind('p', aAce, 0, 0);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	public void exceptionThrown_PHisNotPorH(){
 		WanderingJacks wj = new WanderingJacks();
-		wj.playerRetainer[0].add(a9);
-		wj.playerRetainer[0].add(a9);
-		wj.playerRetainer[0].add(a9);
+		wj.retainerGroup[0][0].add(a9);
+		wj.retainerGroup[0][0].add(a9);
+		wj.retainerGroup[0][0].add(a9);
 		wj.threeOfAKind('f', aAce, 0, 0);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	public void exceptionThrown_AceIsNotAnAce(){
 		WanderingJacks wj = new WanderingJacks();
-		wj.playerRetainer[0].add(a9);
-		wj.playerRetainer[0].add(a9);
-		wj.playerRetainer[0].add(a9);
+		wj.retainerGroup[0][0].add(a9);
+		wj.retainerGroup[0][0].add(a9);
+		wj.retainerGroup[0][0].add(a9);
 		wj.threeOfAKind('p', a9, 0, 0);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	public void exceptionThrown_PIndexOutOfBounds(){
 		WanderingJacks wj = new WanderingJacks();
-		wj.playerRetainer[0].add(a9);
-		wj.playerRetainer[0].add(a9);
-		wj.playerRetainer[0].add(a9);
+		wj.retainerGroup[0][0].add(a9);
+		wj.retainerGroup[0][0].add(a9);
+		wj.retainerGroup[0][0].add(a9);
 		wj.threeOfAKind('p', aAce, 5, 0);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	public void exceptionThrown_OIndexOutOfBounds(){
 		WanderingJacks wj = new WanderingJacks();
-		wj.playerRetainer[0].add(a9);
-		wj.playerRetainer[0].add(a9);
-		wj.playerRetainer[0].add(a9);
+		wj.retainerGroup[0][0].add(a9);
+		wj.retainerGroup[0][0].add(a9);
+		wj.retainerGroup[0][0].add(a9);
 		wj.threeOfAKind('p', aAce, 0, 5);
 	}
 
 	@Test
 	public void threeOfAKindSwapsRetainers(){
 		WanderingJacks wj = new WanderingJacks();
-		wj.playerRetainer[0].add(a9);
-		wj.playerRetainer[0].add(a9);
-		wj.playerRetainer[0].add(a9);
-		wj.houseRetainer[0].add(aQueen);
-		wj.houseRetainer[0].add(aQueen);
+		wj.retainerGroup[0][0].add(a9);
+		wj.retainerGroup[0][0].add(a9);
+		wj.retainerGroup[0][0].add(a9);
+		wj.retainerGroup[1][0].add(aQueen);
+		wj.retainerGroup[1][0].add(aQueen);
 		wj.threeOfAKind('p', aAce, 0, 0);
-		assertTrue(wj.playerRetainer[0].size() == 2);
-		assertTrue(wj.playerRetainer[0].get(0).equals(aQueen));
-		assertTrue(wj.playerRetainer[0].get(1).equals(aQueen));
-		assertTrue(wj.houseRetainer[0].size() == 1);
-		assertTrue(wj.houseRetainer[0].get(0).equals(a9));
+		assertTrue(wj.retainerGroup[0][0].size() == 2);
+		assertTrue(wj.retainerGroup[0][0].get(0).equals(aQueen));
+		assertTrue(wj.retainerGroup[0][0].get(1).equals(aQueen));
+		assertTrue(wj.retainerGroup[1][0].size() == 1);
+		assertTrue(wj.retainerGroup[1][0].get(0).equals(a9));
 		assertTrue(wj.discardPile.peekAtTopCard().equals(aAce));
 	}
+
+
+	/**
+	 * Test that a player can attempt to steal a Jack from opponant
+	 */
+
+	/**
+	 * Test that when a player declares their turn is over, that referee knows
+	 * whose turn it is at all times.
+	 */
 }

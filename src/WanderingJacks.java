@@ -29,27 +29,28 @@ public class WanderingJacks {
 	 */
 	public DiscardPile discardPile;
 	/**
-	 * One of the two players in the game. Has a hand of cards, and a
-	 * bankroll with which to bet. Plays the part of the gambler.
+	 * The player whose turn is active during the game. 0 = gambler, 1 = house.
+	 * Will toggle when player declares that they are finished.
 	 * @see Player
 	 */
-	public Player player;
+	public int activePlayer;
 	/**
-	 * One of the two players in the game. Has a hand of cards, and a
-	 * bankroll with which to bet. Plays the part of the house.
+	 * The array of two players in the game. Each has a hand of cards and a
+	 * bankroll with which to bet.
+	 * <p>
+	 * Player[0] = the gambler, Player[1] = the house.
 	 * @see Player
 	 */
-	public Player house;
+	public Player[] player;
 	/**
-	 * An array of the player's 4 retainers.
+	 * The array of the two players' group of 4 retainers.
+	 * <p>
+	 * RetainerGroup[0] = the gambler's 4 retainers
+	 * RetainerGroup[0][0] = the gambler's first retainer
+	 * RetainerGroup[1] = the house's 4 retainers
 	 * @see Retainer
 	 */
-	public Retainer[] playerRetainer;
-	/**
-	 * An array of the dealer's 4 retainers.
-	 * @see Retainer
-	 */
-	public Retainer[] houseRetainer;
+	public Retainer[][] retainerGroup;
 
 	/**
 	 * Creates the game environment with two players, their array of 4
@@ -59,13 +60,13 @@ public class WanderingJacks {
 		boolean includeJokers = true;
 		deck = new Deck(includeJokers);
 		discardPile = new DiscardPile();
-		player = new Player();
-		house = new Player();
-		playerRetainer = new Retainer[4];
-		houseRetainer = new Retainer[4];
-		for(int i = 0; i < 4; i++){
-			playerRetainer[i] = new Retainer();
-			houseRetainer[i] = new Retainer();
+		activePlayer = 0;
+		player = new Player[2];
+		retainerGroup = new Retainer[2][4];
+		for(int i = 0; i < 2; i++){
+			player[i] = new Player();
+			for(int j = 0; j < 4; j++)
+				retainerGroup[i][j] = new Retainer();
 		}
 	}
 
@@ -78,17 +79,17 @@ public class WanderingJacks {
 			boolean takeFromDeck = true;
 		//	player is dealt a card from the deck or discard pile
 			if(takeFromDeck)
-				wj.player.addToHand(wj.deck.dealCard());
-			else wj.player.addToHand(wj.discardPile.takeTopCard());
+				wj.player[0].addToHand(wj.deck.dealCard());
+			else wj.player[0].addToHand(wj.discardPile.takeTopCard());
 		//	if Joker is drawn, it must be played immediately
 		//	player decides how to play, discard 1 or play at least 1 to retainers
 			int cardIndex = 0;
 			int retainerIndex = 0;
 		//	player plays
-			wj.playerRetainer[retainerIndex].add(wj.player.playFromHand(cardIndex));
+			wj.retainerGroup[0][retainerIndex].add(wj.player[0].playFromHand(cardIndex));
 		//	End of Turn maintenance
 			wj.endTurn();
-			wj.player.setBankroll(0);
+			wj.player[0].setBankroll(0);
 		}System.out.println("Game Over.");
 	}
 
@@ -101,19 +102,19 @@ public class WanderingJacks {
 	 */
 	public boolean isGameOver(){
 		// Player wins
-		if(playerRetainer[0].retainsJack()
-				&& playerRetainer[1].retainsJack()
-				&& playerRetainer[2].retainsJack()
-				&& playerRetainer[3].retainsJack()){
+		if(retainerGroup[0][0].retainsJack()
+				&& retainerGroup[0][1].retainsJack()
+				&& retainerGroup[0][2].retainsJack()
+				&& retainerGroup[0][3].retainsJack()){
 			return true;
 		// Dealer wins
-		}else if(houseRetainer[0].retainsJack()
-					&& houseRetainer[1].retainsJack()
-					&& houseRetainer[2].retainsJack()
-					&& houseRetainer[3].retainsJack()){
+		}else if(retainerGroup[1][0].retainsJack()
+					&& retainerGroup[1][1].retainsJack()
+					&& retainerGroup[1][2].retainsJack()
+					&& retainerGroup[1][3].retainsJack()){
 			return true;
 		// Player loses by running out of money
-		}else if(player.getBankroll() <= 0){
+		}else if(player[0].getBankroll() <= 0){
 			return true;
 		}else return false;
 	}
@@ -127,29 +128,29 @@ public class WanderingJacks {
 		// deal a card to each players' retainers, alternating between each player, discarding Jacks, Aces, Jokers, and Kings
 		Card rcard;
 		for(int i = 0; i < 4; i++){
-			while(playerRetainer[i].isEmpty() == true){
+			while(retainerGroup[0][i].isEmpty() == true){
 				rcard = deck.dealCard();
 				if(rcard.getValue() == Card.JACK || rcard.getValue() == Card.ACE || rcard.getValue() == Card.JOKER || rcard.getValue() == Card.KING)
 					discardPile.discard(rcard);
-				else playerRetainer[i].add(rcard);}
-			while(houseRetainer[i].isEmpty() == true){
+				else retainerGroup[0][i].add(rcard);}
+			while(retainerGroup[1][i].isEmpty() == true){
 				rcard = deck.dealCard();
 				if(rcard.getValue() == Card.JACK || rcard.getValue() == Card.ACE || rcard.getValue() == Card.JOKER || rcard.getValue() == Card.KING)
 					discardPile.discard(rcard);
-				else houseRetainer[i].add(rcard);
+				else retainerGroup[1][i].add(rcard);
 			}
 		}
 		// deal 3 cards one player's hand, then the other, discarding Jokers
-		while(player.getHand().size() < 3){
+		while(player[0].getHand().size() < 3){
 			rcard = deck.dealCard();
 			if(rcard.getSuit() == Card.JOKER)
 				discardPile.discard(rcard);
-			else player.getHand().add(rcard);}
-		while(house.getHand().size() < 3){
+			else player[0].getHand().add(rcard);}
+		while(player[1].getHand().size() < 3){
 			rcard = deck.dealCard();
 			if(rcard.getSuit() == Card.JOKER)
 				discardPile.discard(rcard);
-			else house.getHand().add(rcard);}
+			else player[1].getHand().add(rcard);}
 		// shuffle discard stack into deck, discard top card from the deck
 		if(discardPile.size() > 0)
 			deck.shuffleWithOtherCards(discardPile.takeAllCards());
@@ -264,8 +265,8 @@ public class WanderingJacks {
 		//den of thieves steal Jacks (or Kings)
 		//Jacks on Q,10,DoT stacks, burn stack
 		//ensure that player's hand has 3 cards
-		while(player.getHand().size() < 3)
-			player.addToHand(deck.dealCard());
+		while(player[0].getHand().size() < 3)
+			player[0].addToHand(deck.dealCard());
 		//If discardPile is empty, discard one from deck
 		if(discardPile.isEmpty())
 			discardPile.discard(deck.dealCard());
@@ -293,11 +294,11 @@ public class WanderingJacks {
 		// normalize retainer references
 		Retainer r1, r2;
 		if(i == 'p' || i == 'P'){
-			r1 = playerRetainer[prIndex];
-			r2 = houseRetainer[orIndex];
+			r1 = retainerGroup[0][prIndex];
+			r2 = retainerGroup[1][orIndex];
 		}else if(i == 'p' || i == 'P'){
-			r1 = houseRetainer[orIndex];
-			r2 = playerRetainer[prIndex];
+			r1 = retainerGroup[1][orIndex];
+			r2 = retainerGroup[0][prIndex];
 		}else throw new IllegalArgumentException("The player's first initial must be either 'p' or 'h', not '"+i+"'");
 		// Check if player has a three a kind in that retainer
 		try{if(r1.get(0).getValueAsString() != r1.get(1).getValueAsString() ||
@@ -317,11 +318,11 @@ public class WanderingJacks {
 		r1 = r2;
 		r2 = rt;
 		if(i == 'p' || i == 'P'){
-			playerRetainer[prIndex] = r1;
-			houseRetainer[orIndex]= r2;
+			retainerGroup[0][prIndex] = r1;
+			retainerGroup[1][orIndex]= r2;
 		}else if(i == 'p' || i == 'P'){
-			houseRetainer[orIndex] = r1;
-			playerRetainer[prIndex] = r2;
+			retainerGroup[1][orIndex] = r1;
+			retainerGroup[0][prIndex] = r2;
 		}else throw new IllegalArgumentException("The player's first initial must be either 'p' or 'h', not '"+i+"'");
 	}
 
