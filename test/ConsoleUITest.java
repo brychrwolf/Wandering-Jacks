@@ -29,17 +29,29 @@ public class ConsoleUITest {
 	}
 
 	@Test
-	public void opponentsRetainersAreDrawn(){
-		Retainer[] rets = wj.retainer[(wj.activePlayer == 0 ? 1 : 0)];
-		String oRets = "Opponent's Retainers:"+newLine;
-		for(int i = 0; i < rets.length; i++){
-			for(int j = 0; j < rets[i].size(); j++)
-				oRets += "["+i+"]["+j+"] = "+rets[i].get(j).toString()+" ";
-			oRets += newLine;
+	public void canDrawPlayersRetainers(){
+		Retainer[] pRets = wj.retainer[wj.activePlayer];
+		String outString = "";
+		for(int i = 0; i < pRets.length; i++){
+			for(int j = 0; j < pRets[i].size(); j++)
+				outString += "["+i+"]["+j+"] = "+pRets[i].get(j).toString()+" ";
+			outString += newLine;
 		}
+		ConsoleUI.drawRetainerGroup(pRets);
+	    assertEquals(outString, outContent.toString());
+	}
 
-		ConsoleUI.drawRetainerGroup(rets);
-	    assertEquals(oRets, outContent.toString());
+	@Test
+	public void canDrawOpponentsRetainers(){
+		Retainer[] oRets = wj.retainer[(wj.activePlayer == 0 ? 1 : 0)];
+		String outString = "";
+		for(int i = 0; i < oRets.length; i++){
+			for(int j = 0; j < oRets[i].size(); j++)
+				outString += "["+i+"]["+j+"] = "+oRets[i].get(j).toString()+" ";
+			outString += newLine;
+		}
+		ConsoleUI.drawRetainerGroup(oRets);
+		assertEquals(outString, outContent.toString());
 	}
 
 }
