@@ -38,12 +38,20 @@ public class ConsoleUITest {
 	}
 
 	@Test
+	public void canDrawPlayersBankroll(){
+		String outString = ""+wj.player[wj.activePlayer].getBankroll();
+		outString += newLine;
+		ConsoleUI.drawPlayersBankroll(wj.player[wj.activePlayer]);
+	    assertEquals(outString, outContent.toString());
+	}
+
+	@Test
 	public void canDrawPlayersHand(){
 		Player p = wj.player[wj.activePlayer];
 
 		String outString = "";
 		for(int i = 0; i < p.handSize(); i++){
-			outString += "["+i+"] = "+p.getFromHand(i) .toString()+" ";
+			outString += " ["+i+"] = "+p.getFromHand(i) .toString()+" ";
 		}
 		outString += newLine;
 		ConsoleUI.drawPlayersHand(p);
@@ -56,7 +64,7 @@ public class ConsoleUITest {
 		String outString = "";
 		for(int i = 0; i < pRets.length; i++){
 			for(int j = 0; j < pRets[i].size(); j++)
-				outString += "["+i+"]["+j+"] = "+pRets[i].get(j).toString()+" ";
+				outString += " ["+i+"]["+j+"] = "+pRets[i].get(j).toString()+" ";
 			outString += newLine;
 		}
 		ConsoleUI.drawRetainerGroup(pRets);
@@ -69,7 +77,7 @@ public class ConsoleUITest {
 		String outString = "";
 		for(int i = 0; i < oRets.length; i++){
 			for(int j = 0; j < oRets[i].size(); j++)
-				outString += "["+i+"]["+j+"] = "+oRets[i].get(j).toString()+" ";
+				outString += " ["+i+"]["+j+"] = "+oRets[i].get(j).toString()+" ";
 			outString += newLine;
 		}
 		ConsoleUI.drawRetainerGroup(oRets);
@@ -84,9 +92,9 @@ public class ConsoleUITest {
 		String outString = "";
 		for(int i = 0; i < retainer.length; i++){
 			if(retainer[i].isEmpty())
-				outString += "["+i+"][0] = empty";
+				outString += " ["+i+"][0] = empty";
 			else for(int j = 0; j < retainer[i].size(); j++)
-				outString += "["+i+"]["+j+"] = "+retainer[i].get(j).toString()+" ";
+				outString += " ["+i+"]["+j+"] = "+retainer[i].get(j).toString()+" ";
 			outString += newLine;
 		}
 		ConsoleUI.drawRetainerGroup(retainer);
