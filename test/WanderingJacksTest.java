@@ -352,6 +352,41 @@ public class WanderingJacksTest{
 		wj.stealJack(0, 0);
 	}
 
+	@Test(expected=IllegalStateException.class)
+	public void exThrown_stealingUnprotectedJackWithJack(){
+		wj.retainer[0][0] = twoQueens;
+		wj.retainer[0][0].add(aJack);
+		wj.retainer[0][0].add(aKing);
+		wj.retainer[1][0].add(a10);
+		wj.retainer[1][0].add(aJack);
+		wj.stealJack(0, 0);
+	}
+
+	@Test(expected=IllegalStateException.class)
+	public void exThrown_stealingKingProtectedJackWithJack(){
+		wj.retainer[0][0] = twoQueens;
+		wj.retainer[0][0].add(aJack);
+		wj.retainer[0][0].add(aKing);
+		wj.retainer[1][0].add(a10);
+		wj.retainer[1][0].add(aJack);
+		wj.retainer[1][0].add(aKing);
+		wj.stealJack(0, 0);
+	}
+
+	@Test(expected=IllegalStateException.class)
+	public void exThrown_stealingNoJackWithJack(){
+		wj.retainer[0][0] = twoQueens;
+		wj.retainer[0][0].add(aJack);
+		wj.retainer[0][0].add(aKing);
+		wj.stealJack(0, 0);
+	}
+
+	@Test(expected=IllegalStateException.class)
+	public void exThrown_stealingNoJack(){
+		wj.retainer[0][0] = twoQueens;
+		wj.stealJack(0, 0);
+	}
+
 
 
 	/*

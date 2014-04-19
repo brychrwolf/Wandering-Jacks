@@ -97,13 +97,19 @@ public class WanderingJacks {
 	public void stealJack(int rIdx1, int rIdx2){
 		Retainer r1 = retainer[activePlayer][rIdx1];
 		Retainer r2 = retainer[(activePlayer == 1 ? 0 : 1)][rIdx2];
+		// If player already has a Jack, throw exception
+		if(r1.retainsJack())
+			throw new IllegalStateException("It is illegal to steal to a retainer that already retains a Jack.");
+		// If opponent does not have a Jack, throw exception
+		if(!r2.retainsJack())
+			throw new IllegalStateException("It is illegal to steal from a retainer that does not retain a Jack.");
 		int indexOfCard;
 		Card cardStolen;
 		// if jack is king protected, take king instead
 		if(r2.contains(Card.KING)){
 			// if player already has a king, throw exception
 			if(r1.contains(Card.KING))
-				throw new IllegalStateException("Theft attempt, would net a King, but it is illegal to have two Kings in a single register.");
+				throw new IllegalStateException("Theft attempt would net a King, but it is illegal to have two Kings in a single register.");
 			else indexOfCard = r2.indexOf(Card.KING);
 		}else{
 			indexOfCard = r2.indexOf(Card.JACK);
