@@ -305,7 +305,7 @@ public class WanderingJacksTest{
 	 * Test that a player can attempt to steal a Jack from opponent
 	 */
 	@Test
-	public void stealingUnprotectedJackGainsJackForPlayer(){
+	public void stealingUnprotectedJackGainsJack(){
 		wj.retainerGroup[0][0] = twoQueens;
 		wj.retainerGroup[1][0].add(a10);
 		wj.retainerGroup[1][0].add(aJack);
