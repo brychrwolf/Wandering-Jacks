@@ -102,7 +102,8 @@ public class WanderingJacks{
 				//wj.player[0].addToHand(cardTaken);
 				//String fromHere = (takeFromDeck ? "deck" : "discard pile");
 				//wj.requestPlay(fromHere, "my hand");
-			wj.requestPlay("deck", "my hand");
+			int[] rp = ConsoleUI.requestPlay();
+			wj.requestPlay(rp[0], rp[1]);
 			// TODO if Joker is drawn, it must be played immediately (not yet implemented)
 			// TODO player decides how to play (discard 1 or play at least 1 to retainers)
 				//int cardIndex = 0;
@@ -359,11 +360,14 @@ public class WanderingJacks{
 		Retainer r1 = retainer[activePlayer][prIndex];
 		Retainer r2 = retainer[(activePlayer == 0 ? 1 : 0)][orIndex];
 		// Check if player has a three a kind in that retainer
-		try{if(r1.get(0).getValueAsString() != r1.get(1).getValueAsString() ||
-				r1.get(0).getValueAsString() != r1.get(2).getValueAsString())
-					throw new IllegalStateException("The player's retainer must not contain a 3-of-a-kind.");
+		try{
+			if(r1.size() < 3)
+				throw new IllegalStateException("The player's retainer must contain a 3-of-a-kind.");
+			else if(r1.get(0).getValueAsString() != r1.get(1).getValueAsString() ||
+					r1.get(0).getValueAsString() != r1.get(2).getValueAsString())
+				throw new IllegalStateException("The player's retainer must contain a 3-of-a-kind.");
 		}catch(IndexOutOfBoundsException e){
-			throw new IllegalStateException("The player's retainer must not contain a 3-of-a-kind.");}
+			throw new IllegalStateException("The player's retainer must contain a 3-of-a-kind.");}
 		// Check for a Jack in the opponent's retainer
 		if(r2.retainsJack()) throw new IllegalStateException("The opponent's retainer must not contain a Jack");
 		// Play the Ace
@@ -376,7 +380,7 @@ public class WanderingJacks{
 		retainer[(activePlayer == 0 ? 1 : 0)][orIndex] = r1;
 	}
 
-	public boolean requestPlay(String here, String there){
+	public boolean requestPlay(int here, int there){
 		// set up and play cloned environment for validation
 		WanderingJacks clone = new WanderingJacks(this);
 		try{
@@ -390,15 +394,15 @@ public class WanderingJacks{
 		return true;
 	}
 
-	public static void makePlay(WanderingJacks game, String fromHere, String toThere){
+	public static void makePlay(WanderingJacks game, int fromHere, int toThere){
 		// Translate string to card
 		Card cardFromHere;
 		switch(fromHere){
-			case "discard pile":
-				cardFromHere = game.discardPile.takeTopCard();
-				break;
-			case "deck":
+			case 0: // "deck"
 				cardFromHere = game.deck.dealCard();
+				break;
+			case 1:// "discard pile":
+				cardFromHere = game.discardPile.takeTopCard();
 				break;
 			default:
 				cardFromHere = new Card();
@@ -406,7 +410,7 @@ public class WanderingJacks{
 		}
 		// Move card to location
 		switch(toThere){
-			case "my hand":
+			case 0: // "my hand"
 				game.player[game.activePlayer].addToHand(cardFromHere);
 				break;
 			default:
