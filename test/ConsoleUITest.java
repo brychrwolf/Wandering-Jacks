@@ -1,6 +1,8 @@
 import static org.junit.Assert.assertEquals;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 
 import org.junit.After;
@@ -99,5 +101,20 @@ public class ConsoleUITest {
 		}
 		ConsoleUI.drawRetainerGroup(retainer);
 		assertEquals(outString, outContent.toString());
+	}
+
+	/**
+	 * User prompt
+	 * @throws IOException
+	 */
+	@Test
+	public void requestPlayFromDeckToHandGainsCard() throws IOException{
+		String mockUserInput = "0"+newLine+"0";
+		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
+		System.setIn(mockIn);
+		int[] rp = ConsoleUI.requestPlay();
+		System.setIn(System.in);
+		assertEquals(rp[0], 0);
+		assertEquals(rp[1], 0);
 	}
 }

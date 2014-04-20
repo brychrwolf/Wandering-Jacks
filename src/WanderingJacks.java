@@ -386,7 +386,7 @@ public class WanderingJacks{
 		try{
 			WanderingJacks.makePlay(clone, here, there);
 		}catch(IllegalStateException e){
-			e.printStackTrace();
+			//e.printStackTrace();
 			throw new IllegalStateException("That play would be illegal.");
 		}
 

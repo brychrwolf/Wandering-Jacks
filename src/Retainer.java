@@ -147,6 +147,7 @@ public class Retainer{
 		try{
 			return retainer.get(index);
 		}catch (IndexOutOfBoundsException e){
+			e.printStackTrace();
 		    System.err.println("IndexOutOfBoundsException: " + e.getMessage());
 		    System.err.println("Index " + index + " not within {0 - " + (retainer.size() - 1) + "}");
 			throw new IndexOutOfBoundsException(e + "Index " + index + " not within {0 - " + (retainer.size() - 1) + "}");

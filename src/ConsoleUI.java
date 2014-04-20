@@ -1,3 +1,6 @@
+import java.io.IOException;
+import java.util.Scanner;
+
 
 
 public class ConsoleUI {
@@ -73,4 +76,18 @@ public class ConsoleUI {
 		System.out.print(outString);
 	}
 
+	public static int[] requestPlay() throws IOException{
+		int[] rp = new int[2];
+		Scanner sc = new Scanner(System.in);
+		System.out.println("To make a play:");
+		System.out.println("First enter *from* where to play a card:");
+		System.out.println("[0] deck");
+		System.out.println("[1] discard pile");
+		rp[0] = sc.nextInt();
+		System.out.println("Next enter *to* where to play a card:");
+		System.out.println("[0] my hand");
+		rp[1] = sc.nextInt();
+		sc.close();
+		return rp;
+	}
 }
