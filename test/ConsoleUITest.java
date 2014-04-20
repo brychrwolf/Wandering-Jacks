@@ -103,6 +103,13 @@ public class ConsoleUITest {
 		assertEquals(outString, outContent.toString());
 	}
 
+	@Test
+	public void canDrawEmptyDiscardPile(){
+		wj.discardPile.takeTopCard();
+		ConsoleUI.drawDiscardPile(wj.discardPile);
+		assertEquals("empty"+newLine, outContent.toString());
+	}
+
 	/**
 	 * User prompt
 	 * @throws IOException

@@ -62,7 +62,7 @@ public class ConsoleUI {
 	 * @see DiscardPile
 	 */
 	public static void drawDiscardPile(DiscardPile discardPile){
-		String outString = discardPile.peekAtTopCard().toString();
+		String outString = (discardPile.isEmpty() ? "empty" : discardPile.peekAtTopCard().toString());
 		outString += newLine;
 		System.out.print(outString);
 	}
