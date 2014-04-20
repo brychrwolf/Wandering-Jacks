@@ -1,5 +1,7 @@
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Scanner;
+import java.io.InputStreamReader;
+import java.util.HashMap;
 
 
 
@@ -78,16 +80,58 @@ public class ConsoleUI {
 
 	public static int[] getPlayRequest() throws IOException{
 		int[] rp = new int[2];
-		Scanner sc = new Scanner(System.in);
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		// Enumerate possible origins
+		HashMap<Integer, String> possibleOrigins = new HashMap<Integer, String>();
+			possibleOrigins.put(0, "deck");
+			possibleOrigins.put(1, "discard pile");
+		System.out.println();
+		System.out.println("Enter *from* where to play a card:");
+		for(int origins : possibleOrigins.keySet())
+			System.out.println("["+origins+"] "+possibleOrigins.get(origins));
+		// Get user input, avoiding errors
+		boolean loop = true;
+		while(loop == true && possibleOrigins.containsKey(rp[1])){
+			try{
+				rp[0] = Integer.parseInt(br.readLine());
+				loop = false;
+			}catch(NumberFormatException nfe){
+				System.err.println("Invalid Format!");
+			}
+		}
+		// Enumerate possible destinations
+		HashMap<Integer, String> possibleDestinations = new HashMap<Integer, String>();
+			possibleDestinations.put(0, "my hand");
+		System.out.println();
+		System.out.println("Enter *to* where to play a card:");
+		for(int destination : possibleDestinations.keySet())
+			System.out.println("["+destination+"] "+possibleDestinations.get(destination));
+		System.out.println();
+		// Get user input, avoiding errors
+		loop = true;
+		while(loop == true && possibleDestinations.containsKey(rp[1])){
+			try{
+				rp[1] = Integer.parseInt(br.readLine());
+				loop = false;
+			}catch(NumberFormatException nfe){
+				System.err.println("Please enter a valid integer!");
+			}
+		}
+
+		/*Scanner sc = new Scanner(System.in);
+		System.out.println();
 		System.out.println("To make a play:");
 		System.out.println("First enter *from* where to play a card:");
 		System.out.println("[0] deck");
 		System.out.println("[1] discard pile");
+		System.out.println();
 		rp[0] = sc.nextInt();
+		sc.nextLine();
 		System.out.println("Next enter *to* where to play a card:");
 		System.out.println("[0] my hand");
 		rp[1] = sc.nextInt();
-		sc.close();
+		sc.nextLine();
+		sc.close();*/
 		return rp;
 	}
 }

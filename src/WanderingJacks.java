@@ -375,18 +375,18 @@ public class WanderingJacks{
 	}
 
 	public boolean requestPlay(int[] request){
-		int here = request[0];
-		int there = request[1];
+		int fromHere = request[0];
+		int toThere = request[1];
 		// set up and play cloned environment for validation
-		WanderingJacks clone = new WanderingJacks(this);
+		WanderingJacks inClone = new WanderingJacks(this);
 		try{
-			WanderingJacks.makePlay(clone, here, there);
+			WanderingJacks.makePlay(inClone, fromHere, toThere);
 		}catch(IllegalStateException e){
 			//e.printStackTrace();
 			throw new IllegalStateException("That play would be illegal.");
 		}
 
-		WanderingJacks.makePlay(this, here, there);
+		WanderingJacks.makePlay(this, fromHere, toThere);
 		return true;
 	}
 
