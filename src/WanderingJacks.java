@@ -102,8 +102,7 @@ public class WanderingJacks{
 				//wj.player[0].addToHand(cardTaken);
 				//String fromHere = (takeFromDeck ? "deck" : "discard pile");
 				//wj.requestPlay(fromHere, "my hand");
-			int[] rp = ConsoleUI.requestPlay();
-			wj.requestPlay(rp[0], rp[1]);
+			wj.requestPlay(ConsoleUI.getPlayRequest());
 			// TODO if Joker is drawn, it must be played immediately (not yet implemented)
 			// TODO player decides how to play (discard 1 or play at least 1 to retainers)
 				//int cardIndex = 0;
@@ -375,7 +374,9 @@ public class WanderingJacks{
 		retainer[(activePlayer == 0 ? 1 : 0)][orIndex] = r1;
 	}
 
-	public boolean requestPlay(int here, int there){
+	public boolean requestPlay(int[] request){
+		int here = request[0];
+		int there = request[1];
 		// set up and play cloned environment for validation
 		WanderingJacks clone = new WanderingJacks(this);
 		try{

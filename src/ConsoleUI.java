@@ -76,7 +76,7 @@ public class ConsoleUI {
 		System.out.print(outString);
 	}
 
-	public static int[] requestPlay() throws IOException{
+	public static int[] getPlayRequest() throws IOException{
 		int[] rp = new int[2];
 		Scanner sc = new Scanner(System.in);
 		System.out.println("To make a play:");
