@@ -418,7 +418,8 @@ public class WanderingJacksTest{
 		wj.setUpGameEnvironment();
 		Card cardFromDiscardPile = wj.discardPile.peekAtTopCard();
 		int originalHandSize = wj.player[wj.activePlayer].handSize();
-		assertTrue(wj.requestPlay(1,0));
+		int[] play = {1, 0};
+		assertTrue(wj.requestPlay(play));
 		int newHandSize = wj.player[wj.activePlayer].handSize();
 		assertEquals(newHandSize, originalHandSize + 1);
 		assertEquals(cardFromDiscardPile, wj.player[wj.activePlayer].getFromHand(originalHandSize));
@@ -427,7 +428,8 @@ public class WanderingJacksTest{
 	@Test(expected=IllegalStateException.class)
 	public void requestedPlayIsNotPlayedWhenInvalid(){
 		int originalHandSize = wj.player[wj.activePlayer].handSize();
-		assertTrue(wj.requestPlay(1,0)); // empty discard pile to hand
+		int[] play = {1, 0};
+		assertTrue(wj.requestPlay(play)); // empty discard pile to hand
 		int newHandSize = wj.player[wj.activePlayer].handSize();
 		assertEquals(newHandSize, originalHandSize + 1);
 	}
