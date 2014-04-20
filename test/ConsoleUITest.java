@@ -115,13 +115,15 @@ public class ConsoleUITest {
 	 * @throws IOException
 	 */
 	@Test
-	public void requestPlayFromDeckToHandGainsCard() throws IOException{
-		String mockUserInput = "0"+newLine+"0";
+	public void validPlayRequestReturnsValidIntArr() throws IOException{
+		String mockUserInput = "0"+newLine+"0"+newLine;
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
-		int[] rp = ConsoleUI.getPlayRequest();
+		int[] pr = ConsoleUI.getPlayRequest();
 		System.setIn(System.in);
-		assertEquals(rp[0], 0);
-		assertEquals(rp[1], 0);
+		assertEquals(pr[0], 0);
+		assertEquals(pr[1], 0);
 	}
+
+
 }

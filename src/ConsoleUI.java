@@ -106,7 +106,6 @@ public class ConsoleUI {
 		System.out.println("Enter *to* where to play a card:");
 		for(int destination : possibleDestinations.keySet())
 			System.out.println("["+destination+"] "+possibleDestinations.get(destination));
-		System.out.println();
 		// Get user input, avoiding errors
 		loop = true;
 		while(loop == true && possibleDestinations.containsKey(rp[1])){
