@@ -111,11 +111,6 @@ public class WanderingJacks{
 			// player plays
 				//wj.retainer[0][retainerIndex].add(wj.player[0].playFromHand(cardIndex));
 			// End of Turn maintenance
-			System.out.println("press 'n' to loop; 'e' to end game");
-			char c;
-			while((c = (char) System.in.read()) != 'n'){
-				if(c == 'e'){wj.player[0].setBankroll(0); break;}
-			}
 		}System.out.println("Game Over.");
 	}
 
