@@ -114,6 +114,11 @@ public class Card {
       this.suit = suit;
    }
 
+   Card(Card cloned){
+		this.suit	= cloned.suit;
+		this.value	= cloned.suit;
+	}
+
    /**
     * Returns the suit of this card.
     * @returns the suit, which is one of the constants Card.SPADES,

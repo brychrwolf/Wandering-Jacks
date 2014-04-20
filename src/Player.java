@@ -8,7 +8,7 @@ import java.util.List;
  * @version %I%, %G%
  * @see Card
  */
-public class Player {
+public class Player{
 	private int bankroll;
 	private List<Card> hand;
 
@@ -28,6 +28,13 @@ public class Player {
 	Player(int bankroll){
 		this.bankroll = bankroll;
 		hand = new ArrayList<Card>();
+	}
+
+	Player(Player cloned){
+		this.hand = new ArrayList<Card>();
+		this.bankroll	= cloned.bankroll;
+		for(int i = 0; i < cloned.hand.size(); i++)
+			this.hand.add(new Card(cloned.hand.get(i)));
 	}
 
 	/**

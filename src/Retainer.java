@@ -15,7 +15,7 @@ import java.util.List;
  * @see Player
  * @see Card
  */
-public class Retainer {
+public class Retainer{
 	private List<Card> retainer;
 	private boolean retainsJack;
 
@@ -25,6 +25,11 @@ public class Retainer {
 	Retainer(){
 		retainer = new ArrayList<Card>();
 		retainsJack = false;
+	}
+
+	Retainer(Retainer cloned){
+		this.retainer = cloned.retainer;
+		this.retainsJack = cloned.retainsJack;
 	}
 
 	/**

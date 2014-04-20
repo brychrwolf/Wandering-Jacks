@@ -8,8 +8,17 @@ import java.util.Stack;
  * @version %I%, %G%
  * @see Card
  */
-public class DiscardPile {
+public class DiscardPile{
 	private Stack<Card> discardPile = new Stack<Card>();
+
+	public DiscardPile() {
+		// TODO Auto-generated constructor stub
+	}
+
+	DiscardPile(DiscardPile cloned){
+		for(int i = 0; i < cloned.discardPile.size(); i++)
+			this.discardPile.push(new Card(cloned.discardPile.get(i)));
+	}
 
 	/**
 	 * Returns a single card from the top of the pile.

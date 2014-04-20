@@ -395,12 +395,9 @@ public class WanderingJacksTest{
 		wj.stealJack(0, 0);
 	}
 
-
-
 	/*
 	 * End of turn
 	 */
-
 	@Test
 	public void endingTurnTogglesActivePlayer(){
 		// test 0 to 1
@@ -411,5 +408,19 @@ public class WanderingJacksTest{
 		previousPlayer = wj.activePlayer;
 		wj.endTurn();
 		assertTrue(previousPlayer == 1 && wj.activePlayer == 0);
+	}
+
+	/*
+	 * Play Requests
+	 */
+	@Test
+	public void requestedPlayIsPlayedWhenValid(){
+		wj.setUpGameEnvironment();
+		Card cardFromDiscardPile = wj.discardPile.peekAtTopCard();
+		int originalHandSize = wj.player[wj.activePlayer].handSize();
+		assertTrue(wj.requestPlay("discard pile", "my hand"));
+		int newHandSize = wj.player[wj.activePlayer].handSize();
+		assertEquals(newHandSize, originalHandSize + 1);
+		assertEquals(cardFromDiscardPile, wj.player[wj.activePlayer].getFromHand(originalHandSize));
 	}
 }

@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 /**
  * Wandering Jacks is a two-player card game.
  * <p>
@@ -16,7 +18,7 @@
  * @see Retainer
  */
 
-public class WanderingJacks {
+public class WanderingJacks{
 	/**
 	 * A standard deck of 54 cards (52 + 2 Jokers)used in the game. Its
 	 * contents are "random" and secret.
@@ -60,9 +62,9 @@ public class WanderingJacks {
 	 */
 	WanderingJacks(){
 		boolean includeJokers = true;
+		activePlayer = 0;
 		deck = new Deck(includeJokers);
 		discardPile = new DiscardPile();
-		activePlayer = 0;
 		player = new Player[2];
 		retainer = new Retainer[2][4];
 		for(int i = 0; i < 2; i++){
@@ -72,29 +74,47 @@ public class WanderingJacks {
 		}
 	}
 
-	public static void main(String[] args) {
+	WanderingJacks(WanderingJacks cloned){
+		this.activePlayer 	= cloned.activePlayer;
+		this.deck 			= new Deck(cloned.deck);
+		this.discardPile 	= new DiscardPile(cloned.discardPile);
+		player = new Player[2];
+		retainer = new Retainer[2][4];
+		for(int i = 0; i < 2; i++){
+			player[i] = new Player(cloned.player[i]);
+			for(int j = 0; j < 4; j++)
+				retainer[i][j] = new Retainer(cloned.retainer[i][j]);
+		}
+	}
+
+	public static void main(String[] args) throws IOException {
 		WanderingJacks wj = new WanderingJacks();
 		wj.setUpGameEnvironment();
 		//while the game is not over
 		while(!wj.isGameOver()){
 			// Display game state
 			ConsoleUI.draw(wj);
-			// player decides if he wants a card from the deck or the discard pile
-			// currently random
-			boolean takeFromDeck = false;
-			if(Math.random() >= .5)	takeFromDeck = true;
-			// player is dealt a card from the deck or discard pile
-			Card cardTaken = (takeFromDeck ? wj.deck.dealCard() : wj.discardPile.takeTopCard());
-			// if Joker is drawn, it must be played immediately (not yet implemented)
-			wj.player[0].addToHand(cardTaken);
-			// player decides how to play (discard 1 or play at least 1 to retainers)
-			int cardIndex = 0;
-			int retainerIndex = 0;
+			// TODO player decides if he wants a card from the deck or the discard pile
+				// currently random
+				//boolean takeFromDeck = false;
+				//if(Math.random() >= .5)	takeFromDeck = true;
+				//Card cardTaken = (takeFromDeck ? wj.deck.dealCard() : wj.discardPile.takeTopCard());
+				//wj.player[0].addToHand(cardTaken);
+				//String fromHere = (takeFromDeck ? "deck" : "discard pile");
+				//wj.requestPlay(fromHere, "my hand");
+			wj.requestPlay("deck", "my hand");
+			// TODO if Joker is drawn, it must be played immediately (not yet implemented)
+			// TODO player decides how to play (discard 1 or play at least 1 to retainers)
+				//int cardIndex = 0;
+				//int retainerIndex = 0;
 			// player plays
-			wj.retainer[0][retainerIndex].add(wj.player[0].playFromHand(cardIndex));
+				//wj.retainer[0][retainerIndex].add(wj.player[0].playFromHand(cardIndex));
 			// End of Turn maintenance
-			wj.endTurn();
-			wj.player[0].setBankroll(0);
+			System.out.println("press 'n' to loop; 'e' to end game");
+			char c;
+			while((c = (char) System.in.read()) != 'n'){
+				if(c == 'e'){wj.player[0].setBankroll(0); break;}
+			}
 		}System.out.println("Game Over.");
 	}
 
@@ -354,5 +374,43 @@ public class WanderingJacks {
 		// Swap retainers
 		retainer[activePlayer][prIndex] = r2;
 		retainer[(activePlayer == 0 ? 1 : 0)][orIndex] = r1;
+	}
+
+	public boolean requestPlay(String here, String there){
+		// set up and play cloned environment for validation
+		WanderingJacks clone = new WanderingJacks(this);
+		try{
+			WanderingJacks.makePlay(clone, here, there);
+		}catch(IllegalStateException e){
+			e.printStackTrace();
+			throw new IllegalStateException("That play would be illegal.");
+		}
+
+		WanderingJacks.makePlay(this, here, there);
+		return true;
+	}
+
+	public static void makePlay(WanderingJacks game, String fromHere, String toThere){
+		// Translate string to card
+		Card cardFromHere;
+		switch(fromHere){
+			case "discard pile":
+				cardFromHere = game.discardPile.takeTopCard();
+				break;
+			case "deck":
+				cardFromHere = game.deck.dealCard();
+				break;
+			default:
+				cardFromHere = new Card();
+				break;
+		}
+		// Move card to location
+		switch(toThere){
+			case "my hand":
+				game.player[game.activePlayer].addToHand(cardFromHere);
+				break;
+			default:
+				break;
+		}
 	}
 }

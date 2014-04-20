@@ -37,6 +37,11 @@ public class Deck{
 		}
 	}
 
+	Deck(Deck cloned){
+		for(int i = 0; i < cloned.deck.size(); i++)
+			this.deck.push(new Card(cloned.deck.get(i)));
+	}
+
 	/**
 	 * Randomize the order of (shuffle) the current deck, maintaining the
 	 * current size and contents.

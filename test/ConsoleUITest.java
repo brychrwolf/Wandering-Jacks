@@ -100,5 +100,4 @@ public class ConsoleUITest {
 		ConsoleUI.drawRetainerGroup(retainer);
 		assertEquals(outString, outContent.toString());
 	}
-
 }
