@@ -173,13 +173,24 @@ public class ConsoleUITest {
 	 * cardLocation
 	 */
 	@Test
-	public void validCardLocationReturnsString(){
+	public void validIntCardLocationReturnsString(){
 		assertTrue(ConsoleUI.cardLocation(0) instanceof String);
 	}
 
+	@Test
+	public void validStringCardLocationReturnsInt(){
+		Object result = ConsoleUI.cardLocation("My Hand");
+		assertTrue(result.equals((int)result));
+	}
+
 	@Test(expected=NullPointerException.class)
-	public void invalidCardLocationThrowsException(){
+	public void invalidIntCardLocationThrowsException(){
 		ConsoleUI.cardLocation(-1);
+	}
+
+	@Test(expected=NullPointerException.class)
+	public void invalidStringCardLocationThrowsException(){
+		ConsoleUI.cardLocation("The Sky");
 	}
 
 	@Test

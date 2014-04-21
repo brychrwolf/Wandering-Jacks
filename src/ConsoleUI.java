@@ -24,6 +24,20 @@ public class ConsoleUI {
 		else throw new NullPointerException("That location does not exist.");
 	}
 
+	public static int cardLocation(String location){
+		int loc = -1; // should never return as -1
+		if(cardLocations.containsValue(location)){
+			for(int l : cardLocations.keySet()){
+				if(cardLocations.get(l).equals(location)){
+					loc = l;
+				}
+			}
+			return loc;
+		}else{
+			throw new NullPointerException("That location does not exist.");
+		}
+	}
+
 	public static boolean cardLocationsInclude(int location){
 		return cardLocations.containsKey(location);
 	}
