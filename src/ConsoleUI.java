@@ -7,6 +7,30 @@ import java.util.HashMap;
 
 public class ConsoleUI {
 	private final static String newLine = System.getProperty("line.separator");
+	private final static HashMap<Integer, String> cardLocations = new HashMap<Integer, String>();
+	static{
+		cardLocations.put(0, "The Deck");
+		cardLocations.put(1, "The Discard Pile");
+		cardLocations.put(2, "My Hand");
+		cardLocations.put(3, "My 1st Retainer");
+		cardLocations.put(4, "My 2nd Retainer");
+		cardLocations.put(5, "My 3rd Retainer");
+		cardLocations.put(6, "My 4th Retainer");
+	};
+
+	public static String cardLocation(int location){
+		if(cardLocations.containsKey(location))
+			return cardLocations.get(location);
+		else throw new NullPointerException("That location does not exist.");
+	}
+
+	public static boolean cardLocationsInclude(int location){
+		return cardLocations.containsKey(location);
+	}
+	public static boolean cardLocationsInclude(String location){
+		return cardLocations.containsValue(location);
+	}
+
 
 	public static void draw(WanderingJacks wj){
 		System.out.print("Discard Pile: ");

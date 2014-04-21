@@ -3,7 +3,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.HashMap;
 import java.util.HashSet;
 
 import org.junit.Before;
@@ -69,7 +68,6 @@ public class WanderingJacksTest{
 		assertTrue(wj.activePlayer == (int)wj.activePlayer);
 		assertTrue(wj.onFirstMoveOfTurn == (boolean)wj.onFirstMoveOfTurn);
 		assertTrue(wj.deck instanceof Deck);
-		assertTrue(wj.cardLocations instanceof HashMap<?, ?>);
 		assertTrue(wj.deck instanceof Deck);
 		assertTrue(wj.discardPile instanceof DiscardPile);
 		assertTrue(wj.player[0] instanceof Player);

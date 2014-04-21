@@ -27,7 +27,6 @@ public class WanderingJacks{
 	 */
 	public int activePlayer;
 	public boolean onFirstMoveOfTurn;
-	public HashMap<Integer, String> cardLocations;
 	/**
 	 * A standard deck of 54 cards (52 + 2 Jokers)used in the game. Its
 	 * contents are "random" and secret.
@@ -67,15 +66,6 @@ public class WanderingJacks{
 		boolean includeJokers = true;
 		activePlayer = 0;
 		onFirstMoveOfTurn = true;
-		int l = 0;
-		cardLocations = new HashMap<Integer, String>();
-			cardLocations.put(l++, "The Deck");
-			cardLocations.put(l++, "The Discard Pile");
-			cardLocations.put(l++, "My Hand");
-			cardLocations.put(l++, "My 1st Retainer");
-			cardLocations.put(l++, "My 2nd Retainer");
-			cardLocations.put(l++, "My 3rd Retainer");
-			cardLocations.put(l++, "My 4th Retainer");
 		deck = new Deck(includeJokers);
 		discardPile = new DiscardPile();
 		player = new Player[2];
@@ -90,8 +80,6 @@ public class WanderingJacks{
 	WanderingJacks(WanderingJacks cloned){
 		this.activePlayer 		= cloned.activePlayer;
 		this.onFirstMoveOfTurn 	= cloned.onFirstMoveOfTurn;
-		this.cardLocations		= new HashMap<Integer, String>();
-			this.cardLocations.putAll(cloned.cardLocations);
 		this.deck 				= new Deck(cloned.deck);
 		this.discardPile 		= new DiscardPile(cloned.discardPile);
 		player = new Player[2];

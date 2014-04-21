@@ -1,4 +1,6 @@
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
@@ -155,15 +157,49 @@ public class ConsoleUITest {
 	 */
 	@Test
 	public void pPtDIC_invalidEntriesIgnoredUntilValidEntryIsGiven() throws IOException{
-	String mockUserInput = "f"+newLine; // ignored origins
-	mockUserInput += "foo"+newLine;		//
-	mockUserInput += "99"+newLine;		//
-	mockUserInput += "-1"+newLine;		//
-	mockUserInput += "0"+newLine;		// accepted
-	ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
-	System.setIn(mockIn);
-	int pr = ConsoleUI.promptPlayerToDrawInitialCard();
-	System.setIn(System.in);
-	assertEquals(pr, 0);
+		String mockUserInput = "f"+newLine; // ignored inputs
+		mockUserInput += "foo"+newLine;		//
+		mockUserInput += "99"+newLine;		//
+		mockUserInput += "-1"+newLine;		//
+		mockUserInput += "0"+newLine;		// accepted
+		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
+		System.setIn(mockIn);
+		int pr = ConsoleUI.promptPlayerToDrawInitialCard();
+		System.setIn(System.in);
+		assertEquals(pr, 0);
 	}
+
+	/*
+	 * cardLocation
+	 */
+	@Test
+	public void validCardLocationReturnsString(){
+		assertTrue(ConsoleUI.cardLocation(0) instanceof String);
+	}
+
+	@Test(expected=NullPointerException.class)
+	public void invalidCardLocationThrowsException(){
+		ConsoleUI.cardLocation(-1);
+	}
+
+	@Test
+	public void validIntCardLocationIncludesReturnsTrue(){
+		assertTrue(ConsoleUI.cardLocationsInclude(0));
+	}
+
+	@Test
+	public void validStringCardLocationIncludesReturnsTrue(){
+		assertTrue(ConsoleUI.cardLocationsInclude("My Hand"));
+	}
+
+	@Test
+	public void invalidIntCardLocationIncludesReturnsFalse(){
+		assertFalse(ConsoleUI.cardLocationsInclude(-1));
+	}
+
+	@Test
+	public void invalidStringCardLocationIncludesReturnsFalse(){
+		assertFalse(ConsoleUI.cardLocationsInclude("The Sky"));
+	}
+
 }
