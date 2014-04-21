@@ -21,6 +21,14 @@ import java.util.HashMap;
 
 public class WanderingJacks{
 	/**
+	 * The player whose turn is active during the game. 0 = gambler, 1 = house.
+	 * Will toggle when player declares that they are finished.
+	 * @see Player
+	 */
+	public int activePlayer;
+	public boolean onFirstMoveOfTurn;
+	public HashMap<Integer, String> cardLocations;
+	/**
 	 * A standard deck of 54 cards (52 + 2 Jokers)used in the game. Its
 	 * contents are "random" and secret.
 	 * @see Deck
@@ -31,13 +39,6 @@ public class WanderingJacks{
 	 * @see DiscardPile
 	 */
 	public DiscardPile discardPile;
-	/**
-	 * The player whose turn is active during the game. 0 = gambler, 1 = house.
-	 * Will toggle when player declares that they are finished.
-	 * @see Player
-	 */
-	public int activePlayer;
-	public boolean onFirstMoveOfTurn;
 	/**
 	 * The array of two players in the game. Each has a hand of cards and a
 	 * bankroll with which to bet.
@@ -66,6 +67,15 @@ public class WanderingJacks{
 		boolean includeJokers = true;
 		activePlayer = 0;
 		onFirstMoveOfTurn = true;
+		int l = 0;
+		cardLocations = new HashMap<Integer, String>();
+			cardLocations.put(l++, "The Deck");
+			cardLocations.put(l++, "The Discard Pile");
+			cardLocations.put(l++, "My Hand");
+			cardLocations.put(l++, "My 1st Retainer");
+			cardLocations.put(l++, "My 2nd Retainer");
+			cardLocations.put(l++, "My 3rd Retainer");
+			cardLocations.put(l++, "My 4th Retainer");
 		deck = new Deck(includeJokers);
 		discardPile = new DiscardPile();
 		player = new Player[2];
@@ -78,10 +88,12 @@ public class WanderingJacks{
 	}
 
 	WanderingJacks(WanderingJacks cloned){
-		this.activePlayer 	= cloned.activePlayer;
+		this.activePlayer 		= cloned.activePlayer;
 		this.onFirstMoveOfTurn 	= cloned.onFirstMoveOfTurn;
-		this.deck 			= new Deck(cloned.deck);
-		this.discardPile 	= new DiscardPile(cloned.discardPile);
+		this.cardLocations		= new HashMap<Integer, String>();
+			this.cardLocations.putAll(cloned.cardLocations);
+		this.deck 				= new Deck(cloned.deck);
+		this.discardPile 		= new DiscardPile(cloned.discardPile);
 		player = new Player[2];
 		retainer = new Retainer[2][4];
 		for(int i = 0; i < 2; i++){
@@ -109,9 +121,8 @@ public class WanderingJacks{
 			int[] rp = new int[2];
 			rp[0] = ConsoleUI.getPlayerInput("Enter *from* where to play a card:", wj.getPossibleOrigins());
 			// TODO how do I get card?
-			rp[1] = ConsoleUI.getPlayerInput("Enter *to* where to play a card:", wj.getPossibleDestinations(wj.retainer[wj.activePlayer], ));
-			};
-			wj.requestPlay(rp);
+			//rp[1] = ConsoleUI.getPlayerInput("Enter *to* where to play a card:", wj.getPossibleDestinations(wj.retainer[wj.activePlayer], ));
+			//wj.requestPlay(rp);
 			// TODO if Joker is drawn, it must be played immediately (not yet implemented)
 			// TODO player decides how to play (discard 1 or play at least 1 to retainers)
 				//int cardIndex = 0;
