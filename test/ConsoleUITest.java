@@ -156,6 +156,16 @@ public class ConsoleUITest {
 	 * promptPlayerToDrawInitialCard
 	 */
 	@Test
+	public void pPtDIC_validEntriesReturnSelectionAsInt() throws IOException{
+		String mockUserInput = "0"+newLine;		// accepted
+		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
+		System.setIn(mockIn);
+		int pr = ConsoleUI.promptPlayerToDrawInitialCard();
+		System.setIn(System.in);
+		assertEquals(pr, 0);
+	}
+
+	@Test
 	public void pPtDIC_invalidEntriesIgnoredUntilValidEntryIsGiven() throws IOException{
 		String mockUserInput = "f"+newLine; // ignored inputs
 		mockUserInput += "foo"+newLine;		//
