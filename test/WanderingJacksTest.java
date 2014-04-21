@@ -434,11 +434,63 @@ public class WanderingJacksTest{
 		assertEquals(newHandSize, originalHandSize + 1);
 	}
 
+	/*
+	 * onFirstMoveOfTurn
+	 */
 	@Test
-	public void getPossibleOriginsReturnsANonEmptyResult(){
+	public void onFirstMoveOfTurnTrueAtConstuction(){
+		assertTrue(wj.onFirstMoveOfTurn());
+	}
+	@Test
+	public void onFirstMoveOfTurnFalseAfterOnePlay(){
+		WanderingJacks.makePlay(wj, 0, 0);
+		assertFalse(wj.onFirstMoveOfTurn());
+	}
+	@Test
+	public void onFirstMoveOfTurnTrueAfterEndOfTurn(){
+		WanderingJacks.makePlay(wj, 0, 0);
+		wj.endTurn();
+		assertTrue(wj.onFirstMoveOfTurn());
+	}
+
+	/*
+	 * Possible Origins
+	 */
+	@Test
+	public void possibleOriginsReturnsANonEmptyResult(){
 		assertTrue(wj.getPossibleOrigins().size() > 0);
 	}
 
+	@Test
+	public void possibleOriginsIncludesDeckOnFirstMove(){
+		assertTrue(wj.onFirstMoveOfTurn());
+		assertTrue(wj.getPossibleOrigins().containsValue("deck"));
+	}
+
+	@Test
+	public void possibleOriginsIncludesDicardPileOnFirstMove(){
+		assertTrue(wj.onFirstMoveOfTurn());
+		assertTrue(wj.getPossibleOrigins().containsValue("discard pile"));
+	}
+
+	@Test
+	public void possibleOriginsDontIncludeDeckIfNotOnFirstMove(){
+		WanderingJacks.makePlay(wj, 0, 0);
+		assertFalse(wj.onFirstMoveOfTurn());
+		assertFalse(wj.getPossibleOrigins().containsValue("deck"));
+	}
+
+	@Test
+	public void possibleOriginsDontIncludeDicardPileIfNotOnFirstMove(){
+		WanderingJacks.makePlay(wj, 0, 0);
+		assertFalse(wj.onFirstMoveOfTurn());
+		assertFalse(wj.getPossibleOrigins().containsValue("discard pile"));
+	}
+
+
+	/*
+	 * Possible Destinations
+	 */
 	@Test
 	public void getPossibleDestinationsReturnsANonEmptyResult(){
 		assertTrue(wj.getPossibleDestinations().size() > 0);

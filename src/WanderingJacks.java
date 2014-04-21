@@ -37,6 +37,7 @@ public class WanderingJacks{
 	 * @see Player
 	 */
 	public int activePlayer;
+	public boolean onFirstMoveOfTurn;
 	/**
 	 * The array of two players in the game. Each has a hand of cards and a
 	 * bankroll with which to bet.
@@ -64,6 +65,7 @@ public class WanderingJacks{
 	WanderingJacks(){
 		boolean includeJokers = true;
 		activePlayer = 0;
+		onFirstMoveOfTurn = true;
 		deck = new Deck(includeJokers);
 		discardPile = new DiscardPile();
 		player = new Player[2];
@@ -77,6 +79,7 @@ public class WanderingJacks{
 
 	WanderingJacks(WanderingJacks cloned){
 		this.activePlayer 	= cloned.activePlayer;
+		this.onFirstMoveOfTurn 	= cloned.onFirstMoveOfTurn;
 		this.deck 			= new Deck(cloned.deck);
 		this.discardPile 	= new DiscardPile(cloned.discardPile);
 		player = new Player[2];
@@ -335,6 +338,8 @@ public class WanderingJacks{
 			discardPile.discard(deck.dealCard());
 		// toggle active player
 		activePlayer = activePlayer == 1 ? 0 : 1;
+		// make onFirstMoveOfTurn true
+		onFirstMoveOfTurn = true;
 	}
 
 	/**
@@ -417,13 +422,19 @@ public class WanderingJacks{
 			default:
 				break;
 		}
+		// Can no longer be the first move of turn
+		game.onFirstMoveOfTurn = false;
 	}
 
 	public HashMap<Integer, String> getPossibleOrigins(){
 		// Enumerate possible origins
 		HashMap<Integer, String> possibleOrigins = new HashMap<Integer, String>();
-			possibleOrigins.put(0, "deck");
-			possibleOrigins.put(1, "discard pile");
+		int optNum = 0;
+		if(onFirstMoveOfTurn) possibleOrigins.put(optNum++, "deck");
+		if(onFirstMoveOfTurn) possibleOrigins.put(optNum++, "discard pile");
+		if(!onFirstMoveOfTurn)
+			for(int i = 0; i < player[activePlayer].handSize(); i++)
+				possibleOrigins.put(optNum++, "from hand: "+player[activePlayer].getFromHand(i).toString());
 		return possibleOrigins;
 	}
 
@@ -432,6 +443,10 @@ public class WanderingJacks{
 		HashMap<Integer, String> possibleDestinations = new HashMap<Integer, String>();
 			possibleDestinations.put(0, "my hand");
 		return possibleDestinations;
+	}
+
+	public boolean onFirstMoveOfTurn(){
+		return onFirstMoveOfTurn;
 	}
 
 }
