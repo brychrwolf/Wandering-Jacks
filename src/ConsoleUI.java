@@ -87,12 +87,15 @@ public class ConsoleUI {
 			System.out.println("["+origins+"] "+possibleOrigins.get(origins));
 		// Get user input, avoiding errors
 		boolean loop = true;
-		while(loop == true && possibleOrigins.containsKey(rp[1])){
+		while(loop == true){
 			try{
-				rp[0] = Integer.parseInt(br.readLine());
-				loop = false;
+				int input = Integer.parseInt(br.readLine());
+				if(possibleOrigins.containsKey(input)){
+					rp[0] = input;
+					loop = false;
+				}else System.err.println("Invalid Selection!");
 			}catch(NumberFormatException nfe){
-				System.err.println("Invalid Format!");
+				System.err.println("Not an integer!");
 			}
 		}
 		System.out.println();
@@ -101,12 +104,15 @@ public class ConsoleUI {
 			System.out.println("["+destination+"] "+possibleDestinations.get(destination));
 		// Get user input, avoiding errors
 		loop = true;
-		while(loop == true && possibleDestinations.containsKey(rp[1])){
+		while(loop == true){
 			try{
-				rp[1] = Integer.parseInt(br.readLine());
-				loop = false;
+				int input = Integer.parseInt(br.readLine());
+				if(possibleDestinations.containsKey(input)){
+					rp[1] = input;
+					loop = false;
+				}else System.err.println("Invalid Selection!");
 			}catch(NumberFormatException nfe){
-				System.err.println("Please enter a valid integer!");
+				System.err.println("Not an integer!");
 			}
 		}
 
