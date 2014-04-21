@@ -119,11 +119,14 @@ public class ConsoleUITest {
 		String mockUserInput = "0"+newLine+"0"+newLine;
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
-		int[] pr = ConsoleUI.getPlayRequest();
+		int[] pr = ConsoleUI.getPlayRequest(wj.getPossibleOrigins(), wj.getPossibleDestinations());
 		System.setIn(System.in);
 		assertEquals(pr[0], 0);
 		assertEquals(pr[1], 0);
 	}
 
-
+	@Test
+	public void getPlayRequestPrintsAllPossibleOriginsAndDestinations(){
+		// Not sure how to implement yet
+	}
 }

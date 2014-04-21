@@ -433,4 +433,14 @@ public class WanderingJacksTest{
 		int newHandSize = wj.player[wj.activePlayer].handSize();
 		assertEquals(newHandSize, originalHandSize + 1);
 	}
+
+	@Test
+	public void getPossibleOriginsReturnsANonEmptyResult(){
+		assertTrue(wj.getPossibleOrigins().size() > 0);
+	}
+
+	@Test
+	public void getPossibleDestinationsReturnsANonEmptyResult(){
+		assertTrue(wj.getPossibleDestinations().size() > 0);
+	}
 }

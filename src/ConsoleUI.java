@@ -78,13 +78,9 @@ public class ConsoleUI {
 		System.out.print(outString);
 	}
 
-	public static int[] getPlayRequest() throws IOException{
+	public static int[] getPlayRequest(HashMap<Integer, String> possibleOrigins, HashMap<Integer, String> possibleDestinations) throws IOException{
 		int[] rp = new int[2];
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		// Enumerate possible origins
-		HashMap<Integer, String> possibleOrigins = new HashMap<Integer, String>();
-			possibleOrigins.put(0, "deck");
-			possibleOrigins.put(1, "discard pile");
 		System.out.println();
 		System.out.println("Enter *from* where to play a card:");
 		for(int origins : possibleOrigins.keySet())
@@ -99,9 +95,6 @@ public class ConsoleUI {
 				System.err.println("Invalid Format!");
 			}
 		}
-		// Enumerate possible destinations
-		HashMap<Integer, String> possibleDestinations = new HashMap<Integer, String>();
-			possibleDestinations.put(0, "my hand");
 		System.out.println();
 		System.out.println("Enter *to* where to play a card:");
 		for(int destination : possibleDestinations.keySet())

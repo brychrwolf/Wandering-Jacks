@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * Wandering Jacks is a two-player card game.
@@ -102,7 +103,7 @@ public class WanderingJacks{
 				//wj.player[0].addToHand(cardTaken);
 				//String fromHere = (takeFromDeck ? "deck" : "discard pile");
 				//wj.requestPlay(fromHere, "my hand");
-			wj.requestPlay(ConsoleUI.getPlayRequest());
+			wj.requestPlay(ConsoleUI.getPlayRequest(wj.getPossibleOrigins(), wj.getPossibleDestinations()));
 			// TODO if Joker is drawn, it must be played immediately (not yet implemented)
 			// TODO player decides how to play (discard 1 or play at least 1 to retainers)
 				//int cardIndex = 0;
@@ -413,4 +414,20 @@ public class WanderingJacks{
 				break;
 		}
 	}
+
+	public HashMap<Integer, String> getPossibleOrigins(){
+		// Enumerate possible origins
+		HashMap<Integer, String> possibleOrigins = new HashMap<Integer, String>();
+			possibleOrigins.put(0, "deck");
+			possibleOrigins.put(1, "discard pile");
+		return possibleOrigins;
+	}
+
+	public HashMap<Integer, String> getPossibleDestinations(){
+		// Enumerate possible destinations
+		HashMap<Integer, String> possibleDestinations = new HashMap<Integer, String>();
+			possibleDestinations.put(0, "my hand");
+		return possibleDestinations;
+	}
+
 }
