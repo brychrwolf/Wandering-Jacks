@@ -1,4 +1,5 @@
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -145,6 +146,24 @@ public class ConsoleUITest {
 
 	@Test
 	public void getPlayRequestPrintsAllPossibleOriginsAndDestinations(){
-		// Not sure how to implement yet
+		// Not sure how to implement test yet
+		fail();
+	}
+
+	/*
+	 * promptPlayerToDrawInitialCard
+	 */
+	@Test
+	public void pPtDIC_invalidEntriesIgnoredUntilValidEntryIsGiven() throws IOException{
+	String mockUserInput = "f"+newLine; // ignored origins
+	mockUserInput += "foo"+newLine;		//
+	mockUserInput += "99"+newLine;		//
+	mockUserInput += "-1"+newLine;		//
+	mockUserInput += "0"+newLine;		// accepted
+	ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
+	System.setIn(mockIn);
+	int pr = ConsoleUI.promptPlayerToDrawInitialCard();
+	System.setIn(System.in);
+	assertEquals(pr, 0);
 	}
 }

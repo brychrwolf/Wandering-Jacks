@@ -96,4 +96,18 @@ public class ConsoleUI {
 			}
 		}
 	}
+
+	public static int promptPlayerToDrawInitialCard(){
+		HashMap<Integer, String> options = new HashMap<Integer, String>();
+			options.put(0, "Deck");
+			options.put(1, "Discard Pile");
+		int selection = -1;
+		try{
+			selection = ConsoleUI.getPlayerInput("Would you prefer a card from the Deck or the Discard Pile?", options);
+		}catch(IOException e){
+			System.err.println("Failed to accept player input.");
+		}
+		return selection;
+	}
+
 }
