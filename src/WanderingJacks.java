@@ -94,11 +94,15 @@ public class WanderingJacks{
 	public static void main(String[] args) throws IOException {
 		WanderingJacks wj = new WanderingJacks();
 		wj.setUpGameEnvironment();
+		int[] playRequest = new int[2];
 		//while the game is not over
 		while(!wj.isGameOver()){
 			// Display game state
 			ConsoleUI.draw(wj);
-			// TODO player decides if he wants a card from the deck or the discard pile
+			// player decides if he wants a card from the deck or the discard pile
+			playRequest[0] = ConsoleUI.promptPlayerToDrawInitialCard();
+			playRequest[1] = ConsoleUI.cardLocation("My Hand");
+			wj.requestPlay(playRequest);
 				// currently random
 				//boolean takeFromDeck = false;
 				//if(Math.random() >= .5)	takeFromDeck = true;
@@ -106,8 +110,8 @@ public class WanderingJacks{
 				//wj.player[0].addToHand(cardTaken);
 				//String fromHere = (takeFromDeck ? "deck" : "discard pile");
 				//wj.requestPlay(fromHere, "my hand");
-			int[] rp = new int[2];
-			rp[0] = ConsoleUI.getPlayerInput("Enter *from* where to play a card:", wj.getPossibleOrigins());
+			//int[] rp = new int[2];
+			//rp[0] = ConsoleUI.getPlayerInput("Enter *from* where to play a card:", wj.getPossibleOrigins());
 			// TODO how do I get card?
 			//rp[1] = ConsoleUI.getPlayerInput("Enter *to* where to play a card:", wj.getPossibleDestinations(wj.retainer[wj.activePlayer], ));
 			//wj.requestPlay(rp);
@@ -511,27 +515,54 @@ public class WanderingJacks{
 		return true;
 	}
 
-	public static void makePlay(WanderingJacks game, int fromHere, int toThere){
-		// Translate string to card
-		Card cardFromHere;
+	private static void makePlay(WanderingJacks game, int fromHere, int toThere){
+		/*
+		 * Translate string to card:
+		 * cardLocations.put(0, "The Deck");
+		 * cardLocations.put(1, "The Discard Pile");
+		 * cardLocations.put(2, "My Hand");
+		 * cardLocations.put(3, "My 1st Retainer");
+		 * cardLocations.put(4, "My 2nd Retainer");
+		 * cardLocations.put(5, "My 3rd Retainer");
+		 * cardLocations.put(6, "My 4th Retainer");
+		 */
+		Card cardFromHere = new Card(); // Should never return as this value
 		switch(fromHere){
-			case 0: // "deck"
+			case 0:
 				cardFromHere = game.deck.dealCard();
 				break;
-			case 1:// "discard pile":
+			case 1:
 				cardFromHere = game.discardPile.takeTopCard();
 				break;
-			default:
-				cardFromHere = new Card();
+			case 2:
+				//play from hand needs special prompt!
+				//cardFromHere = game.
 				break;
+			default:
+				throw new IllegalStateException("That play would be illegal.");
 		}
 		// Move card to location
 		switch(toThere){
-			case 0: // "my hand"
-				game.player[game.activePlayer].addToHand(cardFromHere);
+			case 1:
+				game.discardPile.discard(cardFromHere);
+				break;
+			case 2:
+				game.player[0].addToHand(cardFromHere);
+				break;
+			case 3:
+				game.retainer[game.activePlayer][0].add(cardFromHere);
+				break;
+			case 4:
+				game.retainer[game.activePlayer][1].add(cardFromHere);
+				break;
+			case 5:
+				game.retainer[game.activePlayer][2].add(cardFromHere);
+				break;
+			case 6:
+				game.retainer[game.activePlayer][3].add(cardFromHere);
 				break;
 			default:
-				break;
+				throw new IllegalStateException("That play would be illegal.");
 		}
 		// Can no longer be the first move of turn
 		game.onFirstMoveOfTurn = false;
