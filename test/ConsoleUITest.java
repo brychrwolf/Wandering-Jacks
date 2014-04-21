@@ -148,8 +148,7 @@ public class ConsoleUITest {
 
 	@Test
 	public void getPlayRequestPrintsAllPossibleOriginsAndDestinations(){
-		// Not sure how to implement test yet
-		fail();
+		fail("Test not implemented");
 	}
 
 	/*
@@ -175,6 +174,33 @@ public class ConsoleUITest {
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
 		int pr = ConsoleUI.promptPlayerToDrawInitialCard();
+		System.setIn(System.in);
+		assertEquals(pr, 0);
+	}
+
+	/*
+	 * promptPlayerToChooseCardFromHand
+	 */
+	@Test
+	public void ptCCFH_validEntriesReturnSelectionAsInt() throws IOException{
+		String mockUserInput = "0"+newLine;		// accepted
+		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
+		System.setIn(mockIn);
+		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer]);
+		System.setIn(System.in);
+		assertEquals(pr, 0);
+	}
+
+	@Test
+	public void ptCCFH_invalidEntriesIgnoredUntilValidEntryIsGiven() throws IOException{
+		String mockUserInput = "f"+newLine; // ignored inputs
+		mockUserInput += "foo"+newLine;		//
+		mockUserInput += "99"+newLine;		//
+		mockUserInput += "-1"+newLine;		//
+		mockUserInput += "0"+newLine;		// accepted
+		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
+		System.setIn(mockIn);
+		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer]);
 		System.setIn(System.in);
 		assertEquals(pr, 0);
 	}

@@ -150,4 +150,17 @@ public class ConsoleUI {
 		return selection;
 	}
 
+	public static int promptPlayerToChooseCardFromHand(Player player){
+		HashMap<Integer, String> options = new HashMap<Integer, String>();
+		for(int i = 0; i < player.handSize(); i++)
+			options.put(i, player.getFromHand(i).toString());
+		int selection = -1; // Should never return as -1
+		try{
+			selection = ConsoleUI.getPlayerInput("Please select which card from your hand:", options);
+		}catch(IOException e){
+			System.err.println("Failed to accept player input.");
+		}
+		return selection;
+	}
+
 }
