@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.HashMap;
 
 import org.junit.After;
 import org.junit.Before;
@@ -115,14 +116,15 @@ public class ConsoleUITest {
 	 * @throws IOException
 	 */
 	@Test
-	public void validPlayRequestReturnsValidIntArr() throws IOException{
-		String mockUserInput = "0"+newLine+"0"+newLine;
+	public void validPlayerInputReturnsThatInt() throws IOException{
+		String mockUserInput = "0"+newLine;
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
-		int[] pr = ConsoleUI.getPlayRequest(wj.getPossibleOrigins(), wj.getPossibleDestinations());
+		HashMap<Integer, String> validOptions = new HashMap<Integer, String>();
+		validOptions.put(0, "valid");
+		int pr = ConsoleUI.getPlayerInput("", validOptions);
 		System.setIn(System.in);
-		assertEquals(pr[0], 0);
-		assertEquals(pr[1], 0);
+		assertEquals(pr, 0);
 	}
 
 	@Test
@@ -132,17 +134,13 @@ public class ConsoleUITest {
 		mockUserInput += "99"+newLine;		//
 		mockUserInput += "-1"+newLine;		//
 		mockUserInput += "0"+newLine;		// accepted
-		mockUserInput += "f"+newLine; 		// ignored destinations
-		mockUserInput += "foo"+newLine;		//
-		mockUserInput += "99"+newLine;		//
-		mockUserInput += "-1"+newLine;		//
-		mockUserInput += "0"+newLine;		// accepted
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
-		int[] pr = ConsoleUI.getPlayRequest(wj.getPossibleOrigins(), wj.getPossibleDestinations());
+		HashMap<Integer, String> validOptions = new HashMap<Integer, String>();
+		validOptions.put(0, "valid");
+		int pr = ConsoleUI.getPlayerInput("", validOptions);
 		System.setIn(System.in);
-		assertEquals(pr[0], 0);
-		assertEquals(pr[1], 0);
+		assertEquals(pr, 0);
 	}
 
 	@Test

@@ -103,7 +103,11 @@ public class WanderingJacks{
 				//wj.player[0].addToHand(cardTaken);
 				//String fromHere = (takeFromDeck ? "deck" : "discard pile");
 				//wj.requestPlay(fromHere, "my hand");
-			wj.requestPlay(ConsoleUI.getPlayRequest(wj.getPossibleOrigins(), wj.getPossibleDestinations()));
+			int[] rp = {
+				ConsoleUI.getPlayerInput("Enter *from* where to play a card:", wj.getPossibleOrigins()),
+				ConsoleUI.getPlayerInput("Enter *to* where to play a card:", wj.getPossibleDestinations())
+			};
+			wj.requestPlay(rp);
 			// TODO if Joker is drawn, it must be played immediately (not yet implemented)
 			// TODO player decides how to play (discard 1 or play at least 1 to retainers)
 				//int cardIndex = 0;
