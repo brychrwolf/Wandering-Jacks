@@ -1,6 +1,7 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.HashSet;
 
@@ -492,7 +493,74 @@ public class WanderingJacksTest{
 	 * Possible Destinations
 	 */
 	@Test
-	public void getPossibleDestinationsReturnsANonEmptyResult(){
-		assertTrue(wj.getPossibleDestinations().size() > 0);
+	public void possibleDestinations_Returns_ANonEmptyResult(){
+		wj.setUpGameEnvironment();
+		assertTrue(wj.getPossibleDestinations(aQueen).size() > 0);
+	}
+
+	@Test
+	public void possibleDestinations_Includes_MyHand_OnFirstMove(){
+		wj.setUpGameEnvironment();
+		assertTrue(wj.onFirstMoveOfTurn());
+		assertTrue(wj.getPossibleDestinations(aQueen).containsValue("my hand"));
+	}
+
+	@Test
+	public void possibleDestinations_DontInclude_MyHand_IfNotOnFirstMove(){
+		wj.setUpGameEnvironment();
+		WanderingJacks.makePlay(wj, 0, 0);
+		assertFalse(wj.onFirstMoveOfTurn());
+		assertFalse(wj.getPossibleDestinations(aQueen).containsValue("my hand"));
+	}
+
+	@Test
+	public void possibleDestinations_Includes_DiscardPile_IfNotOnFirstMove(){
+		wj.setUpGameEnvironment();
+		WanderingJacks.makePlay(wj, 0, 0);
+		assertFalse(wj.onFirstMoveOfTurn());
+		assertTrue(wj.getPossibleDestinations(aQueen).containsValue("discard pile & end turn"));
+	}
+
+	@Test
+	public void possibleDestinations_DontInclude_DiscardPile_OnFirstMove(){
+		wj.setUpGameEnvironment();
+		assertTrue(wj.onFirstMoveOfTurn());
+		assertFalse(wj.getPossibleDestinations(aQueen).containsValue("discard pile & end turn"));
+	}
+
+	@Test
+	public void possibleDestinations_Include_RetainersWithSameValues_IfNotOnFirstMove(){
+		WanderingJacks.makePlay(wj, 0, 0);
+		wj.retainer[0][0].add(aQueen);
+		wj.retainer[0][1].add(aJack);
+		wj.retainer[0][2].add(a10);
+		wj.retainer[0][3].add(a9);
+		assertFalse(wj.onFirstMoveOfTurn());
+		assertTrue(wj.getPossibleDestinations(aQueen).containsValue("retainer: "+aQueen.toString()+" "));
+		assertFalse(wj.getPossibleDestinations(aQueen).containsValue("retainer: "+aJack.toString()+" "));
+		assertFalse(wj.getPossibleDestinations(aQueen).containsValue("retainer: "+a10.toString()+" "));
+		assertFalse(wj.getPossibleDestinations(aQueen).containsValue("retainer: "+a9.toString()+" "));
+	}
+
+	@Test
+	public void possibleDestinations_Include_RetainersWithQueensOr10s_WhenPlayingAJack_IfNotOnFirstMove(){
+		WanderingJacks.makePlay(wj, 0, 0);
+		wj.retainer[0][0].add(aQueen);
+		wj.retainer[0][1].add(a10);
+		wj.retainer[0][2].add(a9);
+		wj.retainer[0][3].add(a9);
+		wj.player[0].addToHand(aJack);
+		assertFalse(wj.onFirstMoveOfTurn());
+		assertTrue(wj.getPossibleDestinations(aJack).containsValue("retainer: "+aQueen.toString()+" "));
+		assertTrue(wj.getPossibleDestinations(aJack).containsValue("retainer: "+a10.toString()+" "));
+		assertFalse(wj.getPossibleDestinations(aJack).containsValue("retainer: "+a9.toString()+" "));
+	}
+
+	/*
+	 * validMoves
+	 */
+	@Test
+	public void testValidMoves(){
+		fail("Not implemented");
 	}
 }

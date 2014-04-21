@@ -106,9 +106,10 @@ public class WanderingJacks{
 				//wj.player[0].addToHand(cardTaken);
 				//String fromHere = (takeFromDeck ? "deck" : "discard pile");
 				//wj.requestPlay(fromHere, "my hand");
-			int[] rp = {
-				ConsoleUI.getPlayerInput("Enter *from* where to play a card:", wj.getPossibleOrigins()),
-				ConsoleUI.getPlayerInput("Enter *to* where to play a card:", wj.getPossibleDestinations())
+			int[] rp = new int[2];
+			rp[0] = ConsoleUI.getPlayerInput("Enter *from* where to play a card:", wj.getPossibleOrigins());
+			// TODO how do I get card?
+			rp[1] = ConsoleUI.getPlayerInput("Enter *to* where to play a card:", wj.getPossibleDestinations(wj.retainer[wj.activePlayer], ));
 			};
 			wj.requestPlay(rp);
 			// TODO if Joker is drawn, it must be played immediately (not yet implemented)
@@ -227,7 +228,118 @@ public class WanderingJacks{
 	 * currently unusable.
 	 * @param card the Card from which the list of moves is evaluated against
 	 */
-	public void validMoves(Card card){
+	public static boolean[] validPlayFor(Retainer[] retainer, Card card){
+		boolean[] vr = {false, false, false, false};
+		switch(card.getValueAsString()){
+		case "Jack":
+			//if not empty
+			//if a retainer contains a Queen and no Jacks
+			//if a retainer contains a 10 and no Jacks
+			for(int i = 0; i < retainer.length; i++){
+				if(!retainer[i].isEmpty())
+					vr[i] = true;
+				else if(!retainer[i].contains(Card.JACK)){
+					if(retainer[i].get(0).getValue() == Card.QUEEN
+					|| retainer[i].get(0).getValue() == 10){
+						vr[i] = true;
+					}
+				}
+			}
+
+			break;
+		case "Queen":
+			//If empty
+			//If a retainer is empty
+			//If a retainer contains a Queen and not a Jack
+			for(int i = 0; i < retainer.length; i++){
+				if(retainer[i].isEmpty())
+					vr[i] = true;
+				else if(!retainer[i].contains(Card.JACK)){
+					if(retainer[i].get(0).getValue() == Card.QUEEN){
+						vr[i] = true;
+					}
+				}
+			}
+			break;
+		case "10":
+			//If empty
+			//If a retainer is empty
+			//If a retainer contains a Queen and not a Jack
+			for(int i = 0; i < retainer.length; i++){
+				if(retainer[i].isEmpty())
+					vr[i] = true;
+				else if(!retainer[i].contains(Card.JACK)){
+					if(retainer[i].get(0).getValue() == 10){
+						vr[i] = true;
+					}
+				}
+			}
+			break;
+		case "Ace":
+			//If not empty
+			//If a retainer contains three of a kind and no Jack
+			for(int i = 0; i < retainer.length; i++){
+				if(!retainer[i].isEmpty())
+					vr[i] = true;
+				else if(!retainer[i].contains(Card.JACK)
+				&& retainer[i].size() == 3){
+					if(retainer[i].get(0).getValue() == retainer[i].get(1).getValue()
+					&& retainer[i].get(0).getValue() == retainer[i].get(2).getValue()){
+						vr[i] = true;
+					}
+				}
+				/*/If player's hand has three aces, and a retainer contains only one Queen or one 10
+				if(retainer[i].size() == 1
+				&& (retainer[i].get(0).getValue() == Card.QUEEN
+				|| retainer[i].get(0).getValue() == 10)){
+					vr[i] = true;
+				}*/
+			}
+			break;
+		case "Joker":
+			//If empty
+			//If the retainer does not contain a Jack
+			for(int i = 0; i < retainer.length; i++){
+				if(retainer[i].isEmpty())
+					vr[i] = true;
+				else if(!retainer[i].contains(Card.JACK)){
+					vr[i] = true;
+				}
+			}
+			break;
+		case "King":
+			//If not empty
+			//if a retainer contains a Jack and no King
+			for(int i = 0; i < retainer.length; i++){
+				if(!retainer[i].isEmpty())
+					vr[i] = true;
+				else if(retainer[i].contains(Card.JACK)
+				&& !retainer[i].contains(Card.KING))
+					vr[i] = true;
+			}
+			break;
+		case "2":
+		case "3":
+		case "4":
+		case "5":
+		case "6":
+		case "7":
+		case "8":
+		case "9":
+			//If empty
+			//If bottom-most of retainer has same value
+			for(int i = 0; i < retainer.length; i++){
+				if(retainer[i].isEmpty())
+					vr[i] = true;
+				else if(!retainer[i].contains(Card.JACK)
+				&& retainer[i].get(0).getValue() == card.getValue())
+					vr[i] = true;
+			}
+			break;
+		}
+		return vr;
+	}
+	/*public void validMoves(Card card){
 		switch(card.getValueAsString()){
 		case "Jack":
 			//discard()
@@ -317,7 +429,7 @@ public class WanderingJacks{
 
 			break;
 		}
-	}
+	}*/
 
 	/**
 	 * This cleans up the state of the game environment at the end of every turn
@@ -427,22 +539,39 @@ public class WanderingJacks{
 	}
 
 	public HashMap<Integer, String> getPossibleOrigins(){
-		// Enumerate possible origins
-		HashMap<Integer, String> possibleOrigins = new HashMap<Integer, String>();
+		HashMap<Integer, String> po = new HashMap<Integer, String>();
 		int optNum = 0;
-		if(onFirstMoveOfTurn) possibleOrigins.put(optNum++, "deck");
-		if(onFirstMoveOfTurn) possibleOrigins.put(optNum++, "discard pile");
+		if(onFirstMoveOfTurn) po.put(optNum++, "deck");
+		if(onFirstMoveOfTurn) po.put(optNum++, "discard pile");
 		if(!onFirstMoveOfTurn)
 			for(int i = 0; i < player[activePlayer].handSize(); i++)
-				possibleOrigins.put(optNum++, "from hand: "+player[activePlayer].getFromHand(i).toString());
-		return possibleOrigins;
+				po.put(optNum++, "from hand: "+player[activePlayer].getFromHand(i).toString());
+		return po;
 	}
 
-	public HashMap<Integer, String> getPossibleDestinations(){
-		// Enumerate possible destinations
-		HashMap<Integer, String> possibleDestinations = new HashMap<Integer, String>();
-			possibleDestinations.put(0, "my hand");
-		return possibleDestinations;
+	public HashMap<Integer, String> getPossibleDestinations(Card cardToPlay){
+		HashMap<Integer, String> pd = new HashMap<Integer, String>();
+		int optNum = 0;
+		if(onFirstMoveOfTurn) pd.put(optNum++, "my hand");
+		if(!onFirstMoveOfTurn) pd.put(optNum++, "discard pile & end turn");
+		if(!onFirstMoveOfTurn){
+			// Check every retainer
+			String output;
+			for(int i = 0; i < retainer[activePlayer].length; i++){
+				// Add to options if the cardToPlay matches the bottom-most in retainer
+				// or if cardToPlay is a Jack and Retainer is a Queen
+				for(boolean valid : WanderingJacks.validPlayFor(retainer[activePlayer], cardToPlay)){
+					if(valid){
+						output = "retainer: ";
+						for(int j = 0; j < retainer[activePlayer][i].size(); j++){
+							output += retainer[activePlayer][i].get(j).toString()+" ";
+						}
+						pd.put(optNum++, output);
+					}
+				}
+			}
+		}
+		return pd;
 	}
 
 	public boolean onFirstMoveOfTurn(){
