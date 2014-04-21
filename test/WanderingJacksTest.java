@@ -437,6 +437,18 @@ public class WanderingJacksTest{
 		wj.requestPlay(pr); // empty discard pile to hand
 	}
 
+	@Test
+	public void noHandIndex_Valid_IfHandIsNotChosenAsOrigin(){
+		requestedPlayIsPlayedWhenValid();
+	}
+
+	@Test(expected=IndexOutOfBoundsException.class)
+	public void noHandIndex_Invalid_IfHandIsChosenAsOrigin(){
+		wj.setUpGameEnvironment();
+		int[] pr = {2, 1}; // from hand to discard pile without handIndex
+		wj.requestPlay(pr);
+	}
+
 	/*
 	 * onFirstMoveOfTurn tracker
 	 */

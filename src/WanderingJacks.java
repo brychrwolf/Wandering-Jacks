@@ -99,17 +99,19 @@ public class WanderingJacks{
 		while(!wj.isGameOver()){
 			// Display game state
 			ConsoleUI.draw(wj);
-			// player decides if he wants a card from the deck or the discard pile
+			// player takes card to his hand from the deck or the discard pile
 			playRequest[0] = ConsoleUI.promptPlayerToDrawInitialCard();
 			playRequest[1] = ConsoleUI.cardLocation("My Hand");
 			wj.requestPlay(playRequest);
-				// currently random
-				//boolean takeFromDeck = false;
-				//if(Math.random() >= .5)	takeFromDeck = true;
-				//Card cardTaken = (takeFromDeck ? wj.deck.dealCard() : wj.discardPile.takeTopCard());
-				//wj.player[0].addToHand(cardTaken);
-				//String fromHere = (takeFromDeck ? "deck" : "discard pile");
-				//wj.requestPlay(fromHere, "my hand");
+			// Display game state
+			ConsoleUI.draw(wj);
+			// player plays a card from his hand to the discard pile or one of his registers
+			playRequest[0] = ConsoleUI.cardLocation("My Hand");
+			int handIndex = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer]);
+			Card cardFromHand = wj.player[wj.activePlayer].getFromHand(handIndex);
+			playRequest[1] = ConsoleUI.getPlayerInput("Enter *to* where to play your "+cardFromHand.toString()+":", wj.getPossibleDestinations(cardFromHand));
+			playRequest[2] = handIndex;
+			wj.requestPlay(playRequest);
 			//int[] rp = new int[2];
 			//rp[0] = ConsoleUI.getPlayerInput("Enter *from* where to play a card:", wj.getPossibleOrigins());
 			// TODO how do I get card?
@@ -502,20 +504,25 @@ public class WanderingJacks{
 	public boolean requestPlay(int[] request){
 		int fromHere = request[0];
 		int toThere = request[1];
+		int handIndex = -1;
+		if(request.length == 3)
+			handIndex = request[2];
+		else if(fromHere == ConsoleUI.cardLocation("My Hand"))
+			handIndex = ConsoleUI.promptPlayerToChooseCardFromHand(player[activePlayer]);
 		// set up and play cloned environment for validation
 		WanderingJacks inClone = new WanderingJacks(this);
 		try{
-			WanderingJacks.makePlay(inClone, fromHere, toThere);
+			WanderingJacks.makePlay(inClone, fromHere, toThere, handIndex);
 		}catch(IllegalStateException e){
 			//e.printStackTrace();
 			throw new IllegalStateException("That play would be illegal.");
 		}
 
-		WanderingJacks.makePlay(this, fromHere, toThere);
+		WanderingJacks.makePlay(this, fromHere, toThere, handIndex);
 		return true;
 	}
 
-	private static void makePlay(WanderingJacks game, int fromHere, int toThere){
+	private static void makePlay(WanderingJacks game, int fromHere, int toThere, int handIndex){
 		/*
 		 * Translate string to card:
 		 * cardLocations.put(0, "The Deck");
@@ -535,8 +542,9 @@ public class WanderingJacks{
 				cardFromHere = game.discardPile.takeTopCard();
 				break;
 			case 2:
-				//play from hand needs special prompt!
-				//cardFromHere = game.
+				if(handIndex >= 0 && game.player[game.activePlayer].handSize() > handIndex)
+					cardFromHere = game.player[game.activePlayer].getFromHand(handIndex);
+				else throw new IndexOutOfBoundsException("Hand Index Out of Bounds");
 				break;
 			default:
 				throw new IllegalStateException("That play would be illegal.");
@@ -587,17 +595,17 @@ public class WanderingJacks{
 		if(!onFirstMoveOfTurn){
 			// Check every retainer
 			String output;
+			boolean[] isValidDestination = WanderingJacks.validPlayFor(retainer[activePlayer], cardToPlay);
+			WanderingJacks.validPlayFor(retainer[activePlayer], cardToPlay);
 			for(int i = 0; i < retainer[activePlayer].length; i++){
 				// Add to options if the cardToPlay matches the bottom-most in retainer
 				// or if cardToPlay is a Jack and Retainer is a Queen
-				for(boolean valid : WanderingJacks.validPlayFor(retainer[activePlayer], cardToPlay)){
-					if(valid){
-						output = "retainer: ";
-						for(int j = 0; j < retainer[activePlayer][i].size(); j++){
-							output += retainer[activePlayer][i].get(j).toString()+" ";
-						}
-						pd.put(optNum++, output);
+				if(isValidDestination[i]){
+					output = "retainer: ";
+					for(int j = 0; j < retainer[activePlayer][i].size(); j++){
+						output += retainer[activePlayer][i].get(j).toString()+" ";
 					}
+					pd.put(optNum++, output);
 				}
 			}
 		}
