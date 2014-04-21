@@ -126,6 +126,26 @@ public class ConsoleUITest {
 	}
 
 	@Test
+	public void invalidPlayRequestAreIgnoredUntilValidEntriesAreGiven() throws IOException{
+		String mockUserInput = "f"+newLine; // ignored origins
+		mockUserInput += "foo"+newLine;		//
+		mockUserInput += "99"+newLine;		//
+		mockUserInput += "-1"+newLine;		//
+		mockUserInput += "0"+newLine;		// accepted
+		mockUserInput += "f"+newLine; 		// ignored destinations
+		mockUserInput += "foo"+newLine;		//
+		mockUserInput += "99"+newLine;		//
+		mockUserInput += "-1"+newLine;		//
+		mockUserInput += "0"+newLine;		// accepted
+		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
+		System.setIn(mockIn);
+		int[] pr = ConsoleUI.getPlayRequest(wj.getPossibleOrigins(), wj.getPossibleDestinations());
+		System.setIn(System.in);
+		assertEquals(pr[0], 0);
+		assertEquals(pr[1], 0);
+	}
+
+	@Test
 	public void getPlayRequestPrintsAllPossibleOriginsAndDestinations(){
 		// Not sure how to implement yet
 	}
