@@ -136,10 +136,12 @@ public class ConsoleUI {
 	}
 
 	public static int promptPlayerToDrawInitialCard(){
+		int deck = ConsoleUI.cardLocation("The Deck");
+		int discardPile = ConsoleUI.cardLocation("The Discard Pile");
 		HashMap<Integer, String> options = new HashMap<Integer, String>();
-			options.put(0, "Deck");
-			options.put(1, "Discard Pile");
-		int selection = -1;
+			options.put(deck, cardLocations.get(deck));
+			options.put(discardPile, cardLocations.get(discardPile));
+		int selection = -1; // Should never return as -1
 		try{
 			selection = ConsoleUI.getPlayerInput("Would you prefer a card from the Deck or the Discard Pile?", options);
 		}catch(IOException e){
