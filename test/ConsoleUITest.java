@@ -20,6 +20,7 @@ public class ConsoleUITest {
 	private final String newLine = System.getProperty("line.separator");
 
 	WanderingJacks wj;
+	Card aJoker = new Card(0, 0);
 
 	@Before
 	public void init(){
@@ -216,6 +217,20 @@ public class ConsoleUITest {
 	/*
 	 * promptPlayerToChooseCardFromHand
 	 */
+	@Test
+	public void ptCCFH_handWithJokerOnlyAllowsJoker() throws IOException{
+		String mockUserInput = "2"+newLine;	// ignored as invalid
+		mockUserInput += "1"+newLine;		// accepted
+		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
+		System.setIn(mockIn);
+		wj.player[wj.activePlayer].addToHand(aJoker);
+		assertTrue(wj.player[wj.activePlayer].handSize() > 1);
+		assertTrue(wj.player[wj.activePlayer].handContains("Joker"));
+		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer]);
+		System.setIn(System.in);
+		assertEquals(pr, 1);
+	}
+
 	@Test
 	public void ptCCFH_validEntriesReturnSelectionAsInt() throws IOException{
 		String mockUserInput = "1"+newLine;		// accepted
