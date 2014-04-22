@@ -143,11 +143,9 @@ public class ConsoleUI {
 			options.put(deck, cardLocations.get(deck));
 			options.put(discardPile, cardLocations.get(discardPile));
 		int selection = -1; // Should never return as -1
-		try{
-			selection = ConsoleUI.getPlayerInput("Would you prefer a card from the Deck or the Discard Pile?", options);
+		try{ selection = ConsoleUI.getPlayerInput("Would you prefer a card from the Deck or the Discard Pile?", options);
 		}catch(IOException e){
-			System.err.println("Failed to accept player input.");
-		}
+			System.err.println("Failed to accept player input.");}
 		return selection;
 	}
 
@@ -156,11 +154,9 @@ public class ConsoleUI {
 		for(int i = 0; i < player.handSize(); i++)
 			options.put(i, player.getFromHand(i).toString());
 		int selection = -1; // Should never return as -1
-		try{
-			selection = ConsoleUI.getPlayerInput("Please select which card from your hand:", options);
+		try{ selection = ConsoleUI.getPlayerInput("Please select which card from your hand:", options);
 		}catch(IOException e){
-			System.err.println("Failed to accept player input.");
-		}
+			System.err.println("Failed to accept player input.");}
 		return selection;
 	}
 
@@ -174,8 +170,7 @@ public class ConsoleUI {
 			selection = ConsoleUI.getPlayerInput("Would you like to continue playing?", options);
 			endTurn = (selection != 0 ? true : false);
 		}catch(IOException e){
-			System.err.println("Failed to accept player input.");
-		}
+			System.err.println("Failed to accept player input.");}
 		return endTurn;
 	}
 
