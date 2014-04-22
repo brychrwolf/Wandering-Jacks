@@ -113,7 +113,7 @@ public class WanderingJacks{
 				// 	5.1 list all cards in hand
 				// 	5.2 If drew a joker, only option is the Joker
 				playRequest[0] = ConsoleUI.cardLocation("My Hand");
-				int handIndex = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer]);
+				int handIndex = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer]) - 1; // -1 to translate from displayed option to actual hand index
 				Card cardFromHand = wj.player[wj.activePlayer].getFromHand(handIndex);
 				// 6. ask which of available destinations to go
 				//	6.1 first time only, show discard pile
