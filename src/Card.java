@@ -116,7 +116,7 @@ public class Card {
 
    Card(Card cloned){
 		this.suit	= cloned.suit;
-		this.value	= cloned.suit;
+		this.value	= cloned.value;
 	}
 
    /**

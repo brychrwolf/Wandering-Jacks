@@ -1,5 +1,6 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -37,15 +38,27 @@ public class WanderingJacksTest{
 	 * Deep Cloning
 	 */
 	@Test
+	public void cloningGame_CreatesNew_game(){
+		WanderingJacks clone = new WanderingJacks(wj);
+		assertNotSame(wj, clone);
+	}
+
+	@Test
 	public void cloningGame_OnlyCopies_activePlayer(){
 		WanderingJacks clone = new WanderingJacks(wj);
 		assertSame(wj.activePlayer, clone.activePlayer);
 	}
 
 	@Test
-	public void cloningGame_CreatesNew_onFirstMoveOfTurn(){
+	public void cloningGame_OnlyCopies_onFirstMoveOfTurn(){
 		WanderingJacks clone = new WanderingJacks(wj);
 		assertSame(wj.onFirstMoveOfTurn, clone.onFirstMoveOfTurn);
+	}
+
+	@Test
+	public void cloningGame_CreatesNew_deck(){
+		WanderingJacks clone = new WanderingJacks(wj);
+		assertNotSame(wj.deck, clone.deck);
 	}
 
 	/**

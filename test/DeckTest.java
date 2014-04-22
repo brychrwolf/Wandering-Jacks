@@ -1,19 +1,40 @@
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Stack;
 
 import org.junit.Test;
 
-
 public class DeckTest {
+	Deck d = new Deck(true);
+	/*
+	 * Deep Cloning
+	 */
+	@Test
+	public void cloningDeck_CreatesNewButSameSize_Deck(){
+		Deck clone = new Deck(d);
+		assertNotSame(clone, d);
+		assertEquals(clone.cardsLeft(), d.cardsLeft());
+	}
+	@Test
+	public void cloningDeck_CreatesNewButEqual_Cards(){
+		Deck clone = new Deck(d);
+		while(d.cardsLeft() > 0){
+			Card origCard = d.dealCard();
+			Card cloneCard = clone.dealCard();
+			assertNotSame(origCard, cloneCard);
+			assertEquals(origCard.toString(), cloneCard.toString());
+		}
+	}
+
 	/**
 	 * This test ensures that dealing a card from deck returns, and actually
 	 * removes, the top card.
 	 */
 	@Test
 	public void testDealCard(){
-		Deck d = new Deck();
 		int initialDeckSize = d.cardsLeft();
 		assertTrue(d.dealCard() instanceof Card);
 		assertTrue(d.cardsLeft() == initialDeckSize - 1);
