@@ -113,7 +113,6 @@ public class Retainer{
 			c = retainer.get(index);
 			retainer.remove(c);
 		}catch(IndexOutOfBoundsException e){
-			System.err.println("IndexOutOfBoundsException: " + e.getMessage());
 			throw new IndexOutOfBoundsException("Index "+index+" is not within bounds: "+retainer.size());
 		}
 		return c;
@@ -146,10 +145,7 @@ public class Retainer{
 	public Card get(int index){
 		try{
 			return retainer.get(index);
-		}catch (IndexOutOfBoundsException e){
-			e.printStackTrace();
-		    System.err.println("IndexOutOfBoundsException: " + e.getMessage());
-		    System.err.println("Index " + index + " not within {0 - " + (retainer.size() - 1) + "}");
+		}catch(IndexOutOfBoundsException e){
 			throw new IndexOutOfBoundsException(e + "Index " + index + " not within {0 - " + (retainer.size() - 1) + "}");
 		}
 	}

@@ -203,26 +203,24 @@ public class RetainerTest {
 	 * This test ensures that get(index) returns a card if one exists in that
 	 * index, and throws and exception otherwise
 	 */
-	@Test
-	public void testCardGet(){
-		Card aJoker = new Card(0, 0);
-		Card aJack = new Card(Card.JACK, Card.CLUBS);
-		Retainer retainer = new Retainer();
-		//test getting from the initial retainer
-		try{retainer.get(0);}
-		catch(IndexOutOfBoundsException e){
-			assertTrue(e instanceof IndexOutOfBoundsException);}
-		//test getting after adding one card
-		retainer.add(aJoker);
-		assertTrue(retainer.get(0).equals(aJoker));
-		//test getting from out of bounds with one card
-		try{retainer.get(1);}
-		catch(IndexOutOfBoundsException e){
-			assertTrue(e instanceof IndexOutOfBoundsException);}
-		//test getting after adding one more card
-		retainer.add(aJack);
-		assertTrue(retainer.get(1).equals(aJack));
+	@Test(expected=IndexOutOfBoundsException.class)
+	public void getting_FromInitialRetainer_ThrowsException(){
+		r.get(0);
+	}
 
+	@Test
+	public void gettingCard_FromRetainerWith1Card_GetsCardInfo(){
+		r.add(a9);
+		Card cardGotten = r.get(0);
+		assertEquals(r.size(), 1);
+		assertEquals(cardGotten, a9);
+	}
+
+	@Test(expected=IndexOutOfBoundsException.class)
+	public void gettingHighIndex_FromSmallRetainer_ThrowsException(){
+		r.add(a9);
+		assertEquals(r.size(), 1);
+		r.get(2);
 	}
 
 	/**
