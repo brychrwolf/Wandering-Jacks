@@ -17,7 +17,15 @@ public class DiscardPileTest {
 	 * Deep Cloning
 	 */
 	@Test
-	public void cloningDiscardPile_CreatesNewButSameSize_DiscardPile(){
+	public void cloningEmptyDiscardPile_CreatesNew_DiscardPile(){
+		DiscardPile clone = new DiscardPile(dp);
+		assertNotSame(clone, dp);
+		assertEquals(clone.size(), dp.size());
+	}
+
+	@Test
+	public void cloningNonEmptyDiscardPile_CreatesNewButSameSize_DiscardPile(){
+		dp.discard(a9);
 		DiscardPile clone = new DiscardPile(dp);
 		assertNotSame(clone, dp);
 		assertEquals(clone.size(), dp.size());

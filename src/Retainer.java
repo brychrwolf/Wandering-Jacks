@@ -29,7 +29,7 @@ public class Retainer{
 
 	Retainer(Retainer cloned){
 		this.retainsJack = cloned.retainsJack;
-		this.retainer = cloned.retainer;
+		this.retainer = new ArrayList<Card>();
 		for(int i = 0; i < cloned.retainer.size(); i++)
 			this.retainer.add(new Card(cloned.retainer.get(i)));
 	}

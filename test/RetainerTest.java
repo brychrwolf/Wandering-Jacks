@@ -37,7 +37,14 @@ public class RetainerTest {
 	 * Deep Cloning
 	 */
 	@Test
-	public void cloningRetainer_CreatesNewButSameSize_Retainer(){
+	public void cloningEmptyRetainer_CreatesNew_Retainer(){
+		Retainer clone = new Retainer(r);
+		assertNotSame(clone, r);
+	}
+
+	@Test
+	public void cloningNonEmptyRetainer_CreatesNewButSameSize_Retainer(){
+		r.add(a9);
 		Retainer clone = new Retainer(r);
 		assertNotSame(clone, r);
 		assertEquals(clone.size(), r.size());
