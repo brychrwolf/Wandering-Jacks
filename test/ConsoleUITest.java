@@ -124,10 +124,10 @@ public class ConsoleUITest {
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
 		HashMap<Integer, String> validOptions = new HashMap<Integer, String>();
-		validOptions.put(0, "valid");
+		validOptions.put(1, "valid");
 		int pr = ConsoleUI.getPlayerInput("", validOptions);
 		System.setIn(System.in);
-		assertEquals(pr, 0);
+		assertEquals(pr, 1);
 	}
 
 	@Test
@@ -140,10 +140,10 @@ public class ConsoleUITest {
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
 		HashMap<Integer, String> validOptions = new HashMap<Integer, String>();
-		validOptions.put(0, "valid");
+		validOptions.put(1, "valid");
 		int pr = ConsoleUI.getPlayerInput("", validOptions);
 		System.setIn(System.in);
-		assertEquals(pr, 0);
+		assertEquals(pr, 1);
 	}
 
 	@Test
@@ -188,7 +188,7 @@ public class ConsoleUITest {
 		System.setIn(mockIn);
 		int pr = ConsoleUI.promptPlayerToDrawInitialCard();
 		System.setIn(System.in);
-		assertEquals(pr, 0);
+		assertEquals(pr, 1);
 	}
 
 	@Test
@@ -202,7 +202,7 @@ public class ConsoleUITest {
 		System.setIn(mockIn);
 		int pr = ConsoleUI.promptPlayerToDrawInitialCard();
 		System.setIn(System.in);
-		assertEquals(pr, 0);
+		assertEquals(pr, 1);
 	}
 
 	/*
@@ -215,7 +215,7 @@ public class ConsoleUITest {
 		System.setIn(mockIn);
 		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer]);
 		System.setIn(System.in);
-		assertEquals(pr, 0);
+		assertEquals(pr, 1);
 	}
 
 	@Test
@@ -229,7 +229,7 @@ public class ConsoleUITest {
 		System.setIn(mockIn);
 		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer]);
 		System.setIn(System.in);
-		assertEquals(pr, 0);
+		assertEquals(pr, 1);
 	}
 
 	/*
