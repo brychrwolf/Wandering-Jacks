@@ -107,27 +107,30 @@ public class WanderingJacks{
 			wj.requestPlay(playRequest);
 			// 4. Display game state
 			ConsoleUI.draw(wj);
-			// 5. ask which card-from-hand to play
-			// 	5.1 list all cards in hand
-			// 	5.2 If drew a joker, only option is the Joker
-			playRequest[0] = ConsoleUI.cardLocation("My Hand");
-			int handIndex = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer]);
-			Card cardFromHand = wj.player[wj.activePlayer].getFromHand(handIndex);
-			// 6. ask which of available destinations to go
-			//	6.1 first time only, show discard pile
-			//	6.2 always show -back- to loop to 5 (ask which card from hand to play)
-			//	6.3 check validation rules for which retainer is valid
-			//  6.4 If playing Joker, cannot discard
-			playRequest[1] = ConsoleUI.getPlayerInput("Enter *to* where to play your "+cardFromHand.toString()+":", wj.getPossibleDestinations(cardFromHand));
-			playRequest[2] = handIndex;
-			// 7. move card from hand to destination
-			wj.requestPlay(playRequest);
-			// 8. perform any fancy moves like 3oak+A
-			//	8.1 prompt user for opponent's retainer if necessary
-			// 9. display game state
-			ConsoleUI.draw(wj);
-			//10. ask to end turn or loop to 5 (ask which card from hand to play)
-			System.out.println("10. ask to end turn or loop to 5 (ask which card from hand to play)");
+			boolean endTurn = false;
+			while(endTurn == false){
+				// 5. ask which card-from-hand to play
+				// 	5.1 list all cards in hand
+				// 	5.2 If drew a joker, only option is the Joker
+				playRequest[0] = ConsoleUI.cardLocation("My Hand");
+				int handIndex = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer]);
+				Card cardFromHand = wj.player[wj.activePlayer].getFromHand(handIndex);
+				// 6. ask which of available destinations to go
+				//	6.1 first time only, show discard pile
+				//	6.2 always show -back- to loop to 5 (ask which card from hand to play)
+				//	6.3 check validation rules for which retainer is valid
+				//  6.4 If playing Joker, cannot discard
+				playRequest[1] = ConsoleUI.getPlayerInput("Enter *to* where to play your "+cardFromHand.toString()+":", wj.getPossibleDestinations(cardFromHand));
+				playRequest[2] = handIndex;
+				// 7. move card from hand to destination
+				wj.requestPlay(playRequest);
+				// 8. perform any fancy moves like 3oak+A
+				//	8.1 prompt user for opponent's retainer if necessary
+				// 9. display game state
+				ConsoleUI.draw(wj);
+				//10. ask to end turn or loop to 5 (ask which card from hand to play)
+				endTurn = ConsoleUI.promptPlayerToLoopOrEndTurn();
+			}
 			//11. END TURN
 			//int[] rp = new int[2];
 			//rp[0] = ConsoleUI.getPlayerInput("Enter *from* where to play a card:", wj.getPossibleOrigins());

@@ -152,6 +152,33 @@ public class ConsoleUITest {
 	}
 
 	/*
+	 * promptPlayerToLoopOrEndTurn()
+	 */
+	@Test
+	public void pPtLoET_validEntriesReturnSelectionAsBoolean(){
+		String mockUserInput = "0"+newLine;		// accepted
+		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
+		System.setIn(mockIn);
+		boolean endTurn = ConsoleUI.promptPlayerToLoopOrEndTurn();
+		System.setIn(System.in);
+		assertTrue(endTurn == false);
+	}
+
+	@Test
+	public void pPtLoET_invalidEntriesIgnoredUntilValidEntryIsGiven() throws IOException{
+		String mockUserInput = "f"+newLine; // ignored inputs
+		mockUserInput += "foo"+newLine;		//
+		mockUserInput += "99"+newLine;		//
+		mockUserInput += "-1"+newLine;		//
+		mockUserInput += "0"+newLine;		// accepted
+		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
+		System.setIn(mockIn);
+		boolean endTurn = ConsoleUI.promptPlayerToLoopOrEndTurn();
+		System.setIn(System.in);
+		assertTrue(endTurn == false);
+	}
+
+	/*
 	 * promptPlayerToDrawInitialCard
 	 */
 	@Test

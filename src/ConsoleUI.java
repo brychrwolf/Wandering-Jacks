@@ -47,6 +47,7 @@ public class ConsoleUI {
 	}
 
 	public static void draw(WanderingJacks wj) throws IOException{
+		System.out.println(newLine+"------------------------------");
 		System.out.print("Discard Pile: ");
 		drawDiscardPile(wj.discardPile);
 
@@ -161,6 +162,21 @@ public class ConsoleUI {
 			System.err.println("Failed to accept player input.");
 		}
 		return selection;
+	}
+
+	public static boolean promptPlayerToLoopOrEndTurn(){
+		HashMap<Integer, String> options = new HashMap<Integer, String>();
+			options.put(0, "Yes.");
+			options.put(1, "No, end my turn now.");
+		boolean endTurn = false;
+		int selection = -1; // Should never return as -1
+		try{
+			selection = ConsoleUI.getPlayerInput("Would you like to continue playing?", options);
+			endTurn = (selection != 0 ? true : false);
+		}catch(IOException e){
+			System.err.println("Failed to accept player input.");
+		}
+		return endTurn;
 	}
 
 }
