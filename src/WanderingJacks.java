@@ -63,10 +63,9 @@ public class WanderingJacks{
 	 * record of whose turn it is.
 	 */
 	WanderingJacks(){
-		boolean includeJokers = true;
 		activePlayer = 0;
 		onFirstMoveOfTurn = true;
-		deck = new Deck(includeJokers);
+		deck = new Deck(true);
 		discardPile = new DiscardPile();
 		player = new Player[2];
 		retainer = new Retainer[2][4];

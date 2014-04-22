@@ -1,5 +1,6 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -30,6 +31,21 @@ public class WanderingJacksTest{
 		twoQueens = new Retainer();
 		twoQueens.add(aQueen);
 		twoQueens.add(aQueen);
+	}
+
+	/*
+	 * Deep Cloning
+	 */
+	@Test
+	public void cloningGame_OnlyCopies_activePlayer(){
+		WanderingJacks clone = new WanderingJacks(wj);
+		assertSame(wj.activePlayer, clone.activePlayer);
+	}
+
+	@Test
+	public void cloningGame_CreatesNew_onFirstMoveOfTurn(){
+		WanderingJacks clone = new WanderingJacks(wj);
+		assertSame(wj.onFirstMoveOfTurn, clone.onFirstMoveOfTurn);
 	}
 
 	/**
@@ -420,7 +436,7 @@ public class WanderingJacksTest{
 	 * Play Requests
 	 */
 	@Test
-	public void requestedPlayToHandIsPlayedWhenValid(){
+	public void requestedPlay_ToHand_IsPlayedWhenValid(){
 		wj.setUpGameEnvironment();
 		Card cardFromDiscardPile = wj.discardPile.peekAtTopCard();
 		int originalHandSize = wj.player[wj.activePlayer].handSize();
@@ -432,7 +448,7 @@ public class WanderingJacksTest{
 	}
 
 	@Test
-	public void requestedPlayFromHandIsPlayedWhenValid(){
+	public void requestedPlay_FromHand_ToDiscardPile_IsPlayedWhenValid(){
 		wj.setUpGameEnvironment();
 		Card cardFromHand = wj.player[wj.activePlayer].getFromHand(0);
 		int originalHandSize = wj.player[wj.activePlayer].handSize();
@@ -446,6 +462,17 @@ public class WanderingJacksTest{
 		assertEquals(cardFromHand, wj.discardPile.peekAtTopCard());
 	}
 
+	@Test
+	public void requestedPlay_FromHand_ToFirstRetainer_IsPlayedWhenValid(){
+		wj.retainer[0][0].add(a9);
+		wj.player[0].addToHand(a9);
+		int[] pr = {2, 3, 0}; // from my hand, to My 1st Retainer, with valid handIndex
+		assertTrue(wj.requestPlay(pr));
+		assertEquals(wj.player[0].handSize(), 0);
+		assertEquals(wj.retainer[0][0].size(), 2);
+		assertEquals(wj.retainer[0][0].get(1), a9);
+	}
+
 	@Test(expected=IllegalStateException.class)
 	public void requestedPlayIsNotPlayedWhenInvalid(){
 		int[] pr = {1, 2, 0}; // empty discard pile, to my hand
@@ -454,7 +481,7 @@ public class WanderingJacksTest{
 
 	@Test
 	public void invalidHandIndex_Valid_IfHandIsNotChosenAsOrigin(){
-		requestedPlayToHandIsPlayedWhenValid();
+		requestedPlay_ToHand_IsPlayedWhenValid();
 	}
 
 	@Test(expected=IndexOutOfBoundsException.class)
