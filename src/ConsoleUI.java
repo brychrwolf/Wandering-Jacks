@@ -49,8 +49,9 @@ public class ConsoleUI {
 
 	public static void draw(WanderingJacks wj) throws IOException{
 		System.out.println(newLine+"------------------------------");
-		System.out.print("Discard Pile: ");
-		drawDiscardPile(wj.discardPile);
+
+		System.out.print("Active Player: ");
+		drawActivePlayer(wj.activePlayer);
 
 		System.out.print("Player's Bankroll: ");
 		drawPlayersBankroll(wj.player[wj.activePlayer]);
@@ -63,6 +64,9 @@ public class ConsoleUI {
 
 		System.out.println("Opponent's Retainers:");
 		drawRetainerGroup(wj.retainer[(wj.activePlayer == 0 ? 1 : 0)]);
+
+		System.out.print("Discard Pile: ");
+		drawDiscardPile(wj.discardPile);
 	}
 
 	/**
@@ -103,6 +107,12 @@ public class ConsoleUI {
 	 */
 	public static void drawDiscardPile(DiscardPile discardPile){
 		String outString = (discardPile.isEmpty() ? "empty" : discardPile.peekAtTopCard().toString());
+		outString += newLine;
+		System.out.print(outString);
+	}
+
+	public static void drawActivePlayer(int id){
+		String outString = String.valueOf(id);
 		outString += newLine;
 		System.out.print(outString);
 	}

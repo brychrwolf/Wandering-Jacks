@@ -39,7 +39,7 @@ public class ConsoleUITest {
 	public void canDrawActivePlayer(){
 		String outString = String.valueOf(wj.activePlayer);
 		outString += newLine;
-		ConsoleUI.drawActivePlayer(wj.discardPile);
+		ConsoleUI.drawActivePlayer(wj.activePlayer);
 	    assertEquals(outString, outContent.toString());
 	}
 
