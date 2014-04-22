@@ -605,7 +605,7 @@ public class WanderingJacksTest{
 	public void possibleDestinations_Includes_DiscardPile_IfNotOnFirstMove(){
 		wj.onFirstMoveOfTurn = false;
 		assertFalse(wj.onFirstMoveOfTurn());
-		assertTrue(wj.getPossibleDestinations(aQueen).containsValue("discard pile & end turn"));
+		assertTrue(wj.getPossibleDestinations(aQueen).containsValue("discard pile"));
 	}
 
 	@Test
