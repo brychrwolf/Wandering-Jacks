@@ -10,6 +10,8 @@ import org.junit.Test;
 
 public class DiscardPileTest {
 	DiscardPile dp = new DiscardPile();
+	Card a10 = new Card(10, 1);
+	Card a9 = new Card(9, 1);
 
 	/*
 	 * Deep Cloning
@@ -23,6 +25,8 @@ public class DiscardPileTest {
 
 	@Test
 	public void cloningDiscardPile_CreatesNewButEqual_Cards(){
+		dp.discard(a9);
+		dp.discard(a10);
 		DiscardPile clone = new DiscardPile(dp);
 		while(dp.size() > 0){
 			Card origCard = dp.takeTopCard();

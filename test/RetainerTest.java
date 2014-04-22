@@ -1,5 +1,7 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
@@ -30,6 +32,36 @@ public class RetainerTest {
 		twoQueens.add(aQueen);
 		twoQueens.add(aQueen);*/
 	}
+
+	/*
+	 * Deep Cloning
+	 */
+	@Test
+	public void cloningRetainer_CreatesNewButSameSize_Retainer(){
+		Retainer clone = new Retainer(r);
+		assertNotSame(clone, r);
+		assertEquals(clone.size(), r.size());
+	}
+
+	@Test
+	public void cloningRetainer_CreatesNewButEqual_Cards(){
+		r.add(a9);
+		r.add(a10);
+		Retainer clone = new Retainer(r);
+		while(r.size() > 0){
+			Card origCard = r.remove(0);
+			Card cloneCard = clone.remove(0);
+			assertNotSame(origCard, cloneCard);
+			assertTrue(origCard.equals(cloneCard));
+		}
+	}
+
+	@Test
+	public void cloningRetainer_OnlyCopies_RetainsJack(){
+		Retainer clone = new Retainer(r);
+		assertSame(r.retainsJack(), clone.retainsJack());
+	}
+
 	/**
 	 * This test ensures that add(Card) adds the correct card to the retainer.
 	 */

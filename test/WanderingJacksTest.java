@@ -68,6 +68,17 @@ public class WanderingJacksTest{
 			assertNotSame(wj.player[i], clone.player[i]);
 	}
 
+	@Test
+	public void cloningGame_CreatesNewButEqual_Retainers(){
+		WanderingJacks clone = new WanderingJacks(wj);
+		for(int i = 0; i < 2; i++)
+			for(int j = 0; j < 4; j++){
+				assertNotSame(wj.retainer[i][j], clone.retainer[i][j]);
+				for(int k = 0; k < wj.retainer[i][j].size(); k++)
+					assertTrue(wj.retainer[i][j].get(k).equals(clone.retainer[i][j].get(k)));
+			}
+	}
+
 	/**
 	 * This test ensures that at the beginning of the game, the deck has 54
 	 * cards (the standard 52 + 2 Jokers).

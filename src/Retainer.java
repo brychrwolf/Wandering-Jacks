@@ -28,8 +28,10 @@ public class Retainer{
 	}
 
 	Retainer(Retainer cloned){
-		this.retainer = cloned.retainer;
 		this.retainsJack = cloned.retainsJack;
+		this.retainer = cloned.retainer;
+		for(int i = 0; i < cloned.retainer.size(); i++)
+			this.retainer.add(new Card(cloned.retainer.get(i)));
 	}
 
 	/**
