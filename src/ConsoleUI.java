@@ -168,7 +168,7 @@ public class ConsoleUI {
 		int selection = -1; // Should never return as -1
 		try{
 			selection = ConsoleUI.getPlayerInput("Would you like to continue playing?", options);
-			endTurn = (selection != 0 ? true : false);
+			endTurn = (selection != 1 ? true : false);
 		}catch(IOException e){
 			System.err.println("Failed to accept player input.");}
 		return endTurn;
