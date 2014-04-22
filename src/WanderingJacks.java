@@ -139,18 +139,7 @@ public class WanderingJacks{
 				endTurn = ConsoleUI.promptPlayerToLoopOrEndTurn();
 			}
 			//11. END TURN
-			//int[] rp = new int[2];
-			//rp[0] = ConsoleUI.getPlayerInput("Enter *from* where to play a card:", wj.getPossibleOrigins());
-			//how do I get card?
-			//rp[1] = ConsoleUI.getPlayerInput("Enter *to* where to play a card:", wj.getPossibleDestinations(wj.retainer[wj.activePlayer], ));
-			//wj.requestPlay(rp);
-			// if Joker is drawn, it must be played immediately (not yet implemented)
-			// player decides how to play (discard 1 or play at least 1 to retainers)
-				//int cardIndex = 0;
-				//int retainerIndex = 0;
-			// player plays
-				//wj.retainer[0][retainerIndex].add(wj.player[0].playFromHand(cardIndex));
-			// End of Turn maintenance
+			wj.endTurn();
 		}System.out.println("Game Over.");
 	}
 
