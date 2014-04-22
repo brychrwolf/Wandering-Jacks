@@ -94,31 +94,48 @@ public class WanderingJacks{
 	public static void main(String[] args) throws IOException {
 		WanderingJacks wj = new WanderingJacks();
 		wj.setUpGameEnvironment();
-		int[] playRequest = new int[2];
+		int[] playRequest = new int[3];
 		//while the game is not over
 		while(!wj.isGameOver()){
-			// Display game state
+			// https://www.pivotaltracker.com/story/show/69883240
+			// 1. Display game state
 			ConsoleUI.draw(wj);
-			// player takes card to his hand from the deck or the discard pile
+			// 2. ask discard or deck
 			playRequest[0] = ConsoleUI.promptPlayerToDrawInitialCard();
+			// 3. move card from origin to hand
 			playRequest[1] = ConsoleUI.cardLocation("My Hand");
+			playRequest[2] = -1;
 			wj.requestPlay(playRequest);
-			// Display game state
+			// 4. Display game state
 			ConsoleUI.draw(wj);
-			// player plays a card from his hand to the discard pile or one of his registers
+			// 5. ask which card-from-hand to play
+			// 	5.1 list all cards in hand
+			// 	5.2 If drew a joker, only option is the Joker
 			playRequest[0] = ConsoleUI.cardLocation("My Hand");
 			int handIndex = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer]);
 			Card cardFromHand = wj.player[wj.activePlayer].getFromHand(handIndex);
+			// 6. ask which of available destinations to go
+			//	6.1 first time only, show discard pile
+			//	6.2 always show -back- to loop to 5 (ask which card from hand to play)
+			//	6.3 check validation rules for which retainer is valid
 			playRequest[1] = ConsoleUI.getPlayerInput("Enter *to* where to play your "+cardFromHand.toString()+":", wj.getPossibleDestinations(cardFromHand));
 			playRequest[2] = handIndex;
+			// 7. move card from hand to destination
 			wj.requestPlay(playRequest);
+			// 8. perform any fancy moves like 3oak+A
+			//	8.1 prompt user for opponent's retainer if necessary
+			// 9. display game state
+			ConsoleUI.draw(wj);
+			//10. ask to end turn or loop to 5 (ask which card from hand to play)
+			System.out.println("10. ask to end turn or loop to 5 (ask which card from hand to play)");
+			//11. END TURN
 			//int[] rp = new int[2];
 			//rp[0] = ConsoleUI.getPlayerInput("Enter *from* where to play a card:", wj.getPossibleOrigins());
-			// TODO how do I get card?
+			//how do I get card?
 			//rp[1] = ConsoleUI.getPlayerInput("Enter *to* where to play a card:", wj.getPossibleDestinations(wj.retainer[wj.activePlayer], ));
 			//wj.requestPlay(rp);
-			// TODO if Joker is drawn, it must be played immediately (not yet implemented)
-			// TODO player decides how to play (discard 1 or play at least 1 to retainers)
+			// if Joker is drawn, it must be played immediately (not yet implemented)
+			// player decides how to play (discard 1 or play at least 1 to retainers)
 				//int cardIndex = 0;
 				//int retainerIndex = 0;
 			// player plays
@@ -241,12 +258,12 @@ public class WanderingJacks{
 			//if a retainer contains a Queen and no Jacks
 			//if a retainer contains a 10 and no Jacks
 			for(int i = 0; i < retainer.length; i++){
-				if(!retainer[i].isEmpty())
-					vr[i] = true;
-				else if(!retainer[i].contains(Card.JACK)){
-					if(retainer[i].get(0).getValue() == Card.QUEEN
-					|| retainer[i].get(0).getValue() == 10){
-						vr[i] = true;
+				if(!retainer[i].isEmpty()){
+					if(!retainer[i].contains(Card.JACK)){
+						if(retainer[i].get(0).getValue() == Card.QUEEN
+						|| retainer[i].get(0).getValue() == 10){
+							vr[i] = true;
+						}
 					}
 				}
 			}
@@ -504,11 +521,7 @@ public class WanderingJacks{
 	public boolean requestPlay(int[] request){
 		int fromHere = request[0];
 		int toThere = request[1];
-		int handIndex = -1;
-		if(request.length == 3)
-			handIndex = request[2];
-		else if(fromHere == ConsoleUI.cardLocation("My Hand"))
-			handIndex = ConsoleUI.promptPlayerToChooseCardFromHand(player[activePlayer]);
+		int handIndex =  request[2];
 		// set up and play cloned environment for validation
 		WanderingJacks inClone = new WanderingJacks(this);
 		try{
@@ -543,7 +556,7 @@ public class WanderingJacks{
 				break;
 			case 2:
 				if(handIndex >= 0 && game.player[game.activePlayer].handSize() > handIndex)
-					cardFromHere = game.player[game.activePlayer].getFromHand(handIndex);
+					cardFromHere = game.player[game.activePlayer].playFromHand(handIndex);
 				else throw new IndexOutOfBoundsException("Hand Index Out of Bounds");
 				break;
 			default:
@@ -555,7 +568,7 @@ public class WanderingJacks{
 				game.discardPile.discard(cardFromHere);
 				break;
 			case 2:
-				game.player[0].addToHand(cardFromHere);
+				game.player[game.activePlayer].addToHand(cardFromHere);
 				break;
 			case 3:
 				game.retainer[game.activePlayer][0].add(cardFromHere);
