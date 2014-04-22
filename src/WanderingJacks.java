@@ -363,97 +363,6 @@ public class WanderingJacks{
 		}
 		return vr;
 	}
-	/*public void validMoves(Card card){
-		switch(card.getValueAsString()){
-		case "Jack":
-			//discard()
-			//if a retainer contains a Queen and no Jacks
-			//	play Jack to that retainer
-			//if a retainer contains a 10 and no Jacks
-			//	play Jack to that retainer
-			break;
-		case "Queen":
-			//discard()
-			//If a retainer is empty
-			//	play a Queen to that retainer
-			//If a retainer contains a Queen and not a Jack
-			//	play a Queen to that retainer
-			break;
-		case "10":
-			//discard()
-			//If a retainer is empty
-			//	play a 10 to that retainer
-			//If a retainer contains a 10 and not a Jack
-			//	play a 10 to that retainer
-			break;
-		case "Ace":
-			//discard()
-			//If a retainer contains three of a kind
-			//	play Ace to that retainer,
-			//	then discard retainer with Ace, except bottom-most card
-			//		switch that retainer with any one of the opponant's retainer which does not contain a Jack
-			//	dealer discards one card from the deck
-			//If player's hand has three aces, and a retainer contains only a Queen or a 10
-			//	play all three Aces on that retainer
-			break;
-		case "Joker":
-			//If the player's hand contains a Joker,
-			//	must play Joker to any retainer which does not contain a Jack (empty retainer is valid)
-			//	discard that entire retainer, including the Joker
-			//		discard any one of the opponant's Jacks (or Kings)
-			//	draw from deck until hand has 4 cards
-			//	play a valid card so that hand has 3 cards, and all retainers have at least one card
-			//		if player has no valid card in hand (non Jacks, Aces and Jokers),
-			//			discard one card, then draw another from the deck
-			//	dealer shuffles discard pile into deck, then discards top card from deck
-			break;
-		case "King":
-			//discard()
-			//if a retainer contains a Jack and no King
-			//	play King to that retainer
-			break;
-		case "2":
-			//if retainer contains a 2
-			//	play card to that retainer
-		case "3":
-			//if retainer contains a 3
-			//	play card to that retainer
-		case "4":
-			//if retainer contains a 4
-			//	play card to that retainer
-		case "5":
-			//if retainer contains a 5
-			//	play card to that retainer
-		case "6":
-			//if retainer contains a 6
-			//	play card to that retainer
-		case "7":
-			//if retainer contains a 7
-			//	play card to that retainer
-		case "8":
-			//if retainer contains a 8
-			//	play card to that retainer
-		case "9":
-			//if retainer contains a 9
-			//	play card to that retainer
-
-			//discard()
-			//if retainer is empty
-			//	play card to that retainer
-
-			//if retainer contains three of a kind (same as card)
-			//	play card to that retainer
-			//	discard entire retainer
-			//		discard any one of the opponant's Kings
-			//	draw from deck until hand has 4 cards
-			//	play a valid card so that hand has 3 cards, and all retainers have at least one card
-			//		if player has no valid card in hand (non Jacks, Aces and Jokers),
-			//			discard one card, then draw another from the deck
-			//	dealer then discards top card from deck
-
-			break;
-		}
-	}*/
 
 	/**
 	 * This cleans up the state of the game environment at the end of every turn
@@ -590,17 +499,6 @@ public class WanderingJacks{
 		// Can no longer be the first move of turn
 		game.onFirstMoveOfTurn = false;
 	}
-
-	/*public HashMap<Integer, String> getPossibleOrigins(){
-		HashMap<Integer, String> po = new HashMap<Integer, String>();
-		int optNum = 0;
-		if(onFirstMoveOfTurn) po.put(optNum++, "deck");
-		if(onFirstMoveOfTurn) po.put(optNum++, "discard pile");
-		if(!onFirstMoveOfTurn)
-			for(int i = 0; i < player[activePlayer].handSize(); i++)
-				po.put(optNum++, "from hand: "+player[activePlayer].getFromHand(i).toString());
-		return po;
-	}*/
 
 	public HashMap<Integer, String> getPossibleDestinations(Card cardToPlay){
 		HashMap<Integer, String> pd = new HashMap<Integer, String>();
