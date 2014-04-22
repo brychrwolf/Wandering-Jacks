@@ -9,13 +9,13 @@ public class ConsoleUI {
 	private final static String newLine = System.getProperty("line.separator");
 	private final static HashMap<Integer, String> cardLocations = new HashMap<Integer, String>();
 	static{
-		cardLocations.put(0, "The Deck");
-		cardLocations.put(1, "The Discard Pile");
-		cardLocations.put(2, "My Hand");
-		cardLocations.put(3, "My 1st Retainer");
-		cardLocations.put(4, "My 2nd Retainer");
-		cardLocations.put(5, "My 3rd Retainer");
-		cardLocations.put(6, "My 4th Retainer");
+		cardLocations.put(1, "The Deck");
+		cardLocations.put(2, "The Discard Pile");
+		cardLocations.put(3, "My Hand");
+		cardLocations.put(4, "My 1st Retainer");
+		cardLocations.put(5, "My 2nd Retainer");
+		cardLocations.put(6, "My 3rd Retainer");
+		cardLocations.put(7, "My 4th Retainer");
 	};
 
 	public static String cardLocation(int location){
@@ -151,7 +151,7 @@ public class ConsoleUI {
 
 	public static int promptPlayerToChooseCardFromHand(Player player){
 		HashMap<Integer, String> options = new HashMap<Integer, String>();
-		for(int i = 0; i < player.handSize(); i++)
+		for(int i = 1; i < player.handSize()+1; i++)
 			options.put(i, player.getFromHand(i).toString());
 		int selection = -1; // Should never return as -1
 		try{ selection = ConsoleUI.getPlayerInput("Please select which card from your hand:", options);
@@ -162,8 +162,8 @@ public class ConsoleUI {
 
 	public static boolean promptPlayerToLoopOrEndTurn(){
 		HashMap<Integer, String> options = new HashMap<Integer, String>();
-			options.put(0, "Yes.");
-			options.put(1, "No, end my turn now.");
+			options.put(1, "Yes.");
+			options.put(2, "No, end my turn now.");
 		boolean endTurn = false;
 		int selection = -1; // Should never return as -1
 		try{

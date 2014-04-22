@@ -471,7 +471,7 @@ public class WanderingJacksTest{
 		wj.setUpGameEnvironment();
 		Card cardFromDiscardPile = wj.discardPile.peekAtTopCard();
 		int originalHandSize = wj.player[wj.activePlayer].handSize();
-		int[] pr = {1, 2, -1}; // discard pile, to my hand, with invalid handIndex
+		int[] pr = {2, 3, -1}; // discard pile, to my hand, with invalid handIndex
 		assertTrue(wj.requestPlay(pr));
 		int newHandSize = wj.player[wj.activePlayer].handSize();
 		assertEquals(newHandSize, originalHandSize + 1);
@@ -484,7 +484,7 @@ public class WanderingJacksTest{
 		Card cardFromHand = wj.player[wj.activePlayer].getFromHand(0);
 		int originalHandSize = wj.player[wj.activePlayer].handSize();
 		int originalDiscardPileSize = wj.discardPile.size();
-		int[] pr = {2, 1, 0}; // from my hand, to discard pile, with valid handIndex
+		int[] pr = {3, 2, 0}; // from my hand, to discard pile, with valid handIndex
 		assertTrue(wj.requestPlay(pr));
 		int newHandSize = wj.player[wj.activePlayer].handSize();
 		int newDiscardPileSize = wj.discardPile.size();
@@ -497,7 +497,7 @@ public class WanderingJacksTest{
 	public void requestedPlay_FromHand_ToFirstRetainer_IsPlayedWhenValid(){
 		wj.retainer[0][0].add(a9);
 		wj.player[0].addToHand(a9);
-		int[] pr = {2, 3, 0}; // from my hand, to My 1st Retainer, with valid handIndex
+		int[] pr = {3, 4, 0}; // from my hand, to My 1st Retainer, with valid handIndex
 		assertTrue(wj.requestPlay(pr));
 		assertEquals(wj.player[0].handSize(), 0);
 		assertEquals(wj.retainer[0][0].size(), 2);
@@ -506,7 +506,7 @@ public class WanderingJacksTest{
 
 	@Test(expected=IllegalStateException.class)
 	public void requestedPlayIsNotPlayedWhenInvalid(){
-		int[] pr = {1, 2, 0}; // empty discard pile, to my hand
+		int[] pr = {2, 3, 0}; // empty discard pile, to my hand
 		wj.requestPlay(pr);
 	}
 
@@ -518,7 +518,7 @@ public class WanderingJacksTest{
 	@Test(expected=IndexOutOfBoundsException.class)
 	public void invalidHandIndex_Invalid_IfHandIsChosenAsOrigin(){
 		wj.setUpGameEnvironment();
-		int[] pr = {2, 1, -1}; // from hand, to discard pile, with invalid handIndex
+		int[] pr = {3, 2, -1}; // from hand, to discard pile, with invalid handIndex
 		wj.requestPlay(pr);
 	}
 
@@ -531,13 +531,13 @@ public class WanderingJacksTest{
 	}
 	@Test
 	public void onFirstMoveOfTurnFalseAfterOnePlay(){
-		int[] pr = {0, 2, -1};
+		int[] pr = {1, 3, -1}; // deck to hand
 		wj.requestPlay(pr);
 		assertFalse(wj.onFirstMoveOfTurn());
 	}
 	@Test
 	public void onFirstMoveOfTurnTrueAfterEndOfTurn(){
-		int[] pr = {0, 2, -1};
+		int[] pr = {1, 3, -1}; // deck to hand
 		wj.requestPlay(pr);
 		wj.endTurn();
 		assertTrue(wj.onFirstMoveOfTurn());
@@ -546,7 +546,7 @@ public class WanderingJacksTest{
 	/*
 	 * Possible Origins
 	 */
-	@Test
+	/*@Test
 	public void possibleOriginsReturnsANonEmptyResult(){
 		assertTrue(wj.getPossibleOrigins().size() > 0);
 	}
@@ -565,19 +565,17 @@ public class WanderingJacksTest{
 
 	@Test
 	public void possibleOrigins_DontInclude_Deck_IfNotOnFirstMove(){
-		int[] pr = {0, 2, -1};
-		wj.requestPlay(pr);
+		wj.onFirstMoveOfTurn = false;
 		assertFalse(wj.onFirstMoveOfTurn());
 		assertFalse(wj.getPossibleOrigins().containsValue("deck"));
 	}
 
 	@Test
 	public void possibleOrigins_DontInclude_DicardPile_IfNotOnFirstMove(){
-		int[] pr = {0, 2, -1}; // from deck, to my hand
-		wj.requestPlay(pr);
+		wj.onFirstMoveOfTurn = false;
 		assertFalse(wj.onFirstMoveOfTurn());
 		assertFalse(wj.getPossibleOrigins().containsValue("discard pile"));
-	}
+	}*/
 
 
 	/*
@@ -598,18 +596,14 @@ public class WanderingJacksTest{
 
 	@Test
 	public void possibleDestinations_DontInclude_MyHand_IfNotOnFirstMove(){
-		wj.setUpGameEnvironment();
-		int[] pr = {0, 2, -1};
-		wj.requestPlay(pr);
+		wj.onFirstMoveOfTurn = false;
 		assertFalse(wj.onFirstMoveOfTurn());
 		assertFalse(wj.getPossibleDestinations(aQueen).containsValue("my hand"));
 	}
 
 	@Test
 	public void possibleDestinations_Includes_DiscardPile_IfNotOnFirstMove(){
-		wj.setUpGameEnvironment();
-		int[] pr = {0, 2, -1};
-		wj.requestPlay(pr);
+		wj.onFirstMoveOfTurn = false;
 		assertFalse(wj.onFirstMoveOfTurn());
 		assertTrue(wj.getPossibleDestinations(aQueen).containsValue("discard pile & end turn"));
 	}
@@ -623,8 +617,7 @@ public class WanderingJacksTest{
 
 	@Test
 	public void possibleDestinations_Include_RetainersWithSameValues_IfNotOnFirstMove(){
-		int[] pr = {0, 2, -1};
-		wj.requestPlay(pr);
+		wj.onFirstMoveOfTurn = false;
 		wj.retainer[0][0].add(aQueen);
 		wj.retainer[0][1].add(aJack);
 		wj.retainer[0][2].add(a10);
@@ -638,8 +631,7 @@ public class WanderingJacksTest{
 
 	@Test
 	public void possibleDestinations_Include_RetainersWithQueensOr10s_WhenPlayingAJack_IfNotOnFirstMove(){
-		int[] pr = {0, 2, -1};
-		wj.requestPlay(pr);
+		wj.onFirstMoveOfTurn = false;
 		wj.retainer[0][0].add(aQueen);
 		wj.retainer[0][1].add(a10);
 		wj.retainer[0][2].add(a9);

@@ -120,7 +120,8 @@ public class WanderingJacks{
 				//	6.2 always show -back- to loop to 5 (ask which card from hand to play)
 				//	6.3 check validation rules for which retainer is valid
 				//  6.4 If playing Joker, cannot discard
-				playRequest[1] = ConsoleUI.getPlayerInput("Enter *to* where to play your "+cardFromHand.toString()+":", wj.getPossibleDestinations(cardFromHand));
+				String prompt = "Enter *to* where to play your "+cardFromHand.toString()+":";
+				playRequest[1] = ConsoleUI.getPlayerInput(prompt, wj.getPossibleDestinations(cardFromHand));
 				playRequest[2] = handIndex;
 				// 7. move card from hand to destination
 				wj.requestPlay(playRequest);
@@ -541,23 +542,23 @@ public class WanderingJacks{
 	private static void makePlay(WanderingJacks game, int fromHere, int toThere, int handIndex){
 		/*
 		 * Translate string to card:
-		 * cardLocations.put(0, "The Deck");
-		 * cardLocations.put(1, "The Discard Pile");
-		 * cardLocations.put(2, "My Hand");
-		 * cardLocations.put(3, "My 1st Retainer");
-		 * cardLocations.put(4, "My 2nd Retainer");
-		 * cardLocations.put(5, "My 3rd Retainer");
-		 * cardLocations.put(6, "My 4th Retainer");
+		 * cardLocations.put(1, "The Deck");
+		 * cardLocations.put(2, "The Discard Pile");
+		 * cardLocations.put(3, "My Hand");
+		 * cardLocations.put(4, "My 1st Retainer");
+		 * cardLocations.put(5, "My 2nd Retainer");
+		 * cardLocations.put(6, "My 3rd Retainer");
+		 * cardLocations.put(7, "My 4th Retainer");
 		 */
 		Card cardFromHere = new Card(); // Should never return as this value
 		switch(fromHere){
-			case 0:
+			case 1:
 				cardFromHere = game.deck.dealCard();
 				break;
-			case 1:
+			case 2:
 				cardFromHere = game.discardPile.takeTopCard();
 				break;
-			case 2:
+			case 3:
 				if(handIndex >= 0 && game.player[game.activePlayer].handSize() > handIndex)
 					cardFromHere = game.player[game.activePlayer].playFromHand(handIndex);
 				else throw new IndexOutOfBoundsException("Hand Index Out of Bounds");
@@ -567,22 +568,22 @@ public class WanderingJacks{
 		}
 		// Move card to location
 		switch(toThere){
-			case 1:
+			case 2:
 				game.discardPile.discard(cardFromHere);
 				break;
-			case 2:
+			case 3:
 				game.player[game.activePlayer].addToHand(cardFromHere);
 				break;
-			case 3:
+			case 4:
 				game.retainer[game.activePlayer][0].add(cardFromHere);
 				break;
-			case 4:
+			case 5:
 				game.retainer[game.activePlayer][1].add(cardFromHere);
 				break;
-			case 5:
+			case 6:
 				game.retainer[game.activePlayer][2].add(cardFromHere);
 				break;
-			case 6:
+			case 7:
 				game.retainer[game.activePlayer][3].add(cardFromHere);
 				break;
 			default:
@@ -592,7 +593,7 @@ public class WanderingJacks{
 		game.onFirstMoveOfTurn = false;
 	}
 
-	public HashMap<Integer, String> getPossibleOrigins(){
+	/*public HashMap<Integer, String> getPossibleOrigins(){
 		HashMap<Integer, String> po = new HashMap<Integer, String>();
 		int optNum = 0;
 		if(onFirstMoveOfTurn) po.put(optNum++, "deck");
@@ -601,26 +602,21 @@ public class WanderingJacks{
 			for(int i = 0; i < player[activePlayer].handSize(); i++)
 				po.put(optNum++, "from hand: "+player[activePlayer].getFromHand(i).toString());
 		return po;
-	}
+	}*/
 
 	public HashMap<Integer, String> getPossibleDestinations(Card cardToPlay){
 		HashMap<Integer, String> pd = new HashMap<Integer, String>();
 		if(onFirstMoveOfTurn) pd.put(0, "my hand");
-		if(!onFirstMoveOfTurn) pd.put(1, "discard pile");
 		if(!onFirstMoveOfTurn){
-			// Check every retainer
+			pd.put(2, "discard pile");
 			String output;
 			boolean[] isValidDestination = WanderingJacks.validPlayFor(retainer[activePlayer], cardToPlay);
-			WanderingJacks.validPlayFor(retainer[activePlayer], cardToPlay);
 			for(int i = 0; i < retainer[activePlayer].length; i++){
-				// Add to options if the cardToPlay matches the bottom-most in retainer
-				// or if cardToPlay is a Jack and Retainer is a Queen
 				if(isValidDestination[i]){
 					output = "retainer: ";
-					for(int j = 0; j < retainer[activePlayer][i].size(); j++){
+					for(int j = 0; j < retainer[activePlayer][i].size(); j++)
 						output += retainer[activePlayer][i].get(j).toString()+" ";
-					}
-					pd.put(i+3, output);
+					pd.put(i+4, output);
 				}
 			}
 		}

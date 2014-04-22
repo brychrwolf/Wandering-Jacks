@@ -120,7 +120,7 @@ public class ConsoleUITest {
 	 */
 	@Test
 	public void validPlayerInputReturnsThatInt() throws IOException{
-		String mockUserInput = "0"+newLine;
+		String mockUserInput = "1"+newLine;
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
 		HashMap<Integer, String> validOptions = new HashMap<Integer, String>();
@@ -136,7 +136,7 @@ public class ConsoleUITest {
 		mockUserInput += "foo"+newLine;		//
 		mockUserInput += "99"+newLine;		//
 		mockUserInput += "-1"+newLine;		//
-		mockUserInput += "0"+newLine;		// accepted
+		mockUserInput += "1"+newLine;		// accepted
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
 		HashMap<Integer, String> validOptions = new HashMap<Integer, String>();
@@ -156,7 +156,7 @@ public class ConsoleUITest {
 	 */
 	@Test
 	public void pPtLoET_validEntriesReturnSelectionAsBoolean(){
-		String mockUserInput = "0"+newLine;		// accepted
+		String mockUserInput = "1"+newLine;		// accepted
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
 		boolean endTurn = ConsoleUI.promptPlayerToLoopOrEndTurn();
@@ -170,7 +170,7 @@ public class ConsoleUITest {
 		mockUserInput += "foo"+newLine;		//
 		mockUserInput += "99"+newLine;		//
 		mockUserInput += "-1"+newLine;		//
-		mockUserInput += "0"+newLine;		// accepted
+		mockUserInput += "1"+newLine;		// accepted
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
 		boolean endTurn = ConsoleUI.promptPlayerToLoopOrEndTurn();
@@ -183,7 +183,7 @@ public class ConsoleUITest {
 	 */
 	@Test
 	public void pPtDIC_validEntriesReturnSelectionAsInt() throws IOException{
-		String mockUserInput = "0"+newLine;		// accepted
+		String mockUserInput = "1"+newLine;		// accepted
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
 		int pr = ConsoleUI.promptPlayerToDrawInitialCard();
@@ -197,7 +197,7 @@ public class ConsoleUITest {
 		mockUserInput += "foo"+newLine;		//
 		mockUserInput += "99"+newLine;		//
 		mockUserInput += "-1"+newLine;		//
-		mockUserInput += "0"+newLine;		// accepted
+		mockUserInput += "1"+newLine;		// accepted
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
 		int pr = ConsoleUI.promptPlayerToDrawInitialCard();
@@ -210,7 +210,7 @@ public class ConsoleUITest {
 	 */
 	@Test
 	public void ptCCFH_validEntriesReturnSelectionAsInt() throws IOException{
-		String mockUserInput = "0"+newLine;		// accepted
+		String mockUserInput = "1"+newLine;		// accepted
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
 		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer]);
@@ -224,7 +224,7 @@ public class ConsoleUITest {
 		mockUserInput += "foo"+newLine;		//
 		mockUserInput += "99"+newLine;		//
 		mockUserInput += "-1"+newLine;		//
-		mockUserInput += "0"+newLine;		// accepted
+		mockUserInput += "1"+newLine;		// accepted
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
 		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer]);
