@@ -36,6 +36,14 @@ public class ConsoleUITest {
 	}
 
 	@Test
+	public void canDrawActivePlayer(){
+		String outString = String.valueOf(wj.activePlayer);
+		outString += newLine;
+		ConsoleUI.drawActivePlayer(wj.discardPile);
+	    assertEquals(outString, outContent.toString());
+	}
+
+	@Test
 	public void canDrawDiscardPile(){
 		String outString = wj.discardPile.peekAtTopCard().toString();
 		outString += newLine;
