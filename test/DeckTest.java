@@ -25,7 +25,7 @@ public class DeckTest {
 			Card origCard = d.dealCard();
 			Card cloneCard = clone.dealCard();
 			assertNotSame(origCard, cloneCard);
-			assertEquals(origCard.toString(), cloneCard.toString());
+			assertTrue(origCard.equals(cloneCard));
 		}
 	}
 

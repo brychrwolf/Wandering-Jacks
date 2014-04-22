@@ -1,10 +1,21 @@
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 
 public class CardTest {
+	Card aCard = new Card();
+	/*
+	 * Deep Clone
+	 */
+	@Test
+	public void cloningCard_CreatesNewButEqual_Card(){
+		Card clone = new Card(aCard);
+		assertNotSame(clone, aCard);
+		assertTrue(clone.equals(aCard));
+	}
 
 	/**
 	 * This test ensures that every card that is constructed has a value and a
