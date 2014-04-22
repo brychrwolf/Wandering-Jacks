@@ -606,14 +606,15 @@ public class WanderingJacks{
 
 	public HashMap<Integer, String> getPossibleDestinations(Card cardToPlay){
 		HashMap<Integer, String> pd = new HashMap<Integer, String>();
-		if(onFirstMoveOfTurn) pd.put(0, "my hand");
+		if(onFirstMoveOfTurn) pd.put(ConsoleUI.cardLocation("My Hand"), "My Hand");
 		if(!onFirstMoveOfTurn){
-			pd.put(2, "discard pile");
+			pd.put(0, "Go Back");
+			pd.put(ConsoleUI.cardLocation("The Discard Pile"), "The Discard Pile");
 			String output;
 			boolean[] isValidDestination = WanderingJacks.validPlayFor(retainer[activePlayer], cardToPlay);
 			for(int i = 0; i < retainer[activePlayer].length; i++){
 				if(isValidDestination[i]){
-					output = "retainer:";
+					output = "Retainer:";
 					for(int j = 0; j < retainer[activePlayer][i].size(); j++)
 						output += " ["+i+"]["+j+"] = "+retainer[activePlayer][i].get(j).toString();
 					pd.put(i+4, output);

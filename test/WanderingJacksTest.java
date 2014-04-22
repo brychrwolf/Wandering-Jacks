@@ -5,6 +5,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 import org.junit.Before;
@@ -591,28 +592,28 @@ public class WanderingJacksTest{
 	public void possibleDestinations_Includes_MyHand_OnFirstMove(){
 		wj.setUpGameEnvironment();
 		assertTrue(wj.onFirstMoveOfTurn());
-		assertTrue(wj.getPossibleDestinations(aQueen).containsValue("my hand"));
+		assertTrue(wj.getPossibleDestinations(aQueen).containsValue("My Hand"));
 	}
 
 	@Test
 	public void possibleDestinations_DontInclude_MyHand_IfNotOnFirstMove(){
 		wj.onFirstMoveOfTurn = false;
 		assertFalse(wj.onFirstMoveOfTurn());
-		assertFalse(wj.getPossibleDestinations(aQueen).containsValue("my hand"));
+		assertFalse(wj.getPossibleDestinations(aQueen).containsValue("My Hand"));
 	}
 
 	@Test
 	public void possibleDestinations_Includes_DiscardPile_IfNotOnFirstMove(){
 		wj.onFirstMoveOfTurn = false;
 		assertFalse(wj.onFirstMoveOfTurn());
-		assertTrue(wj.getPossibleDestinations(aQueen).containsValue("discard pile"));
+		assertTrue(wj.getPossibleDestinations(aQueen).containsValue("The Discard Pile"));
 	}
 
 	@Test
 	public void possibleDestinations_DontInclude_DiscardPile_OnFirstMove(){
 		wj.setUpGameEnvironment();
 		assertTrue(wj.onFirstMoveOfTurn());
-		assertFalse(wj.getPossibleDestinations(aQueen).containsValue("discard pile & end turn"));
+		assertFalse(wj.getPossibleDestinations(aQueen).containsValue("The Discard Pile"));
 	}
 
 	@Test
@@ -623,10 +624,11 @@ public class WanderingJacksTest{
 		wj.retainer[0][2].add(a10);
 		wj.retainer[0][3].add(a9);
 		assertFalse(wj.onFirstMoveOfTurn());
-		assertTrue(wj.getPossibleDestinations(aQueen).containsValue("retainer: "+aQueen.toString()+" "));
-		assertFalse(wj.getPossibleDestinations(aQueen).containsValue("retainer: "+aJack.toString()+" "));
-		assertFalse(wj.getPossibleDestinations(aQueen).containsValue("retainer: "+a10.toString()+" "));
-		assertFalse(wj.getPossibleDestinations(aQueen).containsValue("retainer: "+a9.toString()+" "));
+		HashMap<Integer, String> pd = wj.getPossibleDestinations(aJack);
+		assertTrue(pd.containsKey(4));
+		assertFalse(pd.containsKey(5));
+		assertFalse(pd.containsKey(6));
+		assertFalse(pd.containsKey(7));
 	}
 
 	@Test
@@ -638,9 +640,18 @@ public class WanderingJacksTest{
 		wj.retainer[0][3].add(a9);
 		wj.player[0].addToHand(aJack);
 		assertFalse(wj.onFirstMoveOfTurn());
-		assertTrue(wj.getPossibleDestinations(aJack).containsValue("retainer: "+aQueen.toString()+" "));
-		assertTrue(wj.getPossibleDestinations(aJack).containsValue("retainer: "+a10.toString()+" "));
-		assertFalse(wj.getPossibleDestinations(aJack).containsValue("retainer: "+a9.toString()+" "));
+		HashMap<Integer, String> pd = wj.getPossibleDestinations(aJack);
+		assertTrue(pd.containsKey(4));
+		assertTrue(pd.containsKey(5));
+		assertFalse(pd.containsKey(6));
+		assertFalse(pd.containsKey(7));
+	}
+
+	@Test
+	public void possibleDestinations_Include_GoBack_WhenPromptingWhereToPlayFromHand(){
+		wj.setUpGameEnvironment();
+		wj.onFirstMoveOfTurn = false;
+		assertTrue(wj.getPossibleDestinations(aQueen).containsValue("Go Back"));
 	}
 
 	/*

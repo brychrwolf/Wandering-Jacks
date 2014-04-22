@@ -9,6 +9,7 @@ public class ConsoleUI {
 	private final static String newLine = System.getProperty("line.separator");
 	private final static HashMap<Integer, String> cardLocations = new HashMap<Integer, String>();
 	static{
+		cardLocations.put(0, "Go Back");
 		cardLocations.put(1, "The Deck");
 		cardLocations.put(2, "The Discard Pile");
 		cardLocations.put(3, "My Hand");
