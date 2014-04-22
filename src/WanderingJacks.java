@@ -607,7 +607,9 @@ public class WanderingJacks{
 		if(onFirstMoveOfTurn) pd.put(ConsoleUI.cardLocation("My Hand"), "My Hand");
 		if(!onFirstMoveOfTurn){
 			pd.put(0, "Go Back");
-			pd.put(ConsoleUI.cardLocation("The Discard Pile"), "The Discard Pile");
+			//  6.4 If playing Joker, cannot discard
+			if(cardToPlay.getValue() != Card.JOKER)
+				pd.put(ConsoleUI.cardLocation("The Discard Pile"), "The Discard Pile");
 			String output;
 			boolean[] isValidDestination = WanderingJacks.validPlayFor(retainer[activePlayer], cardToPlay);
 			for(int i = 0; i < retainer[activePlayer].length; i++){

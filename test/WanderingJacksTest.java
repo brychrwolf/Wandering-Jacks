@@ -652,6 +652,27 @@ public class WanderingJacksTest{
 		assertTrue(wj.getPossibleDestinations(aQueen).containsValue("Go Back"));
 	}
 
+	@Test
+	public void possibleDestinations_DontInclude_DiscardPile_WhenPlayingAJoker(){
+		wj.setUpGameEnvironment();
+		wj.onFirstMoveOfTurn = false;
+		assertFalse(wj.getPossibleDestinations(aJoker).containsValue("The Discard Pile"));
+	}
+
+	@Test
+	public void possibleDestinations_DontInclude_RetainersWithJacks_WhenPlayingAJoker(){
+		wj.retainer[0][0].add(aJack);
+		wj.retainer[0][1].add(aQueen);
+		wj.retainer[0][2].add(aJack);
+		wj.retainer[0][3].add(a10);
+		wj.onFirstMoveOfTurn = false;
+		HashMap<Integer, String> pd = wj.getPossibleDestinations(aJoker);
+		assertFalse(pd.containsKey(4));
+		assertTrue(pd.containsKey(5));
+		assertFalse(pd.containsKey(6));
+		assertTrue(pd.containsKey(7));
+	}
+
 	/*
 	 * validMoves
 	 */
