@@ -219,13 +219,15 @@ public class ConsoleUITest {
 	 */
 	@Test
 	public void ptCCFH_handWithJokerOnlyAllowsJoker() throws IOException{
-		String mockUserInput = "2"+newLine;	// ignored as invalid
-		mockUserInput += "1"+newLine;		// accepted
+		wj.player[wj.activePlayer].addToHand(aJoker);
+		int handSize = wj.player[wj.activePlayer].handSize();
+		assertTrue(wj.player[wj.activePlayer].getFromHand(handSize-1).equals(aJoker));
+		String mockUserInput = "1"+newLine;						// ignored as invalid
+		mockUserInput += "2"+newLine;							//
+		mockUserInput += String.valueOf(handSize)+newLine;  	// only Joker index (+1 for output translation) accepted
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
-		wj.player[wj.activePlayer].addToHand(aJoker);
-		assertTrue(wj.player[wj.activePlayer].handSize() > 1);
-		assertTrue(wj.player[wj.activePlayer].handContains("Joker"));
+		assertTrue(handSize > 1);
 		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer]);
 		System.setIn(System.in);
 		assertEquals(pr, 1);

@@ -162,8 +162,15 @@ public class ConsoleUI {
 
 	public static int promptPlayerToChooseCardFromHand(Player player){
 		HashMap<Integer, String> options = new HashMap<Integer, String>();
-		for(int i = 0; i < player.handSize(); i++)
-			options.put(i+1, player.getFromHand(i).toString());
+		// 5.2 If joker in hand, only option to play is the Joker
+		if(player.handContains("Joker")){
+			for(int i = 0; i < player.handSize(); i++)
+				if(player.getFromHand(i).getValue() == Card.JOKER)
+					options.put(i+1, player.getFromHand(i).toString());
+		}else{
+			for(int i = 0; i < player.handSize(); i++)
+				options.put(i+1, player.getFromHand(i).toString());
+		}
 		int selection = -1; // Should never return as -1
 		try{ selection = ConsoleUI.getPlayerInput("Please select which card from your hand:", options);
 		}catch(IOException e){
