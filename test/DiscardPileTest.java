@@ -1,4 +1,6 @@
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Stack;
@@ -7,6 +9,28 @@ import org.junit.Test;
 
 
 public class DiscardPileTest {
+	DiscardPile dp = new DiscardPile();
+
+	/*
+	 * Deep Cloning
+	 */
+	@Test
+	public void cloningDiscardPile_CreatesNewButSameSize_DiscardPile(){
+		DiscardPile clone = new DiscardPile(dp);
+		assertNotSame(clone, dp);
+		assertEquals(clone.size(), dp.size());
+	}
+
+	@Test
+	public void cloningDiscardPile_CreatesNewButEqual_Cards(){
+		DiscardPile clone = new DiscardPile(dp);
+		while(dp.size() > 0){
+			Card origCard = dp.takeTopCard();
+			Card cloneCard = clone.takeTopCard();
+			assertNotSame(origCard, cloneCard);
+			assertTrue(origCard.equals(cloneCard));
+		}
+	}
 	/**
 	 * This test ensures that the top card of a discard pile can be taken, that
 	 * it is actually the top card,

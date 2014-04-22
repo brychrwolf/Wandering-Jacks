@@ -37,15 +37,9 @@ public class Deck{
 		}
 	}
 
-	Deck(Deck template){
-		Stack<Card> tempStack = new Stack<Card>();
-		while(template.cardsLeft() > 0)
-			tempStack.push(template.dealCard());
-		while(tempStack.size() > 0){
-			Card tempCard = tempStack.pop();
-			template.deck.push(tempCard);
-			deck.push(new Card(tempCard));
-		}
+	Deck(Deck cloned){
+		for(int i = 0; i < cloned.deck.size(); i++)
+			this.deck.push(new Card(cloned.deck.get(i)));
 	}
 
 	/**
