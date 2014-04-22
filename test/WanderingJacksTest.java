@@ -61,6 +61,13 @@ public class WanderingJacksTest{
 		assertNotSame(wj.deck, clone.deck);
 	}
 
+	@Test
+	public void cloningGame_CreatesNew_Players(){
+		WanderingJacks clone = new WanderingJacks(wj);
+		for(int i = 0; i < 2; i++)
+			assertNotSame(wj.player[i], clone.player[i]);
+	}
+
 	/**
 	 * This test ensures that at the beginning of the game, the deck has 54
 	 * cards (the standard 52 + 2 Jokers).

@@ -1,4 +1,6 @@
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -35,6 +37,31 @@ public class PlayerTest {
 		p = new Player(bValue);
 		assertTrue(p.getBankroll() == bValue);
 	}
+
+	/*
+	 * Deep Cloning
+	 */
+	@Test
+	public void cloningPlayer_CreatesNew_Player(){
+		Player clone = new Player(p);
+		assertNotSame(clone, p);
+	}
+	@Test
+	public void cloningPlayer_CreatesNewButEqual_Hand(){
+		Player clone = new Player(p);
+		while(p.handSize() > 0){
+			Card origCard = p.playFromHand(0);
+			Card cloneCard = clone.playFromHand(0);
+			assertNotSame(origCard, cloneCard);
+			assertTrue(origCard.equals(cloneCard));
+		}
+	}
+	@Test
+	public void cloningPlayer_OnlyCopies_Bankroll(){
+		Player clone = new Player(p);
+		assertSame(p.getBankroll(), clone.getBankroll());
+	}
+
 
 	/**
 	 * This test ensures that the player's hand is returned, empty or not.
