@@ -1,33 +1,58 @@
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Before;
 import org.junit.Test;
 
 
 public class RetainerTest {
+	Card aJoker = new Card(0, 0);
+	Card aAce = new Card(1, 1);
+	Card aKing = new Card(13, 1);
+	Card aQueen = new Card(12, 1);
+	Card aJack = new Card(11, 1);
+	Card a10 = new Card(10, 1);
+	Card a9 = new Card(9, 1);
+	Retainer r = new Retainer();
+	/*Retainer three9s;
+	Retainer twoQueens;
+	WanderingJacks wj;*/
+
+	@Before
+	public void init(){
+		/*wj = new WanderingJacks();
+		three9s = new Retainer();
+		three9s.add(a9);
+		three9s.add(a9);
+		three9s.add(a9);
+		twoQueens = new Retainer();
+		twoQueens.add(aQueen);
+		twoQueens.add(aQueen);*/
+	}
 	/**
 	 * This test ensures that add(Card) adds the correct card to the retainer.
 	 */
 	@Test
-	public void testRetainerAdd(){
-		Card aJoker = new Card(0, 0);
-		Card aJack = new Card(Card.JACK, Card.CLUBS);
-		Retainer retainer = new Retainer();
-		//test adding to initial retainer
-		int sizeBefore = retainer.size();
-		retainer.add(aJoker);
-		int sizeAfter = retainer.size();
-		assertTrue(sizeBefore + 1 == sizeAfter);
-		//test adding to retainer with same card
-		sizeBefore = retainer.size();
-		retainer.add(aJoker);
-		sizeAfter = retainer.size();
-		assertTrue(sizeBefore + 1 == sizeAfter);
-		//test adding to retainer with different cards
-		sizeBefore = retainer.size();
-		retainer.add(aJack);
-		sizeAfter = retainer.size();
-		assertTrue(sizeBefore + 1 == sizeAfter);
+	public void addingTo_InitialRetainer_AddsCard(){
+		r.add(a9);
+		assertEquals(r.size(), 1);
+		assertEquals(r.get(0), a9);
+	}
+	@Test
+	public void addingTo_NonEmptyRetainer_AddsCard(){
+		r.add(a9);
+		r.add(a9);
+		assertEquals(r.size(), 2);
+		assertEquals(r.get(1), a9);
+	}
+	@Test
+	public void addingto_RetainerSize10_AddsCard(){
+		for(int i = 0; i < 10; i++)
+			r.add(a9);
+		r.add(a9);
+		assertEquals(r.size(), 11);
+		assertEquals(r.get(10), a9);
 	}
 
 	/**
