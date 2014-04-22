@@ -47,7 +47,6 @@ public class ConsoleUI {
 
 
 	public static void draw(WanderingJacks wj) throws IOException{
-		Runtime.getRuntime().exec("cls"); //windows system dependent
 		System.out.print("Discard Pile: ");
 		drawDiscardPile(wj.discardPile);
 
