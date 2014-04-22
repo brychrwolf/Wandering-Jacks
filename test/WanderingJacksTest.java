@@ -181,8 +181,8 @@ public class WanderingJacksTest{
 	@Test
 	public void testInitialPlayersHandsHave3Cards(){
 		wj.setUpGameEnvironment();
-		assertEquals(wj.player[0].getHand().size(), 3);
-		assertEquals(wj.player[1].getHand().size(), 3);
+		assertEquals(wj.player[0].handSize(), 3);
+		assertEquals(wj.player[1].handSize(), 3);
 	}
 
 	/**
@@ -193,10 +193,8 @@ public class WanderingJacksTest{
 	@Test
 	public void testInitialPlayersHandsHaveNoJokers(){
 		wj.setUpGameEnvironment();
-		for(Card c : wj.player[0].getHand())
-			assertTrue(c.getValue() != Card.JOKER);
-		for(Card c : wj.player[1].getHand())
-			assertTrue(c.getValue() != Card.JOKER);
+		assertFalse(wj.player[0].handContains("Joker"));
+		assertFalse(wj.player[1].handContains("Joker"));
 	}
 
 	/**
@@ -627,7 +625,7 @@ public class WanderingJacksTest{
 		HashMap<Integer, String> pd = wj.getPossibleDestinations(aJack);
 		assertTrue(pd.containsKey(4));
 		assertFalse(pd.containsKey(5));
-		assertFalse(pd.containsKey(6));
+		assertTrue(pd.containsKey(6));
 		assertFalse(pd.containsKey(7));
 	}
 

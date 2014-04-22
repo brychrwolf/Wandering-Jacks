@@ -54,15 +54,6 @@ public class Player{
 	}
 
 	/**
-	 * Returns the list of cards held in the Player's hand.
-	 * @return the entire List<Card> of the Player's hand.
-	 * @see Card
-	 */
-	public List<Card> getHand(){
-		return hand;
-	}
-
-	/**
 	 * Returns the card from the hand at the specified index. Does NOT remove
 	 * the card from the hand, so the hand size will remain the same.
 	 * @param index the index from which to get the card

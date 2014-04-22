@@ -3,8 +3,6 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +21,7 @@ public class PlayerTest {
 	 */
 	@Test
 	public void constructedWithEmptyHand(){
-		assertTrue(p.getHand().size() == 0);
+		assertTrue(p.handSize() == 0);
 	}
 
 	@Test
@@ -60,19 +58,6 @@ public class PlayerTest {
 	public void cloningPlayer_OnlyCopies_Bankroll(){
 		Player clone = new Player(p);
 		assertSame(p.getBankroll(), clone.getBankroll());
-	}
-
-
-	/**
-	 * This test ensures that the player's hand is returned, empty or not.
-	 */
-	@Test
-	public void testGettingHand() {
-		assertTrue(p.getHand() instanceof ArrayList<?>);
-		p.addToHand(new Card(0,0));
-		assertTrue(p.getHand() instanceof ArrayList<?>);
-		p.playFromHand(new Card(0,0));
-		assertTrue(p.getHand() instanceof ArrayList<?>);
 	}
 
 	/**

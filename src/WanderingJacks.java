@@ -238,16 +238,16 @@ public class WanderingJacks{
 			}
 		}
 		// deal 3 cards one player's hand, then the other, discarding Jokers
-		while(player[0].getHand().size() < 3){
+		while(player[0].handSize() < 3){
 			rcard = deck.dealCard();
 			if(rcard.getSuit() == Card.JOKER)
 				discardPile.discard(rcard);
-			else player[0].getHand().add(rcard);}
-		while(player[1].getHand().size() < 3){
+			else player[0].addToHand(rcard);}
+		while(player[1].handSize() < 3){
 			rcard = deck.dealCard();
 			if(rcard.getSuit() == Card.JOKER)
 				discardPile.discard(rcard);
-			else player[1].getHand().add(rcard);}
+			else player[1].addToHand(rcard);}
 		// shuffle discard stack into deck, discard top card from the deck
 		if(discardPile.size() > 0)
 			deck.shuffleWithOtherCards(discardPile.takeAllCards());
