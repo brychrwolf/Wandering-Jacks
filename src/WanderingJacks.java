@@ -127,7 +127,7 @@ public class WanderingJacks{
 					playRequest[1] = ConsoleUI.getPlayerInput(prompt, wj.getPossibleDestinations(cardFromHand));
 					playRequest[2] = handIndex;
 					//  6.5 if go back chosen, loop to 5 (ask which card from hand to play)
-					if(commitPlay = (playRequest[1] != 0 ? true : false));
+					if(commitPlay = (playRequest[1] != ConsoleUI.cardLocation("Go Back") ? true : false));
 				}
 				// 7. move card from hand to destination
 				wj.requestPlay(playRequest);
@@ -135,8 +135,11 @@ public class WanderingJacks{
 				//	8.1 prompt user for opponent's retainer if necessary
 				// 9. display game state
 				ConsoleUI.draw(wj);
-				//10. ask to end turn or loop to 5 (ask which card from hand to play)
-				endTurn = ConsoleUI.promptPlayerToLoopOrEndTurn();
+				// 10. ask to end turn or loop to 5 (ask which card from hand to play)
+				//  10.1 choosing discard pile as destination ends turn automatically
+				if(playRequest[1] == ConsoleUI.cardLocation("The Discard Pile"))
+					endTurn = true;
+				else endTurn = ConsoleUI.promptPlayerToLoopOrEndTurn();
 			}
 			//11. END TURN
 			wj.endTurn();
