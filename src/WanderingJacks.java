@@ -613,9 +613,9 @@ public class WanderingJacks{
 			boolean[] isValidDestination = WanderingJacks.validPlayFor(retainer[activePlayer], cardToPlay);
 			for(int i = 0; i < retainer[activePlayer].length; i++){
 				if(isValidDestination[i]){
-					output = "retainer: ";
+					output = "retainer:";
 					for(int j = 0; j < retainer[activePlayer][i].size(); j++)
-						output += retainer[activePlayer][i].get(j).toString()+" ";
+						output += " ["+i+"]["+j+"] = "+retainer[activePlayer][i].get(j).toString();
 					pd.put(i+4, output);
 				}
 			}
