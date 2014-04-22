@@ -117,6 +117,7 @@ public class WanderingJacks{
 			//	6.1 first time only, show discard pile
 			//	6.2 always show -back- to loop to 5 (ask which card from hand to play)
 			//	6.3 check validation rules for which retainer is valid
+			//  6.4 If playing Joker, cannot discard
 			playRequest[1] = ConsoleUI.getPlayerInput("Enter *to* where to play your "+cardFromHand.toString()+":", wj.getPossibleDestinations(cardFromHand));
 			playRequest[2] = handIndex;
 			// 7. move card from hand to destination
@@ -601,9 +602,8 @@ public class WanderingJacks{
 
 	public HashMap<Integer, String> getPossibleDestinations(Card cardToPlay){
 		HashMap<Integer, String> pd = new HashMap<Integer, String>();
-		int optNum = 0;
-		if(onFirstMoveOfTurn) pd.put(optNum++, "my hand");
-		if(!onFirstMoveOfTurn) pd.put(optNum++, "discard pile & end turn");
+		if(onFirstMoveOfTurn) pd.put(0, "my hand");
+		if(!onFirstMoveOfTurn) pd.put(1, "discard pile");
 		if(!onFirstMoveOfTurn){
 			// Check every retainer
 			String output;
@@ -617,7 +617,7 @@ public class WanderingJacks{
 					for(int j = 0; j < retainer[activePlayer][i].size(); j++){
 						output += retainer[activePlayer][i].get(j).toString()+" ";
 					}
-					pd.put(optNum++, output);
+					pd.put(i+3, output);
 				}
 			}
 		}

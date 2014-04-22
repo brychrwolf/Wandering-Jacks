@@ -41,10 +41,10 @@ public class ConsoleUI {
 	public static boolean cardLocationsInclude(int location){
 		return cardLocations.containsKey(location);
 	}
+
 	public static boolean cardLocationsInclude(String location){
 		return cardLocations.containsValue(location);
 	}
-
 
 	public static void draw(WanderingJacks wj) throws IOException{
 		System.out.print("Discard Pile: ");
@@ -120,8 +120,8 @@ public class ConsoleUI {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println();
 		System.out.println(prompt);
-		for(int origins : option.keySet())
-			System.out.println("["+origins+"] "+option.get(origins));
+		for(int fromHere : option.keySet())
+			System.out.println("-"+fromHere+"- "+option.get(fromHere));
 		// Get user input, avoiding errors
 		while(true){
 			try{
