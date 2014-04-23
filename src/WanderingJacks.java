@@ -256,92 +256,70 @@ public class WanderingJacks{
 		boolean[] vr = {false, false, false, false};
 		switch(card.getValueAsString()){
 		case "Jack":
-			//if not empty
-			//if a retainer contains a Queen and no Jacks
-			//if a retainer contains a 10 and no Jacks
+			//not if empty
+			//not it contains a Jack
+			//if contains a Queen
+			//if contains a 10
 			for(int i = 0; i < retainer.length; i++){
-				if(!retainer[i].isEmpty()){
-					if(!retainer[i].contains(Card.JACK)){
-						if(retainer[i].get(0).getValue() == Card.QUEEN
-						|| retainer[i].get(0).getValue() == 10){
-							vr[i] = true;
-						}
-					}
-				}
-			}
-
-			break;
+				if(!retainer[i].isEmpty()
+				&& !retainer[i].retainsJack()
+				&& (retainer[i].contains(Card.QUEEN)
+				|| retainer[i].contains(10)))
+					vr[i] = true;
+			}break;
 		case "Queen":
-			//If empty
-			//If a retainer is empty
-			//If a retainer contains a Queen and not a Jack
+			//If is empty
+			//If contains a queen
+			//not if contains a Jack
 			for(int i = 0; i < retainer.length; i++){
-				if(retainer[i].isEmpty())
+				if((retainer[i].isEmpty()
+				|| retainer[i].contains(Card.QUEEN))
+				&& !retainer[i].retainsJack())
 					vr[i] = true;
-				else if(!retainer[i].contains(Card.JACK)){
-					if(retainer[i].get(0).getValue() == Card.QUEEN){
-						vr[i] = true;
-					}
-				}
-			}
-			break;
+			}break;
 		case "10":
-			//If empty
-			//If a retainer is empty
-			//If a retainer contains a Queen and not a Jack
+			//If is empty
+			//If contains a 10
+			//not if contains a Jack
 			for(int i = 0; i < retainer.length; i++){
-				if(retainer[i].isEmpty())
+				if((retainer[i].isEmpty()
+				|| retainer[i].contains(10))
+				&& !retainer[i].retainsJack())
 					vr[i] = true;
-				else if(!retainer[i].contains(Card.JACK)){
-					if(retainer[i].get(0).getValue() == 10){
-						vr[i] = true;
-					}
-				}
-			}
-			break;
+			}break;
 		case "Ace":
-			//If not empty
-			//If a retainer contains three of a kind and no Jack
+			//not if empty
+			//If contains three of a kind
+			//not if contains a Jack
 			for(int i = 0; i < retainer.length; i++){
-				if(!retainer[i].isEmpty())
+				if(!retainer[i].isEmpty()
+				&& !retainer[i].retainsJack()
+				&& retainer[i].size() == 3
+				&& retainer[i].get(0).getValue() == retainer[i].get(1).getValue()
+				&& retainer[i].get(0).getValue() == retainer[i].get(2).getValue())
 					vr[i] = true;
-				else if(!retainer[i].contains(Card.JACK)
-				&& retainer[i].size() == 3){
-					if(retainer[i].get(0).getValue() == retainer[i].get(1).getValue()
-					&& retainer[i].get(0).getValue() == retainer[i].get(2).getValue()){
-						vr[i] = true;
-					}
-				}
-				/*/If player's hand has three aces, and a retainer contains only one Queen or one 10
-				if(retainer[i].size() == 1
-				&& (retainer[i].get(0).getValue() == Card.QUEEN
-				|| retainer[i].get(0).getValue() == 10)){
-					vr[i] = true;
-				}*/
-			}
-			break;
+			/*/If player's hand has three aces, and a retainer contains only one Queen or one 10
+			if(retainer[i].size() == 1
+			&& (retainer[i].get(0).getValue() == Card.QUEEN
+			|| retainer[i].get(0).getValue() == 10)){
+				vr[i] = true;
+			}*/
+			}break;
 		case "Joker":
 			//If empty
-			//If the retainer does not contain a Jack
+			//not if contains a Jack
 			for(int i = 0; i < retainer.length; i++){
-				if(retainer[i].isEmpty())
+				if(!retainer[i].retainsJack())
 					vr[i] = true;
-				else if(!retainer[i].contains(Card.JACK)){
-					vr[i] = true;
-				}
-			}
-			break;
+			}break;
 		case "King":
-			//If not empty
-			//if a retainer contains a Jack and no King
+			//if contains a Jack
+			//not if contains a King
 			for(int i = 0; i < retainer.length; i++){
-				if(!retainer[i].isEmpty())
-					vr[i] = true;
-				else if(retainer[i].contains(Card.JACK)
+				if(retainer[i].retainsJack()
 				&& !retainer[i].contains(Card.KING))
 					vr[i] = true;
-			}
-			break;
+			}break;
 		case "2":
 		case "3":
 		case "4":
