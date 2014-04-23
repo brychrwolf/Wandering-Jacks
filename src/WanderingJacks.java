@@ -115,33 +115,41 @@ public class WanderingJacks{
 					// 5. ask which card-from-hand to play
 					// 	5.1 list all cards in hand
 					// 	5.2 If drew a joker, only option is the Joker
+					//  5.3 if not first move, show end turn as option
 					playRequest[0] = ConsoleUI.cardLocation("My Hand");
-					int handIndex = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer]) - 1; // -1 to translate from displayed option to actual hand index
-					Card cardFromHand = wj.player[wj.activePlayer].getFromHand(handIndex);
-					// 6. ask which of available destinations to go
-					//	6.1 first time only, show discard pile
-					//	6.2 show -back- as destination
-					//	6.3 check validation rules for which retainer is valid
-					//  6.4 If playing Joker, cannot discard
-					String prompt = "Enter *to* where to play your "+cardFromHand.toString()+":";
-					playRequest[1] = ConsoleUI.getPlayerInput(prompt, wj.getPossibleDestinations(cardFromHand));
-					playRequest[2] = handIndex;
-					//  6.5 if go back chosen, loop to 5 (ask which card from hand to play)
-					if(commitThisPlay = (playRequest[1] != ConsoleUI.cardLocation("Go Back") ? true : false));
+					int handIndex = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], wj.onFirstPlayFromHandOfTurn) - 1; // -1 to translate from displayed option to actual hand index
+					if(handIndex == ConsoleUI.cardLocation("End Turn")){
+						commitThisPlay = true;
+						endThisTurn = true;
+					}else{
+						Card cardFromHand = wj.player[wj.activePlayer].getFromHand(handIndex);
+						// 6. ask which of available destinations to go
+						//	6.1 first time only, show discard pile
+						//	6.2 show -back- as destination
+						//	6.3 check validation rules for which retainer is valid
+						//  6.4 If playing Joker, cannot discard
+						String prompt = "Enter *to* where to play your "+cardFromHand.toString()+":";
+						playRequest[1] = ConsoleUI.getPlayerInput(prompt, wj.getPossibleDestinations(cardFromHand));
+						playRequest[2] = handIndex;
+						//  6.5 if go back chosen, loop to 5 (ask which card from hand to play)
+						if(commitThisPlay = (playRequest[1] != ConsoleUI.cardLocation("Go Back") ? true : false));
+					}
 				}
-				// 7. move card from hand to destination
-				wj.requestPlay(playRequest);
-				//  7.1 No longer be the first play-from-hand of turn
-				wj.onFirstPlayFromHandOfTurn = false;
-				// 8. perform any fancy moves like 3oak+A
-				//	8.1 prompt user for opponent's retainer if necessary
-				// 9. display game state
-				ConsoleUI.draw(wj);
-				// 10. ask to end turn or loop to 5 (ask which card from hand to play)
-				//  10.1 choosing discard pile as destination ends turn automatically
-				if(playRequest[1] == ConsoleUI.cardLocation("The Discard Pile"))
-					endThisTurn = true;
-				else endThisTurn = ConsoleUI.promptPlayerToLoopOrEndTurn();
+				if(endThisTurn == false){
+					// 7. move card from hand to destination
+					wj.requestPlay(playRequest);
+					//  7.1 No longer be the first play-from-hand of turn
+					wj.onFirstPlayFromHandOfTurn = false;
+					// 8. perform any fancy moves like 3oak+A
+					//	8.1 prompt user for opponent's retainer if necessary
+					// 9. display game state
+					ConsoleUI.draw(wj);
+					// 10. ask to end turn or loop to 5 (ask which card from hand to play)
+					//  10.1 choosing discard pile as destination ends turn automatically
+					if(playRequest[1] == ConsoleUI.cardLocation("The Discard Pile"))
+						endThisTurn = true;
+					else endThisTurn = ConsoleUI.promptPlayerToLoopOrEndTurn();
+				}
 			}
 			//11. END TURN
 			wj.endTurn();

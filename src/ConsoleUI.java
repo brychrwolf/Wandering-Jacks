@@ -9,6 +9,7 @@ public class ConsoleUI {
 	private final static String newLine = System.getProperty("line.separator");
 	private final static HashMap<Integer, String> cardLocations = new HashMap<Integer, String>();
 	static{
+		cardLocations.put(-1, "End Turn");
 		cardLocations.put(0, "Go Back");
 		cardLocations.put(1, "The Deck");
 		cardLocations.put(2, "The Discard Pile");
@@ -26,7 +27,7 @@ public class ConsoleUI {
 	}
 
 	public static int cardLocation(String location){
-		int loc = -1; // should never return as -1
+		int loc = -9; // should never return as -1
 		if(cardLocations.containsValue(location)){
 			for(int l : cardLocations.keySet()){
 				if(cardLocations.get(l).equals(location)){
@@ -160,7 +161,7 @@ public class ConsoleUI {
 		return selection;
 	}
 
-	public static int promptPlayerToChooseCardFromHand(Player player){
+	public static int promptPlayerToChooseCardFromHand(Player player, boolean onFirstPlayFromHandOfTurn){
 		HashMap<Integer, String> options = new HashMap<Integer, String>();
 		// 5.2 If joker in hand, only option to play is the Joker
 		if(player.handContains("Joker")){
@@ -170,6 +171,9 @@ public class ConsoleUI {
 		}else{
 			for(int i = 0; i < player.handSize(); i++)
 				options.put(i+1, player.getFromHand(i).toString());
+			// 5.3 if not first move, show end turn as option
+			if(!onFirstPlayFromHandOfTurn)
+				options.put(ConsoleUI.cardLocation("End Turn")+1, "End Turn"); // +1 to translate to displayed option from actual hand index
 		}
 		int selection = -1; // Should never return as -1
 		try{ selection = ConsoleUI.getPlayerInput("Please select which card from your hand:", options);

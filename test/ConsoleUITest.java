@@ -1,7 +1,6 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -155,11 +154,6 @@ public class ConsoleUITest {
 		assertEquals(pr, 1);
 	}
 
-	@Test
-	public void getPlayRequestPrintsAllPossibleOriginsAndDestinations(){
-		fail("Test not implemented");
-	}
-
 	/*
 	 * promptPlayerToLoopOrEndTurn()
 	 */
@@ -228,7 +222,7 @@ public class ConsoleUITest {
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
 		assertTrue(handSize > 1);
-		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer]);
+		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], true);
 		System.setIn(System.in);
 		assertEquals(pr, 1);
 	}
@@ -238,7 +232,7 @@ public class ConsoleUITest {
 		String mockUserInput = "1"+newLine;		// accepted
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
-		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer]);
+		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], true);
 		System.setIn(System.in);
 		assertEquals(pr, 1);
 	}
@@ -252,10 +246,33 @@ public class ConsoleUITest {
 		mockUserInput += "1"+newLine;		// accepted
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
-		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer]);
+		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], true);
 		System.setIn(System.in);
 		assertEquals(pr, 1);
 	}
+
+	@Test
+	public void ptCCFH_onFirstPlay_NotInclude_EndTurn() throws IOException{
+		String mockUserInput = "0"+newLine; // ignored inputs
+		mockUserInput += "1"+newLine;		// accepted
+		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
+		System.setIn(mockIn);
+		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], true);
+		System.setIn(System.in);
+		assertEquals(pr, 1);
+	}
+
+	@Test
+	public void ptCCFH_notOnFirstPlay_Include_EndTurn() throws IOException{
+		String mockUserInput = "0"+newLine; // accepted
+		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
+		System.setIn(mockIn);
+		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], false);
+		System.setIn(System.in);
+		assertEquals(pr, 0);
+	}
+
+
 
 	/*
 	 * cardLocation
@@ -273,7 +290,7 @@ public class ConsoleUITest {
 
 	@Test(expected=NullPointerException.class)
 	public void invalidIntCardLocationThrowsException(){
-		ConsoleUI.cardLocation(-1);
+		ConsoleUI.cardLocation(-9);
 	}
 
 	@Test(expected=NullPointerException.class)
@@ -293,7 +310,7 @@ public class ConsoleUITest {
 
 	@Test
 	public void invalidIntCardLocationIncludesReturnsFalse(){
-		assertFalse(ConsoleUI.cardLocationsInclude(-1));
+		assertFalse(ConsoleUI.cardLocationsInclude(-9));
 	}
 
 	@Test
