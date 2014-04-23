@@ -26,7 +26,7 @@ public class WanderingJacks{
 	 * @see Player
 	 */
 	public int activePlayer;
-	public boolean onFirstMoveOfTurn;
+	public boolean onFirstPlayFromHandOfTurn;
 	/**
 	 * A standard deck of 54 cards (52 + 2 Jokers)used in the game. Its
 	 * contents are "random" and secret.
@@ -64,7 +64,7 @@ public class WanderingJacks{
 	 */
 	WanderingJacks(){
 		activePlayer = 0;
-		onFirstMoveOfTurn = true;
+		onFirstPlayFromHandOfTurn = true;
 		deck = new Deck(true);
 		discardPile = new DiscardPile();
 		player = new Player[2];
@@ -78,7 +78,7 @@ public class WanderingJacks{
 
 	WanderingJacks(WanderingJacks cloned){
 		this.activePlayer 		= cloned.activePlayer;
-		this.onFirstMoveOfTurn 	= cloned.onFirstMoveOfTurn;
+		this.onFirstPlayFromHandOfTurn 	= cloned.onFirstPlayFromHandOfTurn;
 		this.deck 				= new Deck(cloned.deck);
 		this.discardPile 		= new DiscardPile(cloned.discardPile);
 		player = new Player[2];
@@ -107,10 +107,10 @@ public class WanderingJacks{
 			wj.requestPlay(playRequest);
 			// 4. Display game state
 			ConsoleUI.draw(wj);
-			boolean endTurn = false;
-			while(endTurn == false){
-				boolean commitPlay = false;
-				while(commitPlay == false){
+			boolean endThisTurn = false;
+			while(endThisTurn == false){
+				boolean commitThisPlay = false;
+				while(commitThisPlay == false){
 					playRequest = new int[3];
 					// 5. ask which card-from-hand to play
 					// 	5.1 list all cards in hand
@@ -127,10 +127,12 @@ public class WanderingJacks{
 					playRequest[1] = ConsoleUI.getPlayerInput(prompt, wj.getPossibleDestinations(cardFromHand));
 					playRequest[2] = handIndex;
 					//  6.5 if go back chosen, loop to 5 (ask which card from hand to play)
-					if(commitPlay = (playRequest[1] != ConsoleUI.cardLocation("Go Back") ? true : false));
+					if(commitThisPlay = (playRequest[1] != ConsoleUI.cardLocation("Go Back") ? true : false));
 				}
 				// 7. move card from hand to destination
 				wj.requestPlay(playRequest);
+				//  7.1 No longer be the first play-from-hand of turn
+				wj.onFirstPlayFromHandOfTurn = false;
 				// 8. perform any fancy moves like 3oak+A
 				//	8.1 prompt user for opponent's retainer if necessary
 				// 9. display game state
@@ -138,8 +140,8 @@ public class WanderingJacks{
 				// 10. ask to end turn or loop to 5 (ask which card from hand to play)
 				//  10.1 choosing discard pile as destination ends turn automatically
 				if(playRequest[1] == ConsoleUI.cardLocation("The Discard Pile"))
-					endTurn = true;
-				else endTurn = ConsoleUI.promptPlayerToLoopOrEndTurn();
+					endThisTurn = true;
+				else endThisTurn = ConsoleUI.promptPlayerToLoopOrEndTurn();
 			}
 			//11. END TURN
 			wj.endTurn();
@@ -362,7 +364,7 @@ public class WanderingJacks{
 		// toggle active player
 		activePlayer = activePlayer == 1 ? 0 : 1;
 		// make onFirstMoveOfTurn true
-		onFirstMoveOfTurn = true;
+		onFirstPlayFromHandOfTurn = true;
 	}
 
 	/**
@@ -474,34 +476,26 @@ public class WanderingJacks{
 			default:
 				throw new IllegalStateException("That play would be illegal.");
 		}
-		// Can no longer be the first move of turn
-		game.onFirstMoveOfTurn = false;
 	}
 
 	public HashMap<Integer, String> getPossibleDestinations(Card cardToPlay){
 		HashMap<Integer, String> pd = new HashMap<Integer, String>();
-		if(onFirstMoveOfTurn) pd.put(ConsoleUI.cardLocation("My Hand"), "My Hand");
-		if(!onFirstMoveOfTurn){
-			pd.put(0, "Go Back");
-			//  6.4 If playing Joker, cannot discard
-			if(cardToPlay.getValue() != Card.JOKER)
-				pd.put(ConsoleUI.cardLocation("The Discard Pile"), "The Discard Pile");
-			String output;
-			boolean[] isValidDestination = WanderingJacks.validPlayFor(retainer[activePlayer], cardToPlay);
-			for(int i = 0; i < retainer[activePlayer].length; i++){
-				if(isValidDestination[i]){
-					output = "Retainer:";
-					for(int j = 0; j < retainer[activePlayer][i].size(); j++)
-						output += " ["+i+"]["+j+"] = "+retainer[activePlayer][i].get(j).toString();
-					pd.put(i+4, output);
-				}
+		pd.put(ConsoleUI.cardLocation("Go Back"), "Go Back");
+		//  6.1 first time only, show discard pile
+		//  6.4 If playing Joker, cannot discard
+		if(!onFirstPlayFromHandOfTurn
+		&& cardToPlay.getValue() != Card.JOKER)
+			pd.put(ConsoleUI.cardLocation("The Discard Pile"), "The Discard Pile");
+		String output;
+		boolean[] isValidDestination = WanderingJacks.validPlayFor(retainer[activePlayer], cardToPlay);
+		for(int i = 0; i < retainer[activePlayer].length; i++){
+			if(isValidDestination[i]){
+				output = "Retainer:";
+				for(int j = 0; j < retainer[activePlayer][i].size(); j++)
+					output += " ["+i+"]["+j+"] = "+retainer[activePlayer][i].get(j).toString();
+				pd.put(i+4, output);
 			}
 		}
 		return pd;
 	}
-
-	public boolean onFirstMoveOfTurn(){
-		return onFirstMoveOfTurn;
-	}
-
 }

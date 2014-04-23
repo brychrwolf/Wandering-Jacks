@@ -52,7 +52,7 @@ public class WanderingJacksTest{
 	@Test
 	public void cloningGame_OnlyCopies_onFirstMoveOfTurn(){
 		WanderingJacks clone = new WanderingJacks(wj);
-		assertSame(wj.onFirstMoveOfTurn, clone.onFirstMoveOfTurn);
+		assertSame(wj.onFirstPlayFromHandOfTurn, clone.onFirstPlayFromHandOfTurn);
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class WanderingJacksTest{
 	@Test
 	public void testInitialGameObjectsAreCreated(){
 		assertTrue(wj.activePlayer == (int)wj.activePlayer);
-		assertTrue(wj.onFirstMoveOfTurn == (boolean)wj.onFirstMoveOfTurn);
+		assertTrue(wj.onFirstPlayFromHandOfTurn == (boolean)wj.onFirstPlayFromHandOfTurn);
 		assertTrue(wj.deck instanceof Deck);
 		assertTrue(wj.deck instanceof Deck);
 		assertTrue(wj.discardPile instanceof DiscardPile);
@@ -525,86 +525,78 @@ public class WanderingJacksTest{
 	 */
 	@Test
 	public void onFirstMoveOfTurnTrueAtConstuction(){
-		assertTrue(wj.onFirstMoveOfTurn());
+		assertTrue(wj.onFirstPlayFromHandOfTurn);
 	}
 	@Test
 	public void onFirstMoveOfTurnFalseAfterOnePlay(){
 		int[] pr = {1, 3, -1}; // deck to hand
 		wj.requestPlay(pr);
-		assertFalse(wj.onFirstMoveOfTurn());
+		assertFalse(wj.onFirstPlayFromHandOfTurn);
 	}
 	@Test
 	public void onFirstMoveOfTurnTrueAfterEndOfTurn(){
 		int[] pr = {1, 3, -1}; // deck to hand
 		wj.requestPlay(pr);
 		wj.endTurn();
-		assertTrue(wj.onFirstMoveOfTurn());
+		assertTrue(wj.onFirstPlayFromHandOfTurn);
 	}
 
 	/*
 	 * Possible Destinations
 	 */
 	@Test
-	public void possibleDestinations_Returns_ANonEmptyResult(){
+	public void pDs_Always_Returns_ANonEmptyResult(){
 		wj.setUpGameEnvironment();
+		wj.onFirstPlayFromHandOfTurn = true;
+		assertTrue(wj.getPossibleDestinations(aQueen).size() > 0);
+		wj.onFirstPlayFromHandOfTurn = false;
 		assertTrue(wj.getPossibleDestinations(aQueen).size() > 0);
 	}
 
 	@Test
-	public void possibleDestinations_Includes_MyHand_OnFirstMove(){
+	public void pDs_Always_Include_GoBack(){
 		wj.setUpGameEnvironment();
-		assertTrue(wj.onFirstMoveOfTurn());
-		assertTrue(wj.getPossibleDestinations(aQueen).containsValue("My Hand"));
-	}
-
-	@Test
-	public void possibleDestinations_DontInclude_MyHand_IfNotOnFirstMove(){
-		wj.onFirstMoveOfTurn = false;
-		assertFalse(wj.onFirstMoveOfTurn());
-		assertFalse(wj.getPossibleDestinations(aQueen).containsValue("My Hand"));
-	}
-
-	@Test
-	public void possibleDestinations_Includes_DiscardPile_IfNotOnFirstMove(){
-		wj.onFirstMoveOfTurn = false;
-		assertFalse(wj.onFirstMoveOfTurn());
-		assertTrue(wj.getPossibleDestinations(aQueen).containsValue("The Discard Pile"));
-	}
-
-	@Test
-	public void possibleDestinations_DontInclude_DiscardPile_OnFirstMove(){
-		wj.setUpGameEnvironment();
-		assertTrue(wj.onFirstMoveOfTurn());
-		assertFalse(wj.getPossibleDestinations(aQueen).containsValue("The Discard Pile"));
-	}
-
-	@Test
-	public void possibleDestinations_Include_RetainersWithSameValues_IfNotOnFirstMove(){
-		wj.onFirstMoveOfTurn = false;
-		wj.retainer[0][0].add(aQueen);
-		wj.retainer[0][1].add(aJack);
-		wj.retainer[0][2].add(a10);
-		wj.retainer[0][3].add(a9);
-		assertFalse(wj.onFirstMoveOfTurn());
-		HashMap<Integer, String> pd = wj.getPossibleDestinations(aJack);
-		assertTrue(pd.containsKey(4));
-		assertFalse(pd.containsKey(5));
-		assertTrue(pd.containsKey(6));
-		assertFalse(pd.containsKey(7));
-	}
-
-	@Test
-	public void possibleDestinations_Include_GoBack_WhenPromptingWhereToPlayFromHand(){
-		wj.setUpGameEnvironment();
-		wj.onFirstMoveOfTurn = false;
+		wj.onFirstPlayFromHandOfTurn = true;
+		assertTrue(wj.getPossibleDestinations(aQueen).containsValue("Go Back"));
+		wj.onFirstPlayFromHandOfTurn = false;
 		assertTrue(wj.getPossibleDestinations(aQueen).containsValue("Go Back"));
 	}
 
 	@Test
-	public void possibleDestinations_DontInclude_DiscardPile_WhenPlayingAJoker(){
+	public void pDs_OnFirstMove_Include_DiscardPile(){
 		wj.setUpGameEnvironment();
-		wj.onFirstMoveOfTurn = false;
+		wj.onFirstPlayFromHandOfTurn = true;
+		assertTrue(wj.getPossibleDestinations(aQueen).containsValue("The Discard Pile"));
+	}
+
+	@Test
+	public void pDs_NotOnFirstMove_DontInclude_DiscardPile(){
+		wj.setUpGameEnvironment();
+		wj.onFirstPlayFromHandOfTurn = false;
+		assertFalse(wj.getPossibleDestinations(aQueen).containsValue("The Discard Pile"));
+	}
+
+	@Test
+	public void pDs_WhenPlayingAJoker_DontInclude_DiscardPile(){
+		wj.setUpGameEnvironment();
+		wj.onFirstPlayFromHandOfTurn = true;
 		assertFalse(wj.getPossibleDestinations(aJoker).containsValue("The Discard Pile"));
+		wj.onFirstPlayFromHandOfTurn = false;
+		assertFalse(wj.getPossibleDestinations(aJoker).containsValue("The Discard Pile"));
+	}
+
+	@Test
+	public void pDs_Always_Include_ValidPlays(){
+		wj.setUpGameEnvironment();
+		for(int value = 0; value <= Card.KING; value++){
+			Card aCard = new Card(value, 1);
+			HashMap<Integer, String> pd = wj.getPossibleDestinations(aCard);
+			boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], aJack);
+			assertEquals(vp[0], pd.containsKey(4));
+			assertEquals(vp[1], pd.containsKey(5));
+			assertEquals(vp[2], pd.containsKey(6));
+			assertEquals(vp[3], pd.containsKey(7));
+		}
 	}
 
 	/*
