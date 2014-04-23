@@ -160,15 +160,16 @@ public class WanderingJacksTest{
 	 * found within the forbidden list.
 	 */
 	@Test
-	public void testFirstCardInRegisterIsNotAForbiddenCard(){
+	public void afterSettingUpGame_FirstCardInRegisterIsNotAForbiddenCard(){
+		wj.setUpGameEnvironment();
 		HashSet<Integer> forbiddenValues = new HashSet<Integer>();
 		forbiddenValues.add(Card.JACK);
 		forbiddenValues.add(Card.ACE);
 		forbiddenValues.add(Card.JOKER);
 		forbiddenValues.add(Card.KING);
-		wj.setUpGameEnvironment();
-		for(Retainer r : wj.retainer[0])
-			assertTrue(!forbiddenValues.contains(r.get(0).getValue()));
+		for(int i = 0; i < 2; i++)
+			for(Retainer r : wj.retainer[i])
+				assertFalse(forbiddenValues.contains(r.get(0).getValue()));
 	}
 
 
@@ -528,15 +529,8 @@ public class WanderingJacksTest{
 		assertTrue(wj.onFirstPlayFromHandOfTurn);
 	}
 	@Test
-	public void onFirstMoveOfTurnFalseAfterOnePlay(){
-		int[] pr = {1, 3, -1}; // deck to hand
-		wj.requestPlay(pr);
-		assertFalse(wj.onFirstPlayFromHandOfTurn);
-	}
-	@Test
 	public void onFirstMoveOfTurnTrueAfterEndOfTurn(){
-		int[] pr = {1, 3, -1}; // deck to hand
-		wj.requestPlay(pr);
+		wj.onFirstPlayFromHandOfTurn = false;
 		wj.endTurn();
 		assertTrue(wj.onFirstPlayFromHandOfTurn);
 	}
@@ -588,10 +582,10 @@ public class WanderingJacksTest{
 	@Test
 	public void pDs_Always_Include_ValidPlays(){
 		wj.setUpGameEnvironment();
-		for(int value = 0; value <= Card.KING; value++){
+		for(int value = 1; value <= Card.KING; value++){
 			Card aCard = new Card(value, 1);
 			HashMap<Integer, String> pd = wj.getPossibleDestinations(aCard);
-			boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], aJack);
+			boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[wj.activePlayer], aCard);
 			assertEquals(vp[0], pd.containsKey(4));
 			assertEquals(vp[1], pd.containsKey(5));
 			assertEquals(vp[2], pd.containsKey(6));
@@ -616,7 +610,7 @@ public class WanderingJacksTest{
 		assertTrue(vp[0]);
 	}
 	@Test
-	public void vPF_WhenPlayingAJack_DontInclude_EmptyRs(){
+	public void vPF_WhenPlayingAJack_DontIncludee_EmptyRs(){
 		assertTrue(wj.retainer[0][0].isEmpty());
 		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], aJack);
 		assertFalse(vp[0]);

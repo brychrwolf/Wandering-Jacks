@@ -483,7 +483,7 @@ public class WanderingJacks{
 		pd.put(ConsoleUI.cardLocation("Go Back"), "Go Back");
 		//  6.1 first time only, show discard pile
 		//  6.4 If playing Joker, cannot discard
-		if(!onFirstPlayFromHandOfTurn
+		if(onFirstPlayFromHandOfTurn
 		&& cardToPlay.getValue() != Card.JOKER)
 			pd.put(ConsoleUI.cardLocation("The Discard Pile"), "The Discard Pile");
 		String output;
