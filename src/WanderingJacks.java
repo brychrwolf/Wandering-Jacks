@@ -258,8 +258,8 @@ public class WanderingJacks{
 		case "Jack":
 			//not if empty
 			//not it contains a Jack
-			//if contains a Queen
-			//if contains a 10
+			//If contains a Queen
+			//If contains a 10
 			for(int i = 0; i < retainer.length; i++){
 				if(!retainer[i].isEmpty()
 				&& !retainer[i].retainsJack()
