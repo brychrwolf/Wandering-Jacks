@@ -20,6 +20,7 @@ public class ConsoleUITest {
 
 	WanderingJacks wj;
 	Card aJoker = new Card(0, 0);
+	Card anAce = new Card(1, 1);
 
 	@Before
 	public void init(){
@@ -224,7 +225,7 @@ public class ConsoleUITest {
 		assertTrue(handSize > 1);
 		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], true);
 		System.setIn(System.in);
-		assertEquals(pr, 1);
+		assertEquals(pr, handSize);
 	}
 
 	@Test
@@ -270,6 +271,32 @@ public class ConsoleUITest {
 		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], false);
 		System.setIn(System.in);
 		assertEquals(pr, 0);
+	}
+
+	@Test
+	public void ptCCFH_notHaveThreeAces_DontInclude_DenOfThieves() throws IOException{
+		wj.player[wj.activePlayer].playFromHand(0);
+		assertTrue(wj.player[wj.activePlayer].handSize() < 3);
+		String mockUserInput = "101"+newLine;	// ignored inputs
+		mockUserInput += "1"+newLine;			// accepted
+		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
+		System.setIn(mockIn);
+		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], false);
+		System.setIn(System.in);
+		assertEquals(pr, 1);
+	}
+
+	@Test
+	public void ptCCFH_haveThreeAces_Include_DenOfThieves() throws IOException{
+		wj.player[wj.activePlayer].addToHand(anAce);
+		wj.player[wj.activePlayer].addToHand(anAce);
+		wj.player[wj.activePlayer].addToHand(anAce);
+		String mockUserInput = "101"+newLine;	// accepted
+		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
+		System.setIn(mockIn);
+		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], false);
+		System.setIn(System.in);
+		assertEquals(pr, 101);
 	}
 
 

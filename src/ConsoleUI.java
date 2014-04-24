@@ -169,11 +169,19 @@ public class ConsoleUI {
 				if(player.getFromHand(i).getValue() == Card.JOKER)
 					options.put(i+1, player.getFromHand(i).toString());
 		}else{
-			for(int i = 0; i < player.handSize(); i++)
-				options.put(i+1, player.getFromHand(i).toString());
+			int numbAces = 0;
+			for(int i = 0; i < player.handSize(); i++){
+				Card c = player.getFromHand(i);
+				options.put(i+1, c.toString());
+				if(c.getValue() == Card.ACE)
+					numbAces++;
+			}
 			// 5.3 if not first move, show end turn as option
 			if(!onFirstPlayFromHandOfTurn)
 				options.put(ConsoleUI.cardLocation("End Turn")+1, "End Turn"); // +1 to translate to displayed option from actual hand index
+			//If have three aces, add "Den of Thieves" as an option.
+			if(numbAces >= 3)
+				options.put(101, "Den of Thieves");
 		}
 		int selection = -1; // Should never return as -1
 		try{ selection = ConsoleUI.getPlayerInput("Please select which card from your hand:", options);
