@@ -262,9 +262,9 @@ public class WanderingJacks{
 	 * currently unusable.
 	 * @param card the Card from which the list of moves is evaluated against
 	 */
-	public static boolean[] validPlayFor(Retainer[] retainer, Card card){
+	public static boolean[] validPlayFor(Retainer[] retainer, String playThis){
 		boolean[] vr = {false, false, false, false};
-		switch(card.getValueAsString()){
+		switch(playThis){
 		case "Jack":
 			//not if empty
 			//not it contains a Jack
@@ -344,7 +344,7 @@ public class WanderingJacks{
 				if(retainer[i].isEmpty())
 					vr[i] = true;
 				else if(!retainer[i].contains(Card.JACK)
-				&& retainer[i].get(0).getValue() == card.getValue())
+				&& retainer[i].get(0).getValueAsString().equals(playThis))
 					vr[i] = true;
 			}
 			break;
@@ -495,7 +495,7 @@ public class WanderingJacks{
 		&& cardToPlay.getValue() != Card.JOKER)
 			pd.put(ConsoleUI.cardLocation("The Discard Pile"), "The Discard Pile");
 		String output;
-		boolean[] isValidDestination = WanderingJacks.validPlayFor(retainer[activePlayer], cardToPlay);
+		boolean[] isValidDestination = WanderingJacks.validPlayFor(retainer[activePlayer], cardToPlay.getValueAsString());
 		for(int i = 0; i < retainer[activePlayer].length; i++){
 			if(isValidDestination[i]){
 				output = "Retainer:";

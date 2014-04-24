@@ -585,7 +585,7 @@ public class WanderingJacksTest{
 		for(int value = 1; value <= Card.KING; value++){
 			Card aCard = new Card(value, 1);
 			HashMap<Integer, String> pd = wj.getPossibleDestinations(aCard);
-			boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[wj.activePlayer], aCard);
+			boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[wj.activePlayer], aCard.getValueAsString());
 			assertEquals(vp[0], pd.containsKey(4));
 			assertEquals(vp[1], pd.containsKey(5));
 			assertEquals(vp[2], pd.containsKey(6));
@@ -600,19 +600,19 @@ public class WanderingJacksTest{
 	@Test
 	public void vPF_WhenPlayingAJack_Include_RsWithQueens(){
 		wj.retainer[0][0].add(aQueen);
-		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], aJack);
+		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "Jack");
 		assertTrue(vp[0]);
 	}
 	@Test
 	public void vPF_WhenPlayingAJack_Include_RsWith10s(){
 		wj.retainer[0][0].add(a10);
-		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], aJack);
+		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "Jack");
 		assertTrue(vp[0]);
 	}
 	@Test
 	public void vPF_WhenPlayingAJack_DontIncludee_EmptyRs(){
 		assertTrue(wj.retainer[0][0].isEmpty());
-		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], aJack);
+		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "Jack");
 		assertFalse(vp[0]);
 	}
 
@@ -620,19 +620,19 @@ public class WanderingJacksTest{
 	@Test
 	public void vPF_WhenPlayingAQueen_Include_EmptyRs(){
 		assertTrue(wj.retainer[0][0].isEmpty());
-		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], aQueen);
+		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "Queen");
 		assertTrue(vp[0]);
 	}
 	@Test
 	public void vPF_WhenPlayingAQueen_Include_RsWithQueens(){
 		wj.retainer[0][0].add(aQueen);
-		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], aQueen);
+		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "Queen");
 		assertTrue(vp[0]);
 	}
 	@Test
 	public void vPF_WhenPlayingAQueen_DontInclude_RsWithJacks(){
 		wj.retainer[0][0].add(aJack);
-		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], aQueen);
+		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "Queen");
 		assertFalse(vp[0]);
 	}
 
@@ -640,19 +640,19 @@ public class WanderingJacksTest{
 	@Test
 	public void vPF_WhenPlayingA10_Include_EmptyRs(){
 		assertTrue(wj.retainer[0][0].isEmpty());
-		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], a10);
+		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "10");
 		assertTrue(vp[0]);
 	}
 	@Test
 	public void vPF_WhenPlayingA10_Include_RsWith10s(){
 		wj.retainer[0][0].add(a10);
-		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], a10);
+		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "10");
 		assertTrue(vp[0]);
 	}
 	@Test
 	public void vPF_WhenPlayingA10_DontInclude_RsWithJacks(){
 		wj.retainer[0][0].add(aJack);
-		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], a10);
+		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "10");
 		assertFalse(vp[0]);
 	}
 
@@ -660,7 +660,7 @@ public class WanderingJacksTest{
 	@Test
 	public void vPF_WhenPlayingAnAce_DontInclude_EmptyRs(){
 		assertTrue(wj.retainer[0][0].isEmpty());
-		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], anAce);
+		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "Ace");
 		assertFalse(vp[0]);
 	}
 	@Test
@@ -671,13 +671,13 @@ public class WanderingJacksTest{
 		assertTrue(wj.retainer[0][0].size() == 3);
 		assertTrue(wj.retainer[0][0].get(0).equals(wj.retainer[0][0].get(1)));
 		assertTrue(wj.retainer[0][0].get(0).equals(wj.retainer[0][0].get(2)));
-		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], anAce);
+		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "Ace");
 		assertTrue(vp[0]);
 	}
 	@Test
 	public void vPF_WhenPlayingAnAce_DontInclude_RsWithJacks(){
 		wj.retainer[0][0].add(aJack);
-		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], anAce);
+		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "Ace");
 		assertFalse(vp[0]);
 	}
 
@@ -685,7 +685,7 @@ public class WanderingJacksTest{
 	@Test
 	public void vPF_WhenPlayingAJoker_DontInclude_RsWithJacks(){
 		wj.retainer[0][0].add(aJack);
-		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], aJoker);
+		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "Joker");
 		assertFalse(vp[0]);
 	}
 
@@ -693,26 +693,26 @@ public class WanderingJacksTest{
 	@Test
 	public void vPF_WhenPlayingAKing_DontInclude_EmptyRs(){
 		assertTrue(wj.retainer[0][0].isEmpty());
-		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], aKing);
+		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "King");
 		assertFalse(vp[0]);
 	}
 	@Test
 	public void vPF_WhenPlayingAKing_Include_RsWithJacks(){
 		wj.retainer[0][0].add(aJack);
-		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], aKing);
+		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "King");
 		assertTrue(vp[0]);
 	}
 	@Test
 	public void vPF_WhenPlayingAKing_DontInclude_RsWithNoJacks(){
 		wj.retainer[0][0].add(a9);
 		assertFalse(wj.retainer[0][0].retainsJack());
-		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], aKing);
+		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "King");
 		assertFalse(vp[0]);
 	}
 	@Test
 	public void vPF_WhenPlayingAKing_DontInclude_RsWithKings(){
 		wj.retainer[0][0].add(aKing);
-		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], aKing);
+		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "King");
 		assertFalse(vp[0]);
 	}
 
@@ -721,7 +721,7 @@ public class WanderingJacksTest{
 	public void vPF_WhenPlayingA2thru9_Include_EmptyRs(){
 		for(int value = 2; value <= 9; value++){
 			wj.retainer[0][0].empty();
-			boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], new Card(value, 1));
+			boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], ""+value);
 			assertTrue(vp[0]);
 		}
 	}
@@ -730,7 +730,7 @@ public class WanderingJacksTest{
 		for(int value = 2; value <= 9; value++){
 			wj.retainer[0][0].empty();
 			wj.retainer[0][0].add(new Card(value, 1));
-			boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], new Card(value, 1));
+			boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], ""+value);
 			assertTrue(vp[0]);
 		}
 	}
