@@ -445,58 +445,6 @@ public class WanderingJacks{
 		return true;
 	}
 
-	private static void makePlay(WanderingJacks game, int fromHere, int toThere, int handIndex){
-		/*
-		 * Translate string to card:
-		 * cardLocations.put(1, "The Deck");
-		 * cardLocations.put(2, "The Discard Pile");
-		 * cardLocations.put(3, "My Hand");
-		 * cardLocations.put(4, "My 1st Retainer");
-		 * cardLocations.put(5, "My 2nd Retainer");
-		 * cardLocations.put(6, "My 3rd Retainer");
-		 * cardLocations.put(7, "My 4th Retainer");
-		 */
-		Card cardFromHere = new Card(); // Should never return as this value
-		switch(fromHere){
-			case 1:
-				cardFromHere = game.deck.dealCard();
-				break;
-			case 2:
-				cardFromHere = game.discardPile.takeTopCard();
-				break;
-			case 3:
-				if(handIndex >= 0 && game.player[game.activePlayer].handSize() > handIndex)
-					cardFromHere = game.player[game.activePlayer].playFromHand(handIndex);
-				else throw new IndexOutOfBoundsException("Hand Index Out of Bounds");
-				break;
-			default:
-				throw new IllegalStateException("That play would be illegal.");
-		}
-		// Move card to location
-		switch(toThere){
-			case 2:
-				game.discardPile.discard(cardFromHere);
-				break;
-			case 3:
-				game.player[game.activePlayer].addToHand(cardFromHere);
-				break;
-			case 4:
-				game.retainer[game.activePlayer][0].add(cardFromHere);
-				break;
-			case 5:
-				game.retainer[game.activePlayer][1].add(cardFromHere);
-				break;
-			case 6:
-				game.retainer[game.activePlayer][2].add(cardFromHere);
-				break;
-			case 7:
-				game.retainer[game.activePlayer][3].add(cardFromHere);
-				break;
-			default:
-				throw new IllegalStateException("That play would be illegal.");
-		}
-	}
-
 	public HashMap<Integer, String> getPossibleDestinations(Card cardToPlay){
 		HashMap<Integer, String> pd = new HashMap<Integer, String>();
 		pd.put(ConsoleUI.cardLocation("Go Back"), "Go Back");
@@ -516,5 +464,74 @@ public class WanderingJacks{
 			}
 		}
 		return pd;
+	}
+
+	private static void makePlay(WanderingJacks game, int fromHere, int toThere, int handIndex){
+		/*
+		 * Translate string to card:
+		 * cardLocations.put(1, "The Deck");
+		 * cardLocations.put(2, "The Discard Pile");
+		 * cardLocations.put(3, "My Hand");
+		 * cardLocations.put(4, "My 1st Retainer");
+		 * cardLocations.put(5, "My 2nd Retainer");
+		 * cardLocations.put(6, "My 3rd Retainer");
+		 * cardLocations.put(7, "My 4th Retainer");
+		 */
+
+		if(fromHere == 3 && handIndex == 101){ // Den of Thieves
+			WanderingJacks.playDenOfThieves(game, toThere);
+		}else{ // Single card play
+			Card cardFromHere = new Card(); // Should never return as this value
+			switch(fromHere){
+				case 1:
+					cardFromHere = game.deck.dealCard();
+					break;
+				case 2:
+					cardFromHere = game.discardPile.takeTopCard();
+					break;
+				case 3:
+					if(handIndex >= 0 && game.player[game.activePlayer].handSize() > handIndex)
+						cardFromHere = game.player[game.activePlayer].playFromHand(handIndex);
+					else throw new IndexOutOfBoundsException("Hand Index Out of Bounds");
+					break;
+				default:
+					throw new IllegalStateException("That play would be illegal.");
+			}
+			// Move card to location
+			switch(toThere){
+				case 2:
+					game.discardPile.discard(cardFromHere);
+					break;
+				case 3:
+					game.player[game.activePlayer].addToHand(cardFromHere);
+					break;
+				case 4:
+					game.retainer[game.activePlayer][0].add(cardFromHere);
+					break;
+				case 5:
+					game.retainer[game.activePlayer][1].add(cardFromHere);
+					break;
+				case 6:
+					game.retainer[game.activePlayer][2].add(cardFromHere);
+					break;
+				case 7:
+					game.retainer[game.activePlayer][3].add(cardFromHere);
+					break;
+				default:
+					throw new IllegalStateException("That play would be illegal.");
+			}
+		}
+	}
+
+	private static void playDenOfThieves(WanderingJacks game, int retainerIndex){
+		Player p = game.player[game.activePlayer];
+		int ri = retainerIndex -4; // -4 to translate from display to actual retainer index
+		int numAces = 0;
+		int index = 0;
+		while(p.handSize() > 0 && numAces <= 3)
+			if(p.getFromHand(index).getValue() == Card.ACE){
+				game.retainer[game.activePlayer][ri].add(p.playFromHand(index));
+				numAces++;
+			}else index++;
 	}
 }
