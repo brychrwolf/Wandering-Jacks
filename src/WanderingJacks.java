@@ -348,6 +348,17 @@ public class WanderingJacks{
 					vr[i] = true;
 			}
 			break;
+		case "Den of Thieves":
+			//If has one and only one card
+			//if that one is a Queen
+			//if that one is a 10
+			for(int i = 0; i < retainer.length; i++){
+				if(retainer[i].size() == 1
+				&& (retainer[i].get(0).getValueAsString().equals("Queen")
+				|| retainer[i].get(0).getValueAsString().equals("10")))
+					vr[i] = true;
+			}
+			break;
 		}
 		return vr;
 	}

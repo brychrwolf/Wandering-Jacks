@@ -735,4 +735,36 @@ public class WanderingJacksTest{
 		}
 	}
 
+	// Den of Thieves
+	@Test
+	public void vPF_WhenPlayingADoT_DontInclude_EmptyRs(){
+		wj.retainer[0][0].empty();
+		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "Den of Thieves");
+		assertFalse(vp[0]);
+	}
+
+	@Test
+	public void vPF_WhenPlayingADoT_DontInclude_RsWithMoreThanOneCard(){
+		wj.retainer[0][0].empty();
+		wj.retainer[0][0].add(aQueen);
+		wj.retainer[0][0].add(aQueen);
+		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "Den of Thieves");
+		assertFalse(vp[0]);
+	}
+
+	@Test
+	public void vPF_WhenPlayingADoT_Include_RsWithQueens(){
+		wj.retainer[0][0].empty();
+		wj.retainer[0][0].add(aQueen);
+		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "Den of Thieves");
+		assertTrue(vp[0]);
+	}
+
+	@Test
+	public void vPF_WhenPlayingADoT_Include_RsWith10s(){
+		wj.retainer[0][0].empty();
+		wj.retainer[0][0].add(a10);
+		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "Den of Thieves");
+		assertTrue(vp[0]);
+	}
 }
