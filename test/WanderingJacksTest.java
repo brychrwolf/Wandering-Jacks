@@ -556,41 +556,41 @@ public class WanderingJacksTest{
 	public void pDs_Always_Returns_ANonEmptyResult(){
 		wj.setUpGameEnvironment();
 		wj.onFirstPlayFromHandOfTurn = true;
-		assertTrue(wj.getPossibleDestinations("Queen").size() > 0);
+		assertTrue(WanderingJacks.getPossibleDestinations(wj.retainer[wj.activePlayer], wj.onFirstPlayFromHandOfTurn, "Queen").size() > 0);
 		wj.onFirstPlayFromHandOfTurn = false;
-		assertTrue(wj.getPossibleDestinations("Queen").size() > 0);
+		assertTrue(WanderingJacks.getPossibleDestinations(wj.retainer[wj.activePlayer], wj.onFirstPlayFromHandOfTurn, "Queen").size() > 0);
 	}
 
 	@Test
 	public void pDs_Always_Include_GoBack(){
 		wj.setUpGameEnvironment();
 		wj.onFirstPlayFromHandOfTurn = true;
-		assertTrue(wj.getPossibleDestinations("Queen").containsValue("Go Back"));
+		assertTrue(WanderingJacks.getPossibleDestinations(wj.retainer[wj.activePlayer], wj.onFirstPlayFromHandOfTurn, "Queen").containsValue("Go Back"));
 		wj.onFirstPlayFromHandOfTurn = false;
-		assertTrue(wj.getPossibleDestinations("Queen").containsValue("Go Back"));
+		assertTrue(WanderingJacks.getPossibleDestinations(wj.retainer[wj.activePlayer], wj.onFirstPlayFromHandOfTurn, "Queen").containsValue("Go Back"));
 	}
 
 	@Test
 	public void pDs_OnFirstMove_Include_DiscardPile(){
 		wj.setUpGameEnvironment();
 		wj.onFirstPlayFromHandOfTurn = true;
-		assertTrue(wj.getPossibleDestinations("Queen").containsValue("The Discard Pile"));
+		assertTrue(WanderingJacks.getPossibleDestinations(wj.retainer[wj.activePlayer], wj.onFirstPlayFromHandOfTurn, "Queen").containsValue("The Discard Pile"));
 	}
 
 	@Test
 	public void pDs_NotOnFirstMove_DontInclude_DiscardPile(){
 		wj.setUpGameEnvironment();
 		wj.onFirstPlayFromHandOfTurn = false;
-		assertFalse(wj.getPossibleDestinations("Queen").containsValue("The Discard Pile"));
+		assertFalse(WanderingJacks.getPossibleDestinations(wj.retainer[wj.activePlayer], wj.onFirstPlayFromHandOfTurn, "Queen").containsValue("The Discard Pile"));
 	}
 
 	@Test
 	public void pDs_WhenPlayingAJoker_DontInclude_DiscardPile(){
 		wj.setUpGameEnvironment();
 		wj.onFirstPlayFromHandOfTurn = true;
-		assertFalse(wj.getPossibleDestinations("Joker").containsValue("The Discard Pile"));
+		assertFalse(WanderingJacks.getPossibleDestinations(wj.retainer[wj.activePlayer], wj.onFirstPlayFromHandOfTurn, "Joker").containsValue("The Discard Pile"));
 		wj.onFirstPlayFromHandOfTurn = false;
-		assertFalse(wj.getPossibleDestinations("Joker").containsValue("The Discard Pile"));
+		assertFalse(WanderingJacks.getPossibleDestinations(wj.retainer[wj.activePlayer], wj.onFirstPlayFromHandOfTurn, "Joker").containsValue("The Discard Pile"));
 	}
 
 	@Test
@@ -598,13 +598,35 @@ public class WanderingJacksTest{
 		wj.setUpGameEnvironment();
 		for(int value = 1; value <= Card.KING; value++){
 			Card aCard = new Card(value, 1);
-			HashMap<Integer, String> pd = wj.getPossibleDestinations(aCard.getValueAsString());
+			HashMap<Integer, String> pd = WanderingJacks.getPossibleDestinations(wj.retainer[wj.activePlayer], wj.onFirstPlayFromHandOfTurn, aCard.getValueAsString());
 			boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[wj.activePlayer], aCard.getValueAsString());
 			assertEquals(vp[0], pd.containsKey(4));
 			assertEquals(vp[1], pd.containsKey(5));
 			assertEquals(vp[2], pd.containsKey(6));
 			assertEquals(vp[3], pd.containsKey(7));
 		}
+	}
+
+	@Test
+	public void pDs_WhenPlayingADoT_Include_ValidRetainers(){
+		Retainer[] rg = new Retainer[4];
+		for(int i = 0; i < 4; i++)
+			rg[i] = new Retainer();
+		rg[0].add(aQueen);
+		rg[1].add(aQueen); rg[1].add(aQueen);
+		rg[2].add(a10);
+		rg[3].add(a9);
+
+		HashMap<Integer, String> pd = WanderingJacks.getPossibleDestinations(rg, true, "Den of Thieves");
+		boolean[] vp = WanderingJacks.validPlayFor(rg, "Den of Thieves");
+		assertTrue(vp[0]);
+		assertFalse(vp[1]);
+		assertTrue(vp[2]);
+		assertFalse(vp[3]);
+		assertEquals(vp[0], pd.containsKey(4));
+		assertEquals(vp[1], pd.containsKey(5));
+		assertEquals(vp[2], pd.containsKey(6));
+		assertEquals(vp[3], pd.containsKey(7));
 	}
 
 	/*

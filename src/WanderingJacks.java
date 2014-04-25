@@ -136,7 +136,7 @@ public class WanderingJacks{
 							cardFromHand = "Den of Thieves";
 							prompt += cardFromHand+":";
 						}
-						playRequest[1] = ConsoleUI.getPlayerInput(prompt, wj.getPossibleDestinations(cardFromHand));
+						playRequest[1] = ConsoleUI.getPlayerInput(prompt, WanderingJacks.getPossibleDestinations(wj.retainer[wj.activePlayer], wj.onFirstPlayFromHandOfTurn, cardFromHand));
 						playRequest[2] = handIndex;
 						//  6.5 if go back chosen, loop to 5 (ask which card from hand to play)
 						if(commitThisPlay = (playRequest[1] != ConsoleUI.cardLocation("Go Back") ? true : false));
@@ -452,21 +452,20 @@ public class WanderingJacks{
 		return true;
 	}
 
-	public HashMap<Integer, String> getPossibleDestinations(String cardToPlay){
+	public static HashMap<Integer, String> getPossibleDestinations(Retainer[] rg, boolean oFPfHoT, String cardToPlay){
 		HashMap<Integer, String> pd = new HashMap<Integer, String>();
 		pd.put(ConsoleUI.cardLocation("Go Back"), "Go Back");
 		//  6.1 first time only, show discard pile
 		//  6.4 If playing Joker, cannot discard
-		if(onFirstPlayFromHandOfTurn
-		&& !cardToPlay.equals("Joker"))
+		if(oFPfHoT && !cardToPlay.equals("Joker"))
 			pd.put(ConsoleUI.cardLocation("The Discard Pile"), "The Discard Pile");
 		String output;
-		boolean[] isValidDestination = WanderingJacks.validPlayFor(retainer[activePlayer], cardToPlay);
-		for(int i = 0; i < retainer[activePlayer].length; i++){
+		boolean[] isValidDestination = WanderingJacks.validPlayFor(rg, cardToPlay);
+		for(int i = 0; i < rg.length; i++){
 			if(isValidDestination[i]){
 				output = "Retainer:";
-				for(int j = 0; j < retainer[activePlayer][i].size(); j++)
-					output += " ["+i+"]["+j+"] = "+retainer[activePlayer][i].get(j).toString();
+				for(int j = 0; j < rg[i].size(); j++)
+					output += " ["+i+"]["+j+"] = "+rg[i].get(j).toString();
 				pd.put(i+4, output);
 			}
 		}
