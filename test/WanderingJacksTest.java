@@ -510,15 +510,29 @@ public class WanderingJacksTest{
 	}
 
 	@Test
-	public void invalidHandIndex_Valid_IfHandIsNotChosenAsOrigin(){
+	public void requestedPlay_invalidHandIndex_Valid_IfHandIsNotChosenAsOrigin(){
 		requestedPlay_ToHand_IsPlayedWhenValid();
 	}
 
 	@Test(expected=IndexOutOfBoundsException.class)
-	public void invalidHandIndex_Invalid_IfHandIsChosenAsOrigin(){
+	public void requestedPlay_invalidHandIndex_Invalid_IfHandIsChosenAsOrigin(){
 		wj.setUpGameEnvironment();
-		int[] pr = {3, 2, -1}; // from hand, to discard pile, with invalid handIndex
+		int[] pr = {3, 2, -9}; // from hand, to discard pile, with invalid handIndex
 		wj.requestPlay(pr);
+	}
+
+	@Test
+	public void requestedPlay_isDenOfThieves_IsPlayedWhenValid(){
+		wj.retainer[0][0].add(aQueen);
+		wj.player[0].addToHand(anAce);
+		wj.player[0].addToHand(anAce);
+		wj.player[0].addToHand(anAce);
+		int[] pr = {3, 4, 101}; // from hand, to 1st retainer, with DenOfThieves
+		assertTrue(wj.requestPlay(pr));
+		assertEquals(wj.player[0].handSize(), 0);
+		assertEquals(wj.retainer[0][0].size(), 4);
+		assertTrue(wj.retainer[0][0].get(0).equals(aQueen));
+		assertTrue(wj.retainer[0][0].get(3).equals(anAce));
 	}
 
 	/*
