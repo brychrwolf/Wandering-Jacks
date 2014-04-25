@@ -92,7 +92,8 @@ public class WanderingJacks{
 
 	public static void main(String[] args) throws IOException {
 		WanderingJacks wj = new WanderingJacks();
-		wj.setUpGameEnvironment();
+		//wj.setUpGameEnvironment();
+		wj.stageGameEnvironment();
 		int[] playRequest = new int[3];
 		//while the game is not over
 		while(!wj.isGameOver()){
@@ -117,7 +118,7 @@ public class WanderingJacks{
 					// 	5.2 If drew a joker, only option is the Joker
 					//  5.3 if not first move, show end turn as option
 					playRequest[0] = ConsoleUI.cardLocation("My Hand");
-					int handIndex = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], wj.onFirstPlayFromHandOfTurn) - 1; // -1 to translate from displayed option to actual hand index
+					int handIndex = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], wj.onFirstPlayFromHandOfTurn); // -1 to translate from displayed option to actual hand index
 					if(handIndex == ConsoleUI.cardLocation("End Turn")){
 						commitThisPlay = true;
 						endThisTurn = true;
@@ -261,6 +262,22 @@ public class WanderingJacks{
 		if(discardPile.size() > 0)
 			deck.shuffleWithOtherCards(discardPile.takeAllCards());
 		discardPile.discard(deck.dealCard());
+	}
+
+
+
+	/**
+	 * Set up a staged game environment.
+	 */
+	public void stageGameEnvironment(){
+		// Den of thieves
+		deck.dealCard();
+		deck.dealCard();
+		for(int i = 0; i < 3; i++)
+			player[0].addToHand(new Card(1, 1));
+		for(int i = 0; i < 2; i++)
+			for(int j = 0; j < 4; j++)
+				retainer[i][j].add(new Card(12, 1));
 	}
 
 	/**
@@ -534,7 +551,7 @@ public class WanderingJacks{
 		int ri = retainerIndex -4; // -4 to translate from display to actual retainer index
 		int numAces = 0;
 		int index = 0;
-		while(p.handSize() > 0 && numAces <= 3)
+		while(p.handSize() > 0 && numAces < 3)
 			if(p.getFromHand(index).getValue() == Card.ACE){
 				game.retainer[game.activePlayer][ri].add(p.playFromHand(index));
 				numAces++;

@@ -594,6 +594,15 @@ public class WanderingJacksTest{
 	}
 
 	@Test
+	public void pDs_WhenPlayingADoT_DontInclude_DiscardPile(){
+		wj.setUpGameEnvironment();
+		wj.onFirstPlayFromHandOfTurn = true;
+		assertFalse(WanderingJacks.getPossibleDestinations(wj.retainer[wj.activePlayer], wj.onFirstPlayFromHandOfTurn, "Den of Thieves").containsValue("The Discard Pile"));
+		wj.onFirstPlayFromHandOfTurn = false;
+		assertFalse(WanderingJacks.getPossibleDestinations(wj.retainer[wj.activePlayer], wj.onFirstPlayFromHandOfTurn, "Den of Thieves").containsValue("The Discard Pile"));
+	}
+
+	@Test
 	public void pDs_Always_Include_ValidPlays(){
 		wj.setUpGameEnvironment();
 		for(int value = 1; value <= Card.KING; value++){
