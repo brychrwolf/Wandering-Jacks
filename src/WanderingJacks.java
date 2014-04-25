@@ -92,8 +92,8 @@ public class WanderingJacks{
 
 	public static void main(String[] args) throws IOException {
 		WanderingJacks wj = new WanderingJacks();
-		//wj.setUpGameEnvironment();
-		wj.stageGameEnvironment();
+		wj.setUpGameEnvironment();
+		//wj.stageGameEnvironment();
 		int[] playRequest = new int[3];
 		//while the game is not over
 		while(!wj.isGameOver()){
@@ -266,8 +266,8 @@ public class WanderingJacks{
 
 
 
-	/**
-	 * Set up a staged game environment.
+	/*
+	 * Testing Envinronment Only!
 	 */
 	public void stageGameEnvironment(){
 		// Den of thieves
@@ -474,7 +474,9 @@ public class WanderingJacks{
 		pd.put(ConsoleUI.cardLocation("Go Back"), "Go Back");
 		//  6.1 first time only, show discard pile
 		//  6.4 If playing Joker, cannot discard
-		if(oFPfHoT && !cardToPlay.equals("Joker"))
+		if(oFPfHoT
+		&& !cardToPlay.equals("Joker")
+		&& !cardToPlay.equals("Den of Thieves"))
 			pd.put(ConsoleUI.cardLocation("The Discard Pile"), "The Discard Pile");
 		String output;
 		boolean[] isValidDestination = WanderingJacks.validPlayFor(rg, cardToPlay);
