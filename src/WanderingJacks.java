@@ -122,13 +122,20 @@ public class WanderingJacks{
 						commitThisPlay = true;
 						endThisTurn = true;
 					}else{
-						Card cardFromHand = wj.player[wj.activePlayer].getFromHand(handIndex);
-						// 6. ask which of available destinations to go
-						//	6.1 first time only, show discard pile
-						//	6.2 show -back- as destination
-						//	6.3 check validation rules for which retainer is valid
-						//  6.4 If playing Joker, cannot discard
-						String prompt = "Enter *to* where to play your "+cardFromHand.toString()+":";
+						String cardFromHand = ""; // Should never be used
+						String prompt = "Enter *to* where to play your ";
+						if(handIndex <= wj.player[wj.activePlayer].handSize() + 4){ // Single Card Play
+							cardFromHand = wj.player[wj.activePlayer].getFromHand(handIndex).getValueAsString();
+							// 6. ask which of available destinations to go
+							//	6.1 first time only, show discard pile
+							//	6.2 show -back- as destination
+							//	6.3 check validation rules for which retainer is valid
+							//  6.4 If playing Joker, cannot discard
+							prompt += cardFromHand.toString()+":";
+						}else if(handIndex == 101){ // Den of Thieves
+							cardFromHand = "Den of Thieves";
+							prompt += cardFromHand+":";
+						}
 						playRequest[1] = ConsoleUI.getPlayerInput(prompt, wj.getPossibleDestinations(cardFromHand));
 						playRequest[2] = handIndex;
 						//  6.5 if go back chosen, loop to 5 (ask which card from hand to play)
@@ -445,16 +452,16 @@ public class WanderingJacks{
 		return true;
 	}
 
-	public HashMap<Integer, String> getPossibleDestinations(Card cardToPlay){
+	public HashMap<Integer, String> getPossibleDestinations(String cardToPlay){
 		HashMap<Integer, String> pd = new HashMap<Integer, String>();
 		pd.put(ConsoleUI.cardLocation("Go Back"), "Go Back");
 		//  6.1 first time only, show discard pile
 		//  6.4 If playing Joker, cannot discard
 		if(onFirstPlayFromHandOfTurn
-		&& cardToPlay.getValue() != Card.JOKER)
+		&& !cardToPlay.equals("Joker"))
 			pd.put(ConsoleUI.cardLocation("The Discard Pile"), "The Discard Pile");
 		String output;
-		boolean[] isValidDestination = WanderingJacks.validPlayFor(retainer[activePlayer], cardToPlay.getValueAsString());
+		boolean[] isValidDestination = WanderingJacks.validPlayFor(retainer[activePlayer], cardToPlay);
 		for(int i = 0; i < retainer[activePlayer].length; i++){
 			if(isValidDestination[i]){
 				output = "Retainer:";

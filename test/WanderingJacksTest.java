@@ -556,41 +556,41 @@ public class WanderingJacksTest{
 	public void pDs_Always_Returns_ANonEmptyResult(){
 		wj.setUpGameEnvironment();
 		wj.onFirstPlayFromHandOfTurn = true;
-		assertTrue(wj.getPossibleDestinations(aQueen).size() > 0);
+		assertTrue(wj.getPossibleDestinations("Queen").size() > 0);
 		wj.onFirstPlayFromHandOfTurn = false;
-		assertTrue(wj.getPossibleDestinations(aQueen).size() > 0);
+		assertTrue(wj.getPossibleDestinations("Queen").size() > 0);
 	}
 
 	@Test
 	public void pDs_Always_Include_GoBack(){
 		wj.setUpGameEnvironment();
 		wj.onFirstPlayFromHandOfTurn = true;
-		assertTrue(wj.getPossibleDestinations(aQueen).containsValue("Go Back"));
+		assertTrue(wj.getPossibleDestinations("Queen").containsValue("Go Back"));
 		wj.onFirstPlayFromHandOfTurn = false;
-		assertTrue(wj.getPossibleDestinations(aQueen).containsValue("Go Back"));
+		assertTrue(wj.getPossibleDestinations("Queen").containsValue("Go Back"));
 	}
 
 	@Test
 	public void pDs_OnFirstMove_Include_DiscardPile(){
 		wj.setUpGameEnvironment();
 		wj.onFirstPlayFromHandOfTurn = true;
-		assertTrue(wj.getPossibleDestinations(aQueen).containsValue("The Discard Pile"));
+		assertTrue(wj.getPossibleDestinations("Queen").containsValue("The Discard Pile"));
 	}
 
 	@Test
 	public void pDs_NotOnFirstMove_DontInclude_DiscardPile(){
 		wj.setUpGameEnvironment();
 		wj.onFirstPlayFromHandOfTurn = false;
-		assertFalse(wj.getPossibleDestinations(aQueen).containsValue("The Discard Pile"));
+		assertFalse(wj.getPossibleDestinations("Queen").containsValue("The Discard Pile"));
 	}
 
 	@Test
 	public void pDs_WhenPlayingAJoker_DontInclude_DiscardPile(){
 		wj.setUpGameEnvironment();
 		wj.onFirstPlayFromHandOfTurn = true;
-		assertFalse(wj.getPossibleDestinations(aJoker).containsValue("The Discard Pile"));
+		assertFalse(wj.getPossibleDestinations("Joker").containsValue("The Discard Pile"));
 		wj.onFirstPlayFromHandOfTurn = false;
-		assertFalse(wj.getPossibleDestinations(aJoker).containsValue("The Discard Pile"));
+		assertFalse(wj.getPossibleDestinations("Joker").containsValue("The Discard Pile"));
 	}
 
 	@Test
@@ -598,7 +598,7 @@ public class WanderingJacksTest{
 		wj.setUpGameEnvironment();
 		for(int value = 1; value <= Card.KING; value++){
 			Card aCard = new Card(value, 1);
-			HashMap<Integer, String> pd = wj.getPossibleDestinations(aCard);
+			HashMap<Integer, String> pd = wj.getPossibleDestinations(aCard.getValueAsString());
 			boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[wj.activePlayer], aCard.getValueAsString());
 			assertEquals(vp[0], pd.containsKey(4));
 			assertEquals(vp[1], pd.containsKey(5));
