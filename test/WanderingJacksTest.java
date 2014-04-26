@@ -481,13 +481,10 @@ public class WanderingJacksTest{
 	public void requestedPlay_FromHand_ToDiscardPile_IsPlayedWhenValid(){
 		wj.setUpGameEnvironment();
 		Card cardFromHand = wj.player[wj.activePlayer].getFromHand(0);
-		int originalHandSize = wj.player[wj.activePlayer].handSize();
 		int originalDiscardPileSize = wj.discardPile.size();
 		int[] pr = {3, 2, 0}; // from my hand, to discard pile, with valid handIndex
 		assertTrue(wj.requestPlay(pr));
-		int newHandSize = wj.player[wj.activePlayer].handSize();
 		int newDiscardPileSize = wj.discardPile.size();
-		assertEquals(newHandSize, originalHandSize - 1);
 		assertEquals(newDiscardPileSize, originalDiscardPileSize + 1);
 		assertEquals(cardFromHand, wj.discardPile.peekAtTopCard());
 	}
@@ -498,7 +495,6 @@ public class WanderingJacksTest{
 		wj.player[0].addToHand(a9);
 		int[] pr = {3, 4, 0}; // from my hand, to My 1st Retainer, with valid handIndex
 		assertTrue(wj.requestPlay(pr));
-		assertEquals(wj.player[0].handSize(), 0);
 		assertEquals(wj.retainer[0][0].size(), 2);
 		assertEquals(wj.retainer[0][0].get(1), a9);
 	}
@@ -529,10 +525,36 @@ public class WanderingJacksTest{
 		wj.player[0].addToHand(anAce);
 		int[] pr = {3, 4, 101}; // from hand, to 1st retainer, with DenOfThieves
 		assertTrue(wj.requestPlay(pr));
-		assertEquals(wj.player[0].handSize(), 0);
 		assertEquals(wj.retainer[0][0].size(), 4);
 		assertTrue(wj.retainer[0][0].get(0).equals(aQueen));
 		assertTrue(wj.retainer[0][0].get(3).equals(anAce));
+	}
+
+	@Test
+	public void requestedPlayFromHand_always_addsCardsToEnsure3inHandAtAllTimes(){
+		wj.retainer[0][0].add(a9);
+		wj.player[0].addToHand(a9);
+		assertEquals(wj.player[0].handSize(), 1);
+		int origDeckSize = wj.deck.cardsLeft();
+		int[] pr = {3, 4, 0}; // from hand, to 1st retainer, my 1 card
+		assertTrue(wj.requestPlay(pr));
+		assertEquals(wj.player[0].handSize(), 3);
+		assertEquals(wj.deck.cardsLeft(), origDeckSize - 3); // -3 because players hand was 1, played 1, so 0 left is 3 away from target 3
+	}
+
+	@Test
+	public void requestedPlayFromHand_shufflesDeck_whenNotEnoughToEnsure3inHandAtAllTimes(){
+		wj.retainer[0][0].add(a9);
+		wj.player[0].addToHand(a9);
+		while(wj.deck.cardsLeft() > 0)
+			wj.discardPile.discard(wj.deck.dealCard());
+		int origDeckSize = wj.deck.cardsLeft();
+		int origDiscardPileSize = wj.discardPile.size();
+		int[] pr = {3, 4, 0}; // from hand, to 1st retainer, my 1 card
+		assertTrue(wj.requestPlay(pr));
+		assertEquals(wj.player[0].handSize(), 3);
+		assertEquals(wj.deck.cardsLeft(), origDeckSize + origDiscardPileSize - 4); // -3 for hand, -1 for discard pile
+		assertEquals(wj.discardPile.size(), 1);
 	}
 
 	/*

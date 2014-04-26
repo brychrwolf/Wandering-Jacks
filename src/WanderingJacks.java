@@ -267,7 +267,7 @@ public class WanderingJacks{
 
 
 	/*
-	 * Testing Envinronment Only!
+	 * Testing Environment Only!
 	 */
 	public void stageGameEnvironment(){
 		// Den of thieves
@@ -464,8 +464,18 @@ public class WanderingJacks{
 			//e.printStackTrace();
 			throw new IllegalStateException("That play would be illegal.");
 		}
-
+		// play in actual environment
 		WanderingJacks.makePlay(this, fromHere, toThere, handIndex);
+		// ensure players' hands stay at 3 cards after play
+		if(fromHere == 3){
+			while(player[activePlayer].handSize() < 3){
+				if(deck.cardsLeft() == 0){
+					deck.shuffleWithOtherCards(discardPile.takeAllCards());
+					discardPile.discard(deck.dealCard());
+				}
+				player[activePlayer].addToHand(deck.dealCard());
+			}
+		}
 		return true;
 	}
 
