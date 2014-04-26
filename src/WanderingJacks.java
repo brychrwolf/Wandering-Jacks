@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Wandering Jacks is a two-player card game.
@@ -56,6 +57,15 @@ public class WanderingJacks{
 	 * @see Retainer
 	 */
 	public Retainer[][] retainer;
+
+	private final static HashSet<Integer> cardValuesValidForRetainerBottom = new HashSet<Integer>();
+	static{
+		for(int i = 0; i <= 13; i++)
+			cardValuesValidForRetainerBottom.add(i);
+		cardValuesValidForRetainerBottom.remove(Card.ACE);
+		cardValuesValidForRetainerBottom.remove(Card.JACK);
+		cardValuesValidForRetainerBottom.remove(Card.KING);
+	}
 
 	/**
 	 * Creates the game environment with two players, their array of 4
@@ -114,6 +124,8 @@ public class WanderingJacks{
 				while(commitThisPlay == false){
 					playRequest = new int[3];
 					// 5. ask which card-from-hand to play
+					//  5.1.1 restrict options if there is an empty retainer
+					wj.ensureNoEmptyRetainersExist();
 					// 	5.1 list all cards in hand
 					// 	5.2 If drew a joker, only option is the Joker
 					//  5.3 if not first move, show end turn as option
@@ -480,6 +492,14 @@ public class WanderingJacks{
 	}
 
 	public static HashMap<Integer, String> getPossibleDestinations(Retainer[] rg, boolean oFPfHoT, String cardToPlay){
+		// determine if there is an empty retainer and which
+		boolean anEmptyRetainerExists = false;
+		boolean[] iIsEmpty = new boolean[rg.length];
+		for(int i = 0; i < rg.length; i++){
+			iIsEmpty[i] = rg[i].isEmpty();
+			if(iIsEmpty[i] == true)
+				anEmptyRetainerExists = true;
+		}
 		HashMap<Integer, String> pd = new HashMap<Integer, String>();
 		pd.put(ConsoleUI.cardLocation("Go Back"), "Go Back");
 		//  6.1 first time only, show discard pile
@@ -491,14 +511,26 @@ public class WanderingJacks{
 		String output;
 		boolean[] isValidDestination = WanderingJacks.validPlayFor(rg, cardToPlay);
 		for(int i = 0; i < rg.length; i++){
-			if(isValidDestination[i]){
+			if((!anEmptyRetainerExists && isValidDestination[i])
+			|| (anEmptyRetainerExists && iIsEmpty[i])){
 				output = "Retainer:";
-				for(int j = 0; j < rg[i].size(); j++)
+				if(rg[i].size() == 0)
+					output += " ["+i+"] empty";
+				else for(int j = 0; j < rg[i].size(); j++)
 					output += " ["+i+"]["+j+"] = "+rg[i].get(j).toString();
 				pd.put(i+4, output);
 			}
 		}
 		return pd;
+	}
+
+	public void ensureNoEmptyRetainersExist(){
+		while(retainer[activePlayer][0].isEmpty()
+		|| retainer[activePlayer][1].isEmpty()
+		|| retainer[activePlayer][2].isEmpty()
+		|| retainer[activePlayer][3].isEmpty()){
+			break;
+		}
 	}
 
 	private static void makePlay(WanderingJacks game, int fromHere, int toThere, int handIndex){
