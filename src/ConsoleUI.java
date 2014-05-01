@@ -161,7 +161,7 @@ public class ConsoleUI {
 		return selection;
 	}
 
-	public static int promptPlayerToChooseCardFromHand(Player player, boolean onFirstPlayFromHandOfTurn){
+	public static int promptPlayerToChooseCardFromHand(Player player, Retainer[] retainerGroup, boolean onFirstPlayFromHandOfTurn){
 		HashMap<Integer, String> options = new HashMap<Integer, String>();
 		// 5.2 If joker in hand, only option to play is the Joker
 		if(player.handContains("Joker")){
@@ -176,7 +176,7 @@ public class ConsoleUI {
 				if(c.getValue() == Card.ACE)
 					numbAces++;
 			}
-			// 5.3 if not first move, show end turn as option
+			// if not first move and no empty retainers, show end turn as option
 			if(!onFirstPlayFromHandOfTurn)
 				options.put(ConsoleUI.cardLocation("End Turn")+1, "End Turn"); // +1 to translate to displayed option from actual hand index
 			//If have three aces, add "Den of Thieves" as an option.

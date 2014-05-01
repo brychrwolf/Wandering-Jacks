@@ -102,43 +102,41 @@ public class WanderingJacks{
 
 	public static void main(String[] args) throws IOException {
 		WanderingJacks wj = new WanderingJacks();
-		//wj.setUpGameEnvironment();
-		wj.stageGameEnvironment();
+		wj.playNewGame();
+	}
+
+	public void playNewGame() throws IOException{
+		//setUpGameEnvironment();
+		stageGameEnvironment();
 		int[] playRequest = new int[3];
-		//while the game is not over
-		while(!wj.isGameOver()){
+		while(!isGameOver()){
 			// https://www.pivot1altracker.com/story/show/69883240
-			// 1. Display game state
-			ConsoleUI.draw(wj);
-			// 2. ask discard or deck
+			// display game state
+			ConsoleUI.draw(this);
+			// ask discard or deck
 			playRequest[0] = ConsoleUI.promptPlayerToDrawInitialCard();
-			// 3. move card from origin to hand
+			// move card from origin to hand
 			playRequest[1] = ConsoleUI.cardLocation("My Hand");
 			playRequest[2] = -1;
-			wj.requestPlay(playRequest);
-			// 4. Display game state
-			ConsoleUI.draw(wj);
+			requestPlay(playRequest);
+			// display game state
+			ConsoleUI.draw(this);
 			boolean endThisTurn = false;
 			while(endThisTurn == false){
 				boolean commitThisPlay = false;
 				while(commitThisPlay == false){
 					playRequest = new int[3];
-					// 5. ask which card-from-hand to play
-					//  5.1.1 resolve any empty retainers immediately
-					wj.ensureNoEmptyRetainersExist();
-					// 	5.1 list all cards in hand
-					// 	5.2 If drew a joker, only option is the Joker
-					//  5.3 if not first move, show end turn as option
+					// ask which card-from-hand to play
 					playRequest[0] = ConsoleUI.cardLocation("My Hand");
-					int handIndex = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], wj.onFirstPlayFromHandOfTurn);
+					int handIndex = ConsoleUI.promptPlayerToChooseCardFromHand(player[activePlayer], retainer[activePlayer], onFirstPlayFromHandOfTurn);
 					if(handIndex == ConsoleUI.cardLocation("End Turn")){
 						commitThisPlay = true;
 						endThisTurn = true;
 					}else{
 						String cardFromHand = ""; // Should never be used
 						String prompt = "Enter *to* where to play your ";
-						if(handIndex <= wj.player[wj.activePlayer].handSize() + 4){ // Single Card Play
-							cardFromHand = wj.player[wj.activePlayer].getFromHand(handIndex).getValueAsString();
+						if(handIndex <= player[activePlayer].handSize() + 4){ // Single Card Play
+							cardFromHand = player[activePlayer].getFromHand(handIndex).getValueAsString();
 							// 6. ask which of available destinations to go
 							//	6.1 first time only, show discard pile
 							//	6.2 show -back- as destination
@@ -149,7 +147,7 @@ public class WanderingJacks{
 							cardFromHand = "Den of Thieves";
 							prompt += cardFromHand+":";
 						}
-						playRequest[1] = ConsoleUI.getPlayerInput(prompt, WanderingJacks.getPossibleDestinations(wj.retainer[wj.activePlayer], wj.onFirstPlayFromHandOfTurn, cardFromHand));
+						playRequest[1] = ConsoleUI.getPlayerInput(prompt, WanderingJacks.getPossibleDestinations(retainer[activePlayer], onFirstPlayFromHandOfTurn, cardFromHand));
 						playRequest[2] = handIndex;
 						//  6.5 if go back chosen, loop to 5 (ask which card from hand to play)
 						if(commitThisPlay = (playRequest[1] != ConsoleUI.cardLocation("Go Back") ? true : false));
@@ -157,13 +155,13 @@ public class WanderingJacks{
 				}
 				if(endThisTurn == false){
 					// 7. move card from hand to destination
-					wj.requestPlay(playRequest);
+					requestPlay(playRequest);
 					//  7.1 No longer be the first play-from-hand of turn
-					wj.onFirstPlayFromHandOfTurn = false;
+					onFirstPlayFromHandOfTurn = false;
 					// 8. perform any fancy moves like 3oak+A
 					//	8.1 prompt user for opponent's retainer if necessary
 					// 9. display game state
-					ConsoleUI.draw(wj);
+					ConsoleUI.draw(this);
 					// 10. ask to end turn or loop to 5 (ask which card from hand to play)
 					//  10.1 choosing discard pile as destination ends turn automatically
 					if(playRequest[1] == ConsoleUI.cardLocation("The Discard Pile"))
@@ -172,7 +170,7 @@ public class WanderingJacks{
 				}
 			}
 			//11. END TURN
-			wj.endTurn();
+			this.endTurn();
 		}System.out.println("Game Over.");
 	}
 

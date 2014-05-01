@@ -224,7 +224,7 @@ public class ConsoleUITest {
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
 		assertTrue(handSize > 1);
-		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], true);
+		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], wj.retainer[wj.activePlayer], true);
 		System.setIn(System.in);
 		assertEquals(pr, handSize);
 	}
@@ -234,7 +234,7 @@ public class ConsoleUITest {
 		String mockUserInput = "1"+newLine;		// accepted
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
-		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], true);
+		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], wj.retainer[wj.activePlayer], true);
 		System.setIn(System.in);
 		assertEquals(pr, 1);
 	}
@@ -248,7 +248,7 @@ public class ConsoleUITest {
 		mockUserInput += "1"+newLine;		// accepted
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
-		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], true);
+		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], wj.retainer[wj.activePlayer], true);
 		System.setIn(System.in);
 		assertEquals(pr, 1);
 	}
@@ -259,7 +259,7 @@ public class ConsoleUITest {
 		mockUserInput += "1"+newLine;		// accepted
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
-		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], true);
+		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], wj.retainer[wj.activePlayer], true);
 		System.setIn(System.in);
 		assertEquals(pr, 1);
 	}
@@ -269,7 +269,7 @@ public class ConsoleUITest {
 		String mockUserInput = "0"+newLine; // accepted
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
-		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], false);
+		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], wj.retainer[wj.activePlayer], false);
 		System.setIn(System.in);
 		assertEquals(pr, 0);
 	}
@@ -282,7 +282,7 @@ public class ConsoleUITest {
 		mockUserInput += "1"+newLine;			// accepted
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
-		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], false);
+		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], wj.retainer[wj.activePlayer], false);
 		System.setIn(System.in);
 		assertEquals(pr, 1);
 	}
@@ -295,9 +295,14 @@ public class ConsoleUITest {
 		String mockUserInput = "101"+newLine;	// accepted
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
-		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], false);
+		int pr = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], wj.retainer[wj.activePlayer], false);
 		System.setIn(System.in);
 		assertEquals(pr, 101);
+	}
+
+	@Test
+	public void ptCCFH_haveEmptyRetainer_DontInclude_EndTurn(){
+		fail("not implemented");
 	}
 
 

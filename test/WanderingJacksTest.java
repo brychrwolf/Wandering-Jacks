@@ -87,6 +87,14 @@ public class WanderingJacksTest{
 			}
 	}
 
+	/*
+	 * playNewGame()
+	 */
+	@Test
+	public void playNewGame(){
+		fail("not implemented");
+	}
+
 	/**
 	 * This test ensures that at the beginning of the game, the deck has 54
 	 * cards (the standard 52 + 2 Jokers).
