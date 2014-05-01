@@ -64,6 +64,15 @@ public class WanderingJacksTest{
 	}
 
 	@Test
+	public void cloningGame_CreatesNewButEqual_hasAnEmptyRetainer(){
+		WanderingJacks clone = new WanderingJacks(wj);
+		assertNotSame(wj.hasAnEmptyRetainer, clone.hasAnEmptyRetainer);
+		for(int i = 0; i < 2; i++){
+			assertEquals(wj.hasAnEmptyRetainer[i], clone.hasAnEmptyRetainer[i]);
+		}
+	}
+
+	@Test
 	public void cloningGame_CreatesNew_deck(){
 		WanderingJacks clone = new WanderingJacks(wj);
 		assertNotSame(wj.deck, clone.deck);
@@ -887,6 +896,7 @@ public class WanderingJacksTest{
 		String mockUserInput = "1"+newLine;
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
+		fail("infinte loop");
 		wj.ensureNoEmptyRetainersExist();
 		System.setIn(System.in);
 
