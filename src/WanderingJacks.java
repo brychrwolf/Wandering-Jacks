@@ -58,7 +58,7 @@ public class WanderingJacks{
 	 */
 	public Retainer[][] retainer;
 
-	private final static HashSet<Integer> cardValuesValidForRetainerBottom = new HashSet<Integer>();
+	public final static HashSet<Integer> cardValuesValidForRetainerBottom = new HashSet<Integer>();
 	static{
 		for(int i = 0; i <= 13; i++)
 			cardValuesValidForRetainerBottom.add(i);
@@ -102,12 +102,12 @@ public class WanderingJacks{
 
 	public static void main(String[] args) throws IOException {
 		WanderingJacks wj = new WanderingJacks();
-		wj.setUpGameEnvironment();
-		//wj.stageGameEnvironment();
+		//wj.setUpGameEnvironment();
+		wj.stageGameEnvironment();
 		int[] playRequest = new int[3];
 		//while the game is not over
 		while(!wj.isGameOver()){
-			// https://www.pivotaltracker.com/story/show/69883240
+			// https://www.pivot1altracker.com/story/show/69883240
 			// 1. Display game state
 			ConsoleUI.draw(wj);
 			// 2. ask discard or deck
@@ -124,13 +124,13 @@ public class WanderingJacks{
 				while(commitThisPlay == false){
 					playRequest = new int[3];
 					// 5. ask which card-from-hand to play
-					//  5.1.1 restrict options if there is an empty retainer
+					//  5.1.1 resolve any empty retainers immediately
 					wj.ensureNoEmptyRetainersExist();
 					// 	5.1 list all cards in hand
 					// 	5.2 If drew a joker, only option is the Joker
 					//  5.3 if not first move, show end turn as option
 					playRequest[0] = ConsoleUI.cardLocation("My Hand");
-					int handIndex = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], wj.onFirstPlayFromHandOfTurn); // -1 to translate from displayed option to actual hand index
+					int handIndex = ConsoleUI.promptPlayerToChooseCardFromHand(wj.player[wj.activePlayer], wj.onFirstPlayFromHandOfTurn);
 					if(handIndex == ConsoleUI.cardLocation("End Turn")){
 						commitThisPlay = true;
 						endThisTurn = true;
@@ -282,14 +282,22 @@ public class WanderingJacks{
 	 * Testing Environment Only!
 	 */
 	public void stageGameEnvironment(){
+		deck.dealCard(); // Joker
+		deck.dealCard(); // Joker
 		// Den of thieves
-		deck.dealCard();
+		/*deck.dealCard();
 		deck.dealCard();
 		for(int i = 0; i < 3; i++)
 			player[0].addToHand(new Card(1, 1));
 		for(int i = 0; i < 2; i++)
 			for(int j = 0; j < 4; j++)
-				retainer[i][j].add(new Card(12, 1));
+				retainer[i][j].add(new Card(12, 1));*/
+		//Empty Retainer
+		player[0].addToHand(new Card(Card.JACK, 1));
+		player[0].addToHand(new Card(Card.JACK, 1));
+		player[0].addToHand(new Card(Card.JACK, 1));
+		player[0].addToHand(new Card(Card.JACK, 1));
+
 	}
 
 	/**
@@ -524,12 +532,36 @@ public class WanderingJacks{
 		return pd;
 	}
 
-	public void ensureNoEmptyRetainersExist(){
+	public void ensureNoEmptyRetainersExist() throws IOException{
 		while(retainer[activePlayer][0].isEmpty()
 		|| retainer[activePlayer][1].isEmpty()
 		|| retainer[activePlayer][2].isEmpty()
 		|| retainer[activePlayer][3].isEmpty()){
-			break;
+			int[] playRequest = new int[3];
+			playRequest[0] = ConsoleUI.cardLocation("My Hand");
+			// If have card to play in retainer, play it
+			boolean haveCardToPlay = false;
+			for(int i = 0; i < player[activePlayer].handSize(); i++){
+				if(WanderingJacks.cardValuesValidForRetainerBottom.contains(player[activePlayer].getFromHand(i).getValue()))
+					haveCardToPlay = true;
+			}
+			int handIndex;
+			if(haveCardToPlay){
+				handIndex = ConsoleUI.promptPlayerToChooseCardToFillEmptyRetainer(player[activePlayer]);
+
+			}else{ // get card to play
+				ConsoleUI.draw(this);
+				String output = "You do not have a valid card to play to your empty register."+ConsoleUI.newLine;
+				output += "Please select a card to discard.";
+				HashMap<Integer, String> options = new HashMap<Integer, String>();
+				for(int i = 0; i < player[activePlayer].handSize(); i++){
+					Card c = player[activePlayer].getFromHand(i);
+					options.put(i+1, c.toString());
+				}
+				handIndex = ConsoleUI.getPlayerInput(output, options) - 1;
+				discardPile.discard(player[activePlayer].playFromHand(handIndex));
+				player[activePlayer].addToHand(deck.dealCard());
+			}
 		}
 	}
 

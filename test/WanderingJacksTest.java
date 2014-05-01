@@ -3,7 +3,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -11,6 +15,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class WanderingJacksTest{
+	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+	private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+	private final String newLine = System.getProperty("line.separator");
+
 	Card aJoker = new Card(0, 0);
 	Card anAce = new Card(1, 1);
 	Card aKing = new Card(13, 1);
@@ -557,6 +565,11 @@ public class WanderingJacksTest{
 		assertEquals(wj.discardPile.size(), 1);
 	}
 
+	@Test
+	public void requestedPlay_resultingInEmptyRetainer_forcesPlayerToPlayToRetainer(){
+		fail("not implemented");
+	}
+
 	/*
 	 * onFirstMoveOfTurn tracker
 	 */
@@ -647,7 +660,6 @@ public class WanderingJacksTest{
 		rg[1].add(aQueen); rg[1].add(aQueen);
 		rg[2].add(a10);
 		rg[3].add(a9);
-
 		HashMap<Integer, String> pd = WanderingJacks.getPossibleDestinations(rg, true, "Den of Thieves");
 		boolean[] vp = WanderingJacks.validPlayFor(rg, "Den of Thieves");
 		assertTrue(vp[0]);
@@ -658,6 +670,21 @@ public class WanderingJacksTest{
 		assertEquals(vp[1], pd.containsKey(5));
 		assertEquals(vp[2], pd.containsKey(6));
 		assertEquals(vp[3], pd.containsKey(7));
+	}
+
+	@Test
+	public void pDs_whenPlayerHasAnEmptyRetainer_Include_OnlyEmptyOfRetainers(){
+		fail("not implemented");
+	}
+
+	@Test
+	public void pDs_whenPlayerHasAnEmptyRetainer_andValidCards_DontInclude_DiscardPile(){
+		fail("not implemented");
+	}
+
+	@Test
+	public void pDs_whenPlayerHasAnEmptyRetainer_andNoValidCards_Include_DiscardPile(){
+		fail("not implemented");
 	}
 
 	/*
@@ -812,7 +839,6 @@ public class WanderingJacksTest{
 
 	@Test
 	public void vPF_WhenPlayingADoT_DontInclude_RsWithMoreThanOneCard(){
-		wj.retainer[0][0].empty();
 		wj.retainer[0][0].add(aQueen);
 		wj.retainer[0][0].add(aQueen);
 		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "Den of Thieves");
@@ -821,7 +847,6 @@ public class WanderingJacksTest{
 
 	@Test
 	public void vPF_WhenPlayingADoT_Include_RsWithQueens(){
-		wj.retainer[0][0].empty();
 		wj.retainer[0][0].add(aQueen);
 		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "Den of Thieves");
 		assertTrue(vp[0]);
@@ -829,9 +854,38 @@ public class WanderingJacksTest{
 
 	@Test
 	public void vPF_WhenPlayingADoT_Include_RsWith10s(){
-		wj.retainer[0][0].empty();
 		wj.retainer[0][0].add(a10);
 		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "Den of Thieves");
 		assertTrue(vp[0]);
 	}
+
+	// Has Empty Retainer
+	@Test
+	public void vPF_WhenHasEmptyRetainer_Include_OnlyEmptyRs(){
+		fail("not implemented");
+	}
+
+	/*
+	 * ensureNoEmptyRetainersExist()
+	 */
+	@Test
+	public void eNERE_noRetainersAreLeftEmpty() throws IOException{
+		wj.player[0].addToHand(a9);
+		wj.retainer[0][0].empty();
+		wj.retainer[0][1].add(aQueen);
+		wj.retainer[0][2].add(a10);
+		wj.retainer[0][3].add(a9);
+
+		String mockUserInput = "1"+newLine;
+		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
+		System.setIn(mockIn);
+		wj.ensureNoEmptyRetainersExist();
+		System.setIn(System.in);
+
+		assertFalse(wj.retainer[0][0].isEmpty());
+		assertFalse(wj.retainer[0][1].isEmpty());
+		assertFalse(wj.retainer[0][2].isEmpty());
+		assertFalse(wj.retainer[0][3].isEmpty());
+	}
+
 }

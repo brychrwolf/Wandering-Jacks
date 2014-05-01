@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 
 public class ConsoleUI {
-	private final static String newLine = System.getProperty("line.separator");
+	public final static String newLine = System.getProperty("line.separator");
 	private final static HashMap<Integer, String> cardLocations = new HashMap<Integer, String>();
 	static{
 		cardLocations.put(-1, "End Turn");
@@ -182,6 +182,20 @@ public class ConsoleUI {
 			//If have three aces, add "Den of Thieves" as an option.
 			if(numbAces >= 3)
 				options.put(101, "Den of Thieves");
+		}
+		int selection = -1; // Should never return as -1
+		try{ selection = ConsoleUI.getPlayerInput("Please select which card from your hand:", options);
+		}catch(IOException e){
+			System.err.println("Failed to accept player input.");}
+		return selection;
+	}
+
+	public static int promptPlayerToChooseCardToFillEmptyRetainer(Player player){
+		HashMap<Integer, String> options = new HashMap<Integer, String>();
+		for(int i = 0; i < player.handSize(); i++){
+			Card c = player.getFromHand(i);
+			if(WanderingJacks.cardValuesValidForRetainerBottom.contains(player.getFromHand(i).getValue()))
+				options.put(i+1, c.toString());
 		}
 		int selection = -1; // Should never return as -1
 		try{ selection = ConsoleUI.getPlayerInput("Please select which card from your hand:", options);

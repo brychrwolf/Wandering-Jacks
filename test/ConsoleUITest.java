@@ -1,6 +1,7 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -343,6 +344,15 @@ public class ConsoleUITest {
 	@Test
 	public void invalidStringCardLocationIncludesReturnsFalse(){
 		assertFalse(ConsoleUI.cardLocationsInclude("The Sky"));
+	}
+
+	/*
+	 * promptPLayerToChooseCardToFillEmptyRetainer
+	 */
+
+	@Test
+	public void pPtCCtER_(){
+		fail("not implemented");
 	}
 
 }
