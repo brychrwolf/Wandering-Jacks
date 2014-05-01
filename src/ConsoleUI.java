@@ -190,20 +190,6 @@ public class ConsoleUI {
 		return selection;
 	}
 
-	public static int promptPlayerToChooseCardToFillEmptyRetainer(Player player){
-		HashMap<Integer, String> options = new HashMap<Integer, String>();
-		for(int i = 0; i < player.handSize(); i++){
-			Card c = player.getFromHand(i);
-			if(WanderingJacks.cardValuesValidForRetainerBottom.contains(player.getFromHand(i).getValue()))
-				options.put(i+1, c.toString());
-		}
-		int selection = -1; // Should never return as -1
-		try{ selection = ConsoleUI.getPlayerInput("Please select which card from your hand:", options);
-		}catch(IOException e){
-			System.err.println("Failed to accept player input.");}
-		return selection;
-	}
-
 	public static boolean promptPlayerToLoopOrEndTurn(){
 		HashMap<Integer, String> options = new HashMap<Integer, String>();
 			options.put(1, "Yes.");
@@ -216,6 +202,21 @@ public class ConsoleUI {
 		}catch(IOException e){
 			System.err.println("Failed to accept player input.");}
 		return endTurn;
+	}
+
+	public static int promptPlayerToChooseCardToFillEmptyRetainer(Player player){
+		String output = "You do not have a valid card to play to your empty register."+newLine;
+		output += "Please select a card to discard.";
+		HashMap<Integer, String> options = new HashMap<Integer, String>();
+		for(int i = 0; i < player.handSize(); i++){
+			Card c = player.getFromHand(i);
+			options.put(i+1, c.toString());
+		}
+		int selection = -1; // Should never return as -1
+		try{ selection = ConsoleUI.getPlayerInput(output, options);
+		}catch(IOException e){
+			System.err.println("Failed to accept player input.");}
+		return selection;
 	}
 
 }

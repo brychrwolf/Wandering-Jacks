@@ -1,7 +1,6 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -321,6 +320,21 @@ public class ConsoleUITest {
 		assertEquals(pr, 0);
 	}
 
+	/*
+	 * promptPlayerToChooseCardToFillEmptyRetainer
+	 */
+
+	@Test
+	public void pPtCCtER_IgnoresBadInput_Returns_Selection(){
+		String mockUserInput = "0"+newLine; // ignored inputs
+		mockUserInput += "1"+newLine;		// accepted
+		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
+		System.setIn(mockIn);
+		int pr = ConsoleUI.promptPlayerToChooseCardToFillEmptyRetainer(wj.player[wj.activePlayer]);
+		System.setIn(System.in);
+		assertEquals(pr, 1);
+	}
+
 
 
 
@@ -366,15 +380,6 @@ public class ConsoleUITest {
 	@Test
 	public void invalidStringCardLocationIncludesReturnsFalse(){
 		assertFalse(ConsoleUI.cardLocationsInclude("The Sky"));
-	}
-
-	/*
-	 * promptPLayerToChooseCardToFillEmptyRetainer
-	 */
-
-	@Test
-	public void pPtCCtER_(){
-		fail("not implemented");
 	}
 
 }

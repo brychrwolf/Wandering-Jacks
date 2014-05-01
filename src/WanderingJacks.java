@@ -545,7 +545,7 @@ public class WanderingJacks{
 		return pd;
 	}
 
-	public void ensureActivePlayerHasCardToPlayInEmptyRetainer() throws IOException{
+	public void ensureActivePlayerHasCardToPlayInEmptyRetainer(){
 		// draw up to 4 cards in hand
 		while(player[activePlayer].handSize() < 4)
 			player[activePlayer].addToHand(deck.dealCard());
@@ -560,15 +560,7 @@ public class WanderingJacks{
 					haveCardToPlay = true;
 			}
 			if(!haveCardToPlay){
-				ConsoleUI.draw(this);
-				String output = "You do not have a valid card to play to your empty register."+ConsoleUI.newLine;
-				output += "Please select a card to discard.";
-				HashMap<Integer, String> options = new HashMap<Integer, String>();
-				for(int i = 0; i < player[activePlayer].handSize(); i++){
-					Card c = player[activePlayer].getFromHand(i);
-					options.put(i+1, c.toString());
-				}
-				int handIndex = ConsoleUI.getPlayerInput(output, options) - 1;
+				int handIndex = ConsoleUI.promptPlayerToChooseCardToFillEmptyRetainer(player[activePlayer]) - 1;
 				discardPile.discard(player[activePlayer].playFromHand(handIndex));
 				player[activePlayer].addToHand(deck.dealCard());
 			}
