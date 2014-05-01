@@ -113,8 +113,8 @@ public class WanderingJacks{
 	}
 
 	public void playNewGame() throws IOException{
-		//setUpGameEnvironment();
-		stageGameEnvironment();
+		setUpGameEnvironment();
+		//stageGameEnvironment();
 		int[] playRequest = new int[3];
 		while(!isGameOver()){
 			// https://www.pivot1altracker.com/story/show/69883240
@@ -170,6 +170,17 @@ public class WanderingJacks{
 					onFirstPlayFromHandOfTurn = false;
 					// perform any fancy moves like 3oak+A
 					//	  prompt user for opponent's retainer if necessary
+					Retainer r = retainer[activePlayer][playRequest[1]];
+					if(r.size() == 4
+					&& r.get(0) == r.get(1)
+					&& r.get(0) == r.get(2)
+					&& r.get(3).getValue() == Card.ACE){
+						// Move was a 3oak+A!
+						// prompt player for
+						int orIndex = promptPlayerToChooseOpponantsRetainer("3oak+A");
+						threeOfAKindPlusAce(playRequest[1], int orIndex);
+					}
+
 					// display game state
 					ConsoleUI.draw(this);
 					// check for empty retainers
@@ -454,12 +465,10 @@ public class WanderingJacks{
 	 * @throws IllegalStateException if the opponent's retainer contains a Jack
 	 * @throws IllegalStateException if the player's retainer does not contain a 3-of-a-kind
 	 */
-	public void threeOfAKindPlusAce(Card ace, int prIndex, int orIndex){
+	public void threeOfAKindPlusAce(int prIndex, int orIndex){
 		// Check if both indexes are within bounds
 		if(prIndex > 3 || prIndex < 0) throw new IllegalArgumentException(prIndex + " is not within the range of valid retainers, 0-3");
 		if(orIndex > 3 || orIndex < 0) throw new IllegalArgumentException(orIndex + " is not within the range of valid retainers, 0-3");
-		// Check if the ace is an ace
-		if(!ace.getValueAsString().equals("Ace")) throw new IllegalArgumentException("The ace is not an ace");
 		// normalize retainer references
 		Retainer r1 = retainer[activePlayer][prIndex];
 		Retainer r2 = retainer[(activePlayer == 0 ? 1 : 0)][orIndex];
@@ -474,8 +483,6 @@ public class WanderingJacks{
 			throw new IllegalStateException("The player's retainer must contain a 3-of-a-kind.");}
 		// Check for a Jack in the opponent's retainer
 		if(r2.retainsJack()) throw new IllegalStateException("The opponent's retainer must not contain a Jack");
-		// Play the Ace
-		r1.add(ace);
 		// Discard all but the bottom card
 		while(r1.size() > 1)
 			discardPile.discard(r1.remove(1));
