@@ -906,4 +906,22 @@ public class WanderingJacksTest{
 		assertFalse(wj.retainer[0][3].isEmpty());
 	}
 
+	/*
+	 * checkForEmptyRetainers()
+	 */
+	@Test
+	public void cfER_True_whenEmptyRs_Exists(){
+		wj.retainer[0][0].empty();
+		wj.checkForEmptyRetainers();
+		assertTrue(wj.hasAnEmptyRetainer[0]);
+	}
+
+	@Test
+	public void cfER_False_whenEmptyRs_DontExists(){
+		for(int i = 0; i < wj.retainer[0].length; i++)
+			wj.retainer[0][i].add(a9);
+		wj.checkForEmptyRetainers();
+		assertFalse(wj.hasAnEmptyRetainer[0]);
+	}
+
 }

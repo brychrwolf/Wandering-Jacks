@@ -135,7 +135,7 @@ public class WanderingJacks{
 					playRequest = new int[3];
 					// ask which card-from-hand to play
 					playRequest[0] = ConsoleUI.cardLocation("My Hand");
-					int handIndex = ConsoleUI.promptPlayerToChooseCardFromHand(player[activePlayer], retainer[activePlayer], onFirstPlayFromHandOfTurn);
+					int handIndex = ConsoleUI.promptPlayerToChooseCardFromHand(player[activePlayer], hasAnEmptyRetainer[activePlayer], onFirstPlayFromHandOfTurn);
 					if(handIndex == ConsoleUI.cardLocation("End Turn")){
 						commitThisPlay = true;
 						endThisTurn = true;
@@ -637,5 +637,14 @@ public class WanderingJacks{
 				game.retainer[game.activePlayer][ri].add(p.playFromHand(index));
 				numAces++;
 			}else index++;
+	}
+
+	public void checkForEmptyRetainers(){
+		for(int i = 0; i < 2; i++){
+			hasAnEmptyRetainer[i] = false;
+			for(int j = 0; j < retainer[i].length; j++)
+				if(retainer[i][j].isEmpty())
+					hasAnEmptyRetainer[i] = true;
+		}
 	}
 }
