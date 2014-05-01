@@ -212,6 +212,33 @@ public class ConsoleUI {
 			Card c = player.getFromHand(i);
 			options.put(i+1, c.toString());
 		}
+
+		int selection = -1; // Should never return as -1
+		try{ selection = ConsoleUI.getPlayerInput(output, options);
+		}catch(IOException e){
+			System.err.println("Failed to accept player input.");}
+		return selection;
+	}
+
+	public static int promptPlayerToChooseOpponantsRetainer(Retainer[] oRetainers, String moveType){
+		String output = "Please choose which of the opponent's retainers to affect.";
+		HashMap<Integer, String> options = new HashMap<Integer, String>();
+
+		switch(moveType){
+		case "3oak+A":
+			// any retainer without a Jack
+			for(int i = 0; i < oRetainers.length; i++){
+				if(!oRetainers[i].retainsJack()){
+					String outString = "";
+					for(int j = 0; j < oRetainers[i].size(); j++)
+						outString += " ["+i+"]["+j+"] = "+oRetainers[i].get(j).toString()+" ";
+					options.put(i, outString);
+				}
+			}break;
+		default:
+			throw new IllegalArgumentException(moveType+" is not a valid move type.");
+		}
+
 		int selection = -1; // Should never return as -1
 		try{ selection = ConsoleUI.getPlayerInput(output, options);
 		}catch(IOException e){

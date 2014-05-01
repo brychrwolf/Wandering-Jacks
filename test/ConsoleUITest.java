@@ -21,6 +21,8 @@ public class ConsoleUITest {
 	WanderingJacks wj;
 	Card aJoker = new Card(0, 0);
 	Card anAce = new Card(1, 1);
+	Card aJack = new Card(11, 1);
+	Card a9 = new Card(9, 1);
 
 	@Before
 	public void init(){
@@ -335,7 +337,32 @@ public class ConsoleUITest {
 		assertEquals(pr, 1);
 	}
 
+	/*
+	 * promptPlayerToChooseOpponantsRetainer
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void pPtCOR_Exception_WhenParamWrong(){
+		ConsoleUI.promptPlayerToChooseOpponantsRetainer(wj.retainer[1], "invalid arg");
+	}
 
+	@Test
+	public void pPtCOR_When3oakA_DontShow_RsWithJacks(){
+		wj.retainer[1][0].add(aJack);
+		wj.retainer[1][1].add(a9);
+		wj.retainer[1][2].add(aJack);
+		wj.retainer[1][3].add(aJack);
+
+		String mockUserInput = "0"+newLine; // ignored inputs
+		mockUserInput += "2"+newLine;		//
+		mockUserInput += "3"+newLine;		//
+		mockUserInput += "4"+newLine;		//
+		mockUserInput += "1"+newLine;		// accepted
+		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
+		System.setIn(mockIn);
+		int pr = ConsoleUI.promptPlayerToChooseOpponantsRetainer(wj.retainer[1], "3oak+A");
+		System.setIn(System.in);
+		assertEquals(pr, 1);
+	}
 
 
 	/*
