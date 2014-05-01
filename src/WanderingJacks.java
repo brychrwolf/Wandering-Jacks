@@ -138,7 +138,7 @@ public class WanderingJacks{
 					playRequest = new int[3];
 					// ask which card-from-hand to play
 					playRequest[0] = ConsoleUI.cardLocation("My Hand");
-					int handIndex = ConsoleUI.promptPlayerToChooseCardFromHand(player[activePlayer], hasAnEmptyRetainer[activePlayer], onFirstPlayFromHandOfTurn);
+					int handIndex = ConsoleUI.promptPlayerToChooseCardFromHand(player[activePlayer], hasAnEmptyRetainer[activePlayer], onFirstPlayFromHandOfTurn) - 1;
 					if(handIndex == ConsoleUI.cardLocation("End Turn")){
 						commitThisPlay = true;
 						endThisTurn = true;
