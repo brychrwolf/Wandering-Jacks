@@ -531,8 +531,9 @@ public class WanderingJacks{
 		String output;
 		boolean[] isValidDestination = WanderingJacks.validPlayFor(rg, cardToPlay);
 		for(int i = 0; i < rg.length; i++){
-			if((!anEmptyRetainerExists && isValidDestination[i])
-			|| (anEmptyRetainerExists && iIsEmpty[i])){
+			if(isValidDestination[i]
+			&& (!anEmptyRetainerExists
+			|| (anEmptyRetainerExists && iIsEmpty[i]))){
 				output = "Retainer:";
 				if(rg[i].size() == 0)
 					output += " ["+i+"] empty";

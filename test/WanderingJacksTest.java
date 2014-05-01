@@ -690,18 +690,30 @@ public class WanderingJacksTest{
 	}
 
 	@Test
-	public void pDs_whenPlayerHasAnEmptyRetainer_Include_OnlyEmptyOfRetainers(){
-		fail("not implemented");
+	public void pDs_whenPlayerHasAnEmptyRetainer_Include_OnlyEmptyRetainers(){
+		wj.retainer[0][2].add(a9);
+		wj.retainer[0][3].add(a9);
+		HashMap<Integer, String> pd = WanderingJacks.getPossibleDestinations(wj.retainer[0], true, "Queen");
+		assertTrue(pd.containsKey(4));
+		assertTrue(pd.containsKey(5));
+		assertFalse(pd.containsKey(6));
+		assertFalse(pd.containsKey(7));
 	}
 
 	@Test
-	public void pDs_whenPlayerHasAnEmptyRetainer_andValidCards_DontInclude_DiscardPile(){
-		fail("not implemented");
+	public void pDs_whenPlayerHasAnEmptyRetainer_ButNoValidCard_DontInclude_EmptyRetainers(){
+		wj.retainer[0][2].add(a9);
+		wj.retainer[0][3].add(a9);
+		HashMap<Integer, String> pd = WanderingJacks.getPossibleDestinations(wj.retainer[0], true, "aJack");
+		assertFalse(pd.containsKey(4));
+		assertFalse(pd.containsKey(5));
+		assertFalse(pd.containsKey(6));
+		assertFalse(pd.containsKey(7));
 	}
 
 	@Test
-	public void pDs_whenPlayerHasAnEmptyRetainer_andNoValidCards_Include_DiscardPile(){
-		fail("not implemented");
+	public void pDs_whenPlayerHasAnEmptyRetainer_DontInclude_DiscardPile(){
+		assertFalse(WanderingJacks.getPossibleDestinations(wj.retainer[wj.activePlayer], false, "9").containsValue("The Discard Pile"));
 	}
 
 	/*
