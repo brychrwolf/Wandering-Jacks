@@ -883,27 +883,34 @@ public class WanderingJacksTest{
 	}
 
 	/*
-	 * ensureNoEmptyRetainersExist()
+	 * ensureActivePlayerHasCardToPlayInEmptyRetainer()
 	 */
 	@Test
-	public void eNERE_noRetainersAreLeftEmpty() throws IOException{
-		wj.player[0].addToHand(a9);
-		wj.retainer[0][0].empty();
-		wj.retainer[0][1].add(aQueen);
-		wj.retainer[0][2].add(a10);
-		wj.retainer[0][3].add(a9);
+	public void eAPHCtPiER_playerHasFourCards() throws IOException{
+		for(int i = 0; i < 3; i++)
+			wj.player[0].addToHand(a9);
+		wj.ensureActivePlayerHasCardToPlayInEmptyRetainer();
+		assertEquals(wj.player[0].handSize(), 4);
+	}
 
+	@Test
+	public void eAPHCtPiER_playerGetsAValidCardForRetainerBottoms() throws IOException{
+		for(int i = 0; i < 3; i++)
+			wj.player[0].addToHand(aJack);
 		String mockUserInput = "1"+newLine;
+		for(int i = 0; i < 25; i++)
+			mockUserInput += "1"+newLine;
+
 		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
 		System.setIn(mockIn);
-		fail("infinte loop");
-		wj.ensureNoEmptyRetainersExist();
+		wj.ensureActivePlayerHasCardToPlayInEmptyRetainer();
 		System.setIn(System.in);
 
-		assertFalse(wj.retainer[0][0].isEmpty());
-		assertFalse(wj.retainer[0][1].isEmpty());
-		assertFalse(wj.retainer[0][2].isEmpty());
-		assertFalse(wj.retainer[0][3].isEmpty());
+		boolean hasValidCard = false;
+		for(int i = 0; i < wj.player[0].handSize(); i++)
+			if(WanderingJacks.cardValuesValidForRetainerBottom.contains(wj.player[wj.activePlayer].getFromHand(i).getValue()))
+				hasValidCard = true;
+		assertTrue(hasValidCard);
 	}
 
 	/*

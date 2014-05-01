@@ -132,6 +132,9 @@ public class WanderingJacks{
 			while(endThisTurn == false){
 				boolean commitThisPlay = false;
 				while(commitThisPlay == false){
+					// If an empty retainer exists, ensure that player has card to play in an empty retainer
+					if(hasAnEmptyRetainer[activePlayer])
+						ensureActivePlayerHasCardToPlayInEmptyRetainer();
 					playRequest = new int[3];
 					// ask which card-from-hand to play
 					playRequest[0] = ConsoleUI.cardLocation("My Hand");
@@ -161,19 +164,23 @@ public class WanderingJacks{
 					}
 				}
 				if(endThisTurn == false){
-					// 7. move card from hand to destination
+					// move card from hand to destination
 					requestPlay(playRequest);
-					//  7.1 No longer be the first play-from-hand of turn
+					//  no longer on the first play-from-hand of turn
 					onFirstPlayFromHandOfTurn = false;
-					// 8. perform any fancy moves like 3oak+A
-					//	8.1 prompt user for opponent's retainer if necessary
-					// 9. display game state
+					// perform any fancy moves like 3oak+A
+					//	  prompt user for opponent's retainer if necessary
+					// display game state
 					ConsoleUI.draw(this);
-					// 10. ask to end turn or loop to 5 (ask which card from hand to play)
-					//  10.1 choosing discard pile as destination ends turn automatically
+					// check for empty retainers
+					checkForEmptyRetainers();
+					// If have no empty retainers, ask to end turn or loop turn
+					// else just loop
+					//    choosing discard pile as destination ends turn automatically
 					if(playRequest[1] == ConsoleUI.cardLocation("The Discard Pile"))
 						endThisTurn = true;
-					else endThisTurn = ConsoleUI.promptPlayerToLoopOrEndTurn();
+					else if(!hasAnEmptyRetainer[activePlayer])
+						endThisTurn = ConsoleUI.promptPlayerToLoopOrEndTurn();
 				}
 			}
 			//11. END TURN
@@ -537,24 +544,21 @@ public class WanderingJacks{
 		return pd;
 	}
 
-	public void ensureNoEmptyRetainersExist() throws IOException{
-		while(retainer[activePlayer][0].isEmpty()
-		|| retainer[activePlayer][1].isEmpty()
-		|| retainer[activePlayer][2].isEmpty()
-		|| retainer[activePlayer][3].isEmpty()){
-			int[] playRequest = new int[3];
-			playRequest[0] = ConsoleUI.cardLocation("My Hand");
-			// If have card to play in retainer, play it
-			boolean haveCardToPlay = false;
+	public void ensureActivePlayerHasCardToPlayInEmptyRetainer() throws IOException{
+		// draw up to 4 cards in hand
+		while(player[activePlayer].handSize() < 4)
+			player[activePlayer].addToHand(deck.dealCard());
+
+		int[] playRequest = new int[3];
+		playRequest[0] = ConsoleUI.cardLocation("My Hand");
+		// If have card to play in retainer, break
+		boolean haveCardToPlay = false;
+		while(!haveCardToPlay){
 			for(int i = 0; i < player[activePlayer].handSize(); i++){
 				if(WanderingJacks.cardValuesValidForRetainerBottom.contains(player[activePlayer].getFromHand(i).getValue()))
 					haveCardToPlay = true;
 			}
-			int handIndex;
-			if(haveCardToPlay){
-				handIndex = ConsoleUI.promptPlayerToChooseCardToFillEmptyRetainer(player[activePlayer]);
-
-			}else{ // get card to play
+			if(!haveCardToPlay){
 				ConsoleUI.draw(this);
 				String output = "You do not have a valid card to play to your empty register."+ConsoleUI.newLine;
 				output += "Please select a card to discard.";
@@ -563,7 +567,7 @@ public class WanderingJacks{
 					Card c = player[activePlayer].getFromHand(i);
 					options.put(i+1, c.toString());
 				}
-				handIndex = ConsoleUI.getPlayerInput(output, options) - 1;
+				int handIndex = ConsoleUI.getPlayerInput(output, options) - 1;
 				discardPile.discard(player[activePlayer].playFromHand(handIndex));
 				player[activePlayer].addToHand(deck.dealCard());
 			}
