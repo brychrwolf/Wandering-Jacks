@@ -501,6 +501,8 @@ public class WanderingJacks{
 		// Discard all but the bottom card
 		while(r1.size() > 1)
 			discardPile.discard(r1.remove(1));
+		// turn needToCoverDiscardedCard on
+		needToCoverDiscardedCard = true;
 		// Swap retainers
 		retainer[activePlayer][prIndex] = r2;
 		retainer[(activePlayer == 0 ? 1 : 0)][orIndex] = r1;
