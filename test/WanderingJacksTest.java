@@ -378,6 +378,15 @@ public class WanderingJacksTest{
 		assertTrue(wj.discardPile.peekAtTopCard().equals(a9));
 	}
 
+	@Test
+	public void threeOfAKind_turnsOn_needToCoverDiscardedCard(){
+		wj.retainer[0][0] = three9s;
+		wj.retainer[1][0] = twoQueens;
+		assertFalse(wj.needToCoverDiscardedCard);
+		wj.threeOfAKindPlusAce(0, 0);
+		assertTrue(wj.needToCoverDiscardedCard);
+	}
+
 	/*
 	 * Jack Stealing
 	 */

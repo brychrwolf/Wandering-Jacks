@@ -29,6 +29,7 @@ public class WanderingJacks{
 	public int activePlayer;
 	public boolean onFirstPlayFromHandOfTurn;
 	public boolean[] hasAnEmptyRetainer;
+	public boolean needToCoverDiscardedCard;
 	/**
 	 * A standard deck of 54 cards (52 + 2 Jokers)used in the game. Its
 	 * contents are "random" and secret.
@@ -76,6 +77,7 @@ public class WanderingJacks{
 	WanderingJacks(){
 		activePlayer = 0;
 		onFirstPlayFromHandOfTurn = true;
+		needToCoverDiscardedCard = false;
 		hasAnEmptyRetainer = new boolean[2];
 			hasAnEmptyRetainer[0] = true;
 			hasAnEmptyRetainer[1] = true;
@@ -93,6 +95,7 @@ public class WanderingJacks{
 	WanderingJacks(WanderingJacks cloned){
 		this.activePlayer 		= cloned.activePlayer;
 		this.onFirstPlayFromHandOfTurn 	= cloned.onFirstPlayFromHandOfTurn;
+		this.needToCoverDiscardedCard 	= cloned.needToCoverDiscardedCard;
 		this.hasAnEmptyRetainer = new boolean[2];
 			this.hasAnEmptyRetainer[0] = cloned.hasAnEmptyRetainer[0];
 			this.hasAnEmptyRetainer[1] = cloned.hasAnEmptyRetainer[1];
