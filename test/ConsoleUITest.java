@@ -22,6 +22,7 @@ public class ConsoleUITest {
 	Card aJoker = new Card(0, 0);
 	Card anAce = new Card(1, 1);
 	Card aJack = new Card(11, 1);
+	Card aKing = new Card(13, 1);
 	Card a9 = new Card(9, 1);
 
 	@Before
@@ -363,7 +364,32 @@ public class ConsoleUITest {
 		System.setIn(System.in);
 		assertEquals(pr, 1);
 	}
+	@Test
+	public void pPtCOR_WhenJoker_Show_RsWithJacks(){
+		wj.retainer[1][0].add(aJack);
+		wj.retainer[1][1].add(a9);
 
+		String mockUserInput = "1"+newLine; // ignored inputs
+		mockUserInput += "0"+newLine;		// accepted
+		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
+		System.setIn(mockIn);
+		int pr = ConsoleUI.promptPlayerToChooseOpponantsRetainer(wj.retainer[1], "joker");
+		System.setIn(System.in);
+		assertEquals(pr, 1);
+	}
+	@Test
+	public void pPtCOR_WhenJoker_Show_RsWithKings(){
+		wj.retainer[1][0].add(aKing);
+		wj.retainer[1][1].add(a9);
+
+		String mockUserInput = "1"+newLine; // ignored inputs
+		mockUserInput += "0"+newLine;		// accepted
+		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
+		System.setIn(mockIn);
+		int pr = ConsoleUI.promptPlayerToChooseOpponantsRetainer(wj.retainer[1], "joker");
+		System.setIn(System.in);
+		assertEquals(pr, 1);
+	}
 
 	/*
 	 * cardLocation
