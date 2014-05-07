@@ -152,7 +152,7 @@ public class WanderingJacks{
 							//	6.2 show -back- as destination
 							//	6.3 check validation rules for which retainer is valid
 							//  6.4 If playing Joker, cannot discard
-							prompt += cardFromHand.toString()+":";
+							prompt += player[activePlayer].getFromHand(handIndex).toString()+":";
 						}else if(handIndex == 101){ // Den of Thieves
 							cardFromHand = "Den of Thieves";
 							prompt += cardFromHand+":";
@@ -170,15 +170,17 @@ public class WanderingJacks{
 					onFirstPlayFromHandOfTurn = false;
 					// perform any fancy moves like 3oak+A
 					//	  prompt user for opponent's retainer if necessary
-					Retainer r = retainer[activePlayer][playRequest[1]];
-					if(r.size() == 4
-					&& r.get(0) == r.get(1)
-					&& r.get(0) == r.get(2)
-					&& r.get(3).getValue() == Card.ACE){
-						// Move was a 3oak+A!
-						// prompt player for
-						int orIndex = promptPlayerToChooseOpponantsRetainer("3oak+A");
-						threeOfAKindPlusAce(playRequest[1], int orIndex);
+					if(playRequest[1] >= 4 && playRequest[1] <= 7){
+						Retainer r = retainer[activePlayer][playRequest[1] - 4];
+						if(r.size() == 4
+						&& r.get(0) == r.get(1)
+						&& r.get(0) == r.get(2)
+						&& r.get(3).getValue() == Card.ACE){
+							// Move was a 3oak+A!
+							// prompt player for
+							int orIndex = ConsoleUI.promptPlayerToChooseOpponantsRetainer(retainer[activePlayer], "3oak+A");
+							threeOfAKindPlusAce(playRequest[1], orIndex);
+						}
 					}
 
 					// display game state
