@@ -488,6 +488,22 @@ public class WanderingJacksTest{
 		assertTrue(previousPlayer == 1 && wj.activePlayer == 0);
 	}
 
+	@Test
+	public void endingTurnDiscardsIfPileIsEmpty(){
+		assertTrue(wj.discardPile.isEmpty());
+		wj.endTurn();
+		assertTrue(wj.discardPile.size() == 1);
+	}
+
+	@Test
+	public void endingTurnDiscardsIf_NtCDC_IsTrue(){
+		wj.discardPile.discard(new Card(Card.JACK, 1));
+		int origDpSize = wj.discardPile.size();
+		wj.needToCoverDiscardedCard = true;
+		wj.endTurn();
+		assertEquals(wj.discardPile.size(), origDpSize + 1);
+	}
+
 	/*
 	 * Making a Play
 	 * and

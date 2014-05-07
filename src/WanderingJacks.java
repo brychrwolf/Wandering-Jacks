@@ -460,7 +460,7 @@ public class WanderingJacks{
 		// Jacks on Q, 10, DoT stacks, burn one from stack
 		// If discardPile is empty, or if any card was discarded from any retainer,
 		//	discard one from deck
-		if(discardPile.isEmpty())
+		if(discardPile.isEmpty() || needToCoverDiscardedCard)
 			discardPile.discard(deck.dealCard());
 		// toggle active player
 		activePlayer = activePlayer == 1 ? 0 : 1;
