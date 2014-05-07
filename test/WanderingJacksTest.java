@@ -340,33 +340,33 @@ public class WanderingJacksTest{
 	 */
 	@Test(expected=IllegalStateException.class)
 	public void exceptionThrown_PlayerHasNo3oak(){
-		wj.threeOfAKindPlusAce(0, 0);
+		wj.move_3oakPlusAce(0, 0);
 	}
 
 	@Test(expected=IllegalStateException.class)
 	public void exceptionThrown_ORcontainsAJack(){
 		wj.retainer[0][0] = three9s;
 		wj.retainer[1][0].add(aJack);
-		wj.threeOfAKindPlusAce(0, 0);
+		wj.move_3oakPlusAce(0, 0);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	public void exceptionThrown_PIndexOutOfBounds(){
 		wj.retainer[0][0] = three9s;
-		wj.threeOfAKindPlusAce(5, 0);
+		wj.move_3oakPlusAce(5, 0);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	public void exceptionThrown_OIndexOutOfBounds(){
 		wj.retainer[0][0] = three9s;
-		wj.threeOfAKindPlusAce(0, 5);
+		wj.move_3oakPlusAce(0, 5);
 	}
 
 	@Test
 	public void threeOfAKindSwapsRetainers(){
 		wj.retainer[0][0] = three9s;
 		wj.retainer[1][0] = twoQueens;
-		wj.threeOfAKindPlusAce(0, 0);
+		wj.move_3oakPlusAce(0, 0);
 		assertTrue(wj.retainer[0][0].size() == 2);
 		assertTrue(wj.retainer[0][0].get(0).equals(aQueen));
 		assertTrue(wj.retainer[0][0].get(1).equals(aQueen));
@@ -380,7 +380,86 @@ public class WanderingJacksTest{
 		wj.retainer[0][0] = three9s;
 		wj.retainer[1][0] = twoQueens;
 		assertFalse(wj.needToCoverDiscardedCard);
-		wj.threeOfAKindPlusAce(0, 0);
+		wj.move_3oakPlusAce(0, 0);
+		assertTrue(wj.needToCoverDiscardedCard);
+	}
+
+	/*
+	 * move_joker
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void move_joker_exThrown_PIndexOutOfBounds(){
+		wj.moveJoker(5, 0);
+	}
+	@Test(expected=IllegalArgumentException.class)
+	public void move_joker_exThrown_OIndexOutOfBounds(){
+		wj.moveJoker(0, 5);
+	}
+	@Test
+	public void move_joker_DiscardEntirePlayerRetainer(){
+		wj.retainer[0][0].add(a9);
+		wj.retainer[0][0].add(a9);
+		wj.moveJoker(0, 0);
+		assertTrue(wj.retainer[0][0].isEmpty());
+	}
+	@Test
+	public void move_joker_DiscardOpJack(){
+		wj.retainer[1][0].add(aJack);
+		assertTrue(wj.retainer[1][0].contains(Card.JACK));
+		wj.moveJoker(0, 0);
+		assertFalse(wj.retainer[1][0].contains(Card.JACK));
+	}
+	@Test
+	public void move_joker_DiscardOpKing(){
+		wj.retainer[1][0].add(aKing);
+		int origSize = wj.retainer[1][0].size();
+		wj.moveJoker(0, 0);
+		assertEquals(origSize - 1, wj.retainer[1][0].size());
+	}
+	@Test
+	public void move_joker_DiscardOpKing_WhenJackAndKingPresent(){
+		wj.retainer[1][0].add(aJack);
+		wj.retainer[1][0].add(aKing);
+		wj.retainer[1][1].add(aKing);
+		wj.retainer[1][1].add(aJack);
+		int origSizeA = wj.retainer[1][0].size();
+		int origSizeB = wj.retainer[1][1].size();
+		assertTrue(wj.retainer[1][0].contains(Card.JACK));
+		assertTrue(wj.retainer[1][1].contains(Card.JACK));
+		wj.moveJoker(0, 0);
+		wj.moveJoker(0, 1);
+		assertEquals(origSizeA - 1, wj.retainer[1][0].size());
+		assertEquals(origSizeB - 1, wj.retainer[1][1].size());
+		assertTrue(wj.retainer[1][0].contains(Card.JACK));
+		assertTrue(wj.retainer[1][1].contains(Card.JACK));
+	}
+	@Test
+	public void move_joker_DiscardOpAces_WhenDiscardingJack(){
+		wj.retainer[1][0].add(a10);
+		wj.retainer[1][0].add(anAce);
+		wj.retainer[1][0].add(anAce);
+		wj.retainer[1][0].add(aJack);
+		wj.moveJoker(0, 0);
+		assertEquals(wj.retainer[1][0].size(), 1);
+		assertFalse(wj.retainer[1][0].contains(Card.JACK));
+		assertFalse(wj.retainer[1][0].contains(Card.ACE));
+	}
+	@Test
+	public void move_joker_DontDiscardOpAces_WhenDiscardingKing(){
+		wj.retainer[1][0].add(a10);
+		wj.retainer[1][0].add(anAce);
+		wj.retainer[1][0].add(aKing);
+		wj.retainer[1][0].add(aJack);
+		wj.moveJoker(0, 0);
+		assertEquals(wj.retainer[1][0].size(), 1);
+		assertTrue(wj.retainer[1][0].contains(Card.JACK));
+		assertTrue(wj.retainer[1][0].contains(Card.ACE));
+		assertFalse(wj.retainer[1][0].contains(Card.KING));
+	}
+	@Test
+	public void move_joker_turnsOn_needToCoverDiscardedCard(){
+		assertFalse(wj.needToCoverDiscardedCard);
+		wj.moveJoker(0, 0);
 		assertTrue(wj.needToCoverDiscardedCard);
 	}
 

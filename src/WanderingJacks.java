@@ -182,7 +182,11 @@ public class WanderingJacks{
 						&& pr.get(3).getValue() == Card.ACE){
 							// Move was a 3oak+A!
 							int orIndex = ConsoleUI.promptPlayerToChooseOpponantsRetainer(retainer[(activePlayer == 1 ? 0 : 1)], "3oak+A");
-							threeOfAKindPlusAce(prIndex, orIndex);
+							move_3oakPlusAce(prIndex, orIndex);
+						}else if(pr.get(pr.size() - 1).equals("Joker")){
+							// Move was a Joker!
+							int orIndex = ConsoleUI.promptPlayerToChooseOpponantsRetainer(retainer[(activePlayer == 1 ? 0 : 1)], "joker");
+							moveJoker(prIndex, orIndex);
 						}
 					}
 
@@ -480,7 +484,7 @@ public class WanderingJacks{
 	 * @throws IllegalStateException if the opponent's retainer contains a Jack
 	 * @throws IllegalStateException if the player's retainer does not contain a 3-of-a-kind
 	 */
-	public void threeOfAKindPlusAce(int prIndex, int orIndex){
+	public void move_3oakPlusAce(int prIndex, int orIndex){
 		// Check if both indexes are within bounds
 		if(prIndex > 3 || prIndex < 0) throw new IllegalArgumentException(prIndex + " is not within the range of valid retainers, 0-3");
 		if(orIndex > 3 || orIndex < 0) throw new IllegalArgumentException(orIndex + " is not within the range of valid retainers, 0-3");
@@ -506,6 +510,17 @@ public class WanderingJacks{
 		// Swap retainers
 		retainer[activePlayer][prIndex] = r2;
 		retainer[(activePlayer == 0 ? 1 : 0)][orIndex] = r1;
+	}
+
+	public void moveJoker(int prIndex, int orIndex){
+		// Check if both indexes are within bounds
+		if(prIndex > 3 || prIndex < 0) throw new IllegalArgumentException(prIndex + " is not within the range of valid retainers, 0-3");
+		if(orIndex > 3 || orIndex < 0) throw new IllegalArgumentException(orIndex + " is not within the range of valid retainers, 0-3");
+		// normalize retainer references
+		Retainer r1 = retainer[activePlayer][prIndex];
+		Retainer r2 = retainer[(activePlayer == 0 ? 1 : 0)][orIndex];
+
+
 	}
 
 	public boolean requestPlay(int[] request){
