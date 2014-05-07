@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,8 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class WanderingJacksTest{
-	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-	private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
 	private final String newLine = System.getProperty("line.separator");
 
 	Card aJoker = new Card(0, 0);

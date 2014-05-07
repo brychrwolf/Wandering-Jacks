@@ -175,11 +175,11 @@ public class WanderingJacks{
 					//	  prompt user for opponent's retainer if necessary
 					if(playRequest[1] >= 4 && playRequest[1] <= 7){
 						int prIndex = playRequest[1] - 4;
-						Retainer r = retainer[activePlayer][prIndex];
-						if(r.size() == 4
-						&& r.get(0).getValue() == r.get(1).getValue()
-						&& r.get(0).getValue() == r.get(2).getValue()
-						&& r.get(3).getValue() == Card.ACE){
+						Retainer pr = retainer[activePlayer][prIndex];
+						if(pr.size() == 4
+						&& pr.get(0).getValue() == pr.get(1).getValue()
+						&& pr.get(0).getValue() == pr.get(2).getValue()
+						&& pr.get(3).getValue() == Card.ACE){
 							// Move was a 3oak+A!
 							int orIndex = ConsoleUI.promptPlayerToChooseOpponantsRetainer(retainer[(activePlayer == 1 ? 0 : 1)], "3oak+A");
 							threeOfAKindPlusAce(prIndex, orIndex);
