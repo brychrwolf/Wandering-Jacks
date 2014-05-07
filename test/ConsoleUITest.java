@@ -375,7 +375,7 @@ public class ConsoleUITest {
 		System.setIn(mockIn);
 		int pr = ConsoleUI.promptPlayerToChooseOpponantsRetainer(wj.retainer[1], "joker");
 		System.setIn(System.in);
-		assertEquals(pr, 1);
+		assertEquals(pr, 0);
 	}
 	@Test
 	public void pPtCOR_WhenJoker_Show_RsWithKings(){
@@ -388,7 +388,7 @@ public class ConsoleUITest {
 		System.setIn(mockIn);
 		int pr = ConsoleUI.promptPlayerToChooseOpponantsRetainer(wj.retainer[1], "joker");
 		System.setIn(System.in);
-		assertEquals(pr, 1);
+		assertEquals(pr, 0);
 	}
 
 	/*

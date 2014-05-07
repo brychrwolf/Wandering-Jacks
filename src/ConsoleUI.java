@@ -235,6 +235,16 @@ public class ConsoleUI {
 					options.put(i, outString);
 				}
 			}break;
+		case "joker":
+			// any retainer with a Jack or a King or both
+			for(int i = 0; i < oRetainers.length; i++){
+				if(oRetainers[i].retainsJack() || oRetainers[i].contains(Card.KING)){
+					String outString = "";
+					for(int j = 0; j < oRetainers[i].size(); j++)
+						outString += " ["+i+"]["+j+"] = "+oRetainers[i].get(j).toString()+" ";
+					options.put(i, outString);
+				}
+			}break;
 		default:
 			throw new IllegalArgumentException(moveType+" is not a valid move type.");
 		}
