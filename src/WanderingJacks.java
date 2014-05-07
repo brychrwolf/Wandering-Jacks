@@ -113,8 +113,8 @@ public class WanderingJacks{
 	}
 
 	public void playNewGame() throws IOException{
-		setUpGameEnvironment();
-		//stageGameEnvironment();
+		//setUpGameEnvironment();
+		stageGameEnvironment();
 		int[] playRequest = new int[3];
 		while(!isGameOver()){
 			// https://www.pivot1altracker.com/story/show/69883240
@@ -171,15 +171,15 @@ public class WanderingJacks{
 					// perform any fancy moves like 3oak+A
 					//	  prompt user for opponent's retainer if necessary
 					if(playRequest[1] >= 4 && playRequest[1] <= 7){
-						Retainer r = retainer[activePlayer][playRequest[1] - 4];
+						int prIndex = playRequest[1] - 4;
+						Retainer r = retainer[activePlayer][prIndex];
 						if(r.size() == 4
-						&& r.get(0) == r.get(1)
-						&& r.get(0) == r.get(2)
+						&& r.get(0).getValue() == r.get(1).getValue()
+						&& r.get(0).getValue() == r.get(2).getValue()
 						&& r.get(3).getValue() == Card.ACE){
 							// Move was a 3oak+A!
-							// prompt player for
-							int orIndex = ConsoleUI.promptPlayerToChooseOpponantsRetainer(retainer[activePlayer], "3oak+A");
-							threeOfAKindPlusAce(playRequest[1], orIndex);
+							int orIndex = ConsoleUI.promptPlayerToChooseOpponantsRetainer(retainer[(activePlayer == 1 ? 0 : 1)], "3oak+A");
+							threeOfAKindPlusAce(prIndex, orIndex);
 						}
 					}
 
@@ -309,6 +309,7 @@ public class WanderingJacks{
 	public void stageGameEnvironment(){
 		deck.dealCard(); // Joker
 		deck.dealCard(); // Joker
+
 		// Den of thieves
 		/*deck.dealCard();
 		deck.dealCard();
@@ -317,11 +318,20 @@ public class WanderingJacks{
 		for(int i = 0; i < 2; i++)
 			for(int j = 0; j < 4; j++)
 				retainer[i][j].add(new Card(12, 1));*/
-		//Empty Retainer
-		player[0].addToHand(new Card(Card.JACK, 1));
-		player[0].addToHand(new Card(Card.JACK, 1));
-		player[0].addToHand(new Card(Card.JACK, 1));
-		player[0].addToHand(new Card(Card.JACK, 1));
+
+		//3oak+A
+		player[0].addToHand(new Card(Card.ACE, 1));
+		retainer[0][0].add(new Card(3, 1));
+		retainer[0][0].add(new Card(3, 1));
+		retainer[0][0].add(new Card(3, 1));
+		retainer[0][1].add(new Card(3, 1));
+		retainer[0][2].add(new Card(3, 1));
+		retainer[0][3].add(new Card(3, 1));
+		retainer[1][0].add(new Card(Card.QUEEN, 1));
+		retainer[1][0].add(new Card(Card.QUEEN, 1));
+		retainer[1][1].add(new Card(7, 1));
+		retainer[1][2].add(new Card(7, 1));
+		retainer[1][3].add(new Card(7, 1));
 
 	}
 
