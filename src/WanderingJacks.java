@@ -136,8 +136,10 @@ public class WanderingJacks{
 				boolean commitThisPlay = false;
 				while(commitThisPlay == false){
 					// If an empty retainer exists, ensure that player has card to play in an empty retainer
-					if(hasAnEmptyRetainer[activePlayer])
+					if(hasAnEmptyRetainer[activePlayer]){
+						System.out.println("You have an empty retainer.");
 						ensureActivePlayerHasCardToPlayInEmptyRetainer();
+					}
 					playRequest = new int[3];
 					// ask which card-from-hand to play
 					playRequest[0] = ConsoleUI.cardLocation("My Hand");
@@ -183,7 +185,7 @@ public class WanderingJacks{
 							// Move was a 3oak+A!
 							int orIndex = ConsoleUI.promptPlayerToChooseOpponantsRetainer(retainer[(activePlayer == 1 ? 0 : 1)], "3oak+A");
 							move_3oakPlusAce(prIndex, orIndex);
-						}else if(pr.get(pr.size() - 1).equals("Joker")){
+						}else if(pr.get(pr.size() - 1).getValue() == Card.JOKER){
 							// Move was a Joker!
 							int orIndex = ConsoleUI.promptPlayerToChooseOpponantsRetainer(retainer[(activePlayer == 1 ? 0 : 1)], "joker");
 							moveJoker(prIndex, orIndex);
@@ -317,8 +319,8 @@ public class WanderingJacks{
 		deck.dealCard(); // Joker
 		deck.dealCard(); // Joker
 
-		// Den of thieves
-		/*deck.dealCard();
+		/*/ Den of thieves
+		deck.dealCard();
 		deck.dealCard();
 		for(int i = 0; i < 3; i++)
 			player[0].addToHand(new Card(1, 1));
@@ -326,7 +328,7 @@ public class WanderingJacks{
 			for(int j = 0; j < 4; j++)
 				retainer[i][j].add(new Card(12, 1));*/
 
-		//3oak+A
+		/*/3oak+A
 		player[0].addToHand(new Card(Card.ACE, 1));
 		retainer[0][0].add(new Card(3, 1));
 		retainer[0][0].add(new Card(3, 1));
@@ -338,7 +340,19 @@ public class WanderingJacks{
 		retainer[1][0].add(new Card(Card.QUEEN, 1));
 		retainer[1][1].add(new Card(7, 1));
 		retainer[1][2].add(new Card(7, 1));
+		retainer[1][3].add(new Card(7, 1));*/
+
+		//joker
+		player[0].addToHand(new Card(Card.JOKER, Card.JOKER));
+		retainer[0][0].add(new Card(3, 1));
+		retainer[0][1].add(new Card(3, 1));
+		retainer[0][2].add(new Card(3, 1));
+		retainer[0][3].add(new Card(3, 1));
+		retainer[1][0].add(new Card(Card.JACK, 1));
+		retainer[1][1].add(new Card(7, 1));
+		retainer[1][2].add(new Card(7, 1));
 		retainer[1][3].add(new Card(7, 1));
+
 
 	}
 
@@ -464,8 +478,11 @@ public class WanderingJacks{
 		// Jacks on Q, 10, DoT stacks, burn one from stack
 		// If discardPile is empty, or if any card was discarded from any retainer,
 		//	discard one from deck
-		if(discardPile.isEmpty() || needToCoverDiscardedCard)
-			discardPile.discard(deck.dealCard());
+		if(discardPile.isEmpty() || needToCoverDiscardedCard){
+			Card drawnCard = deck.dealCard();
+			System.out.println("The "+drawnCard.toString()+" was discard.");
+			discardPile.discard(drawnCard);
+		}
 		// toggle active player
 		activePlayer = activePlayer == 1 ? 0 : 1;
 		// make onFirstMoveOfTurn true
@@ -519,7 +536,19 @@ public class WanderingJacks{
 		// normalize retainer references
 		Retainer r1 = retainer[activePlayer][prIndex];
 		Retainer r2 = retainer[(activePlayer == 0 ? 1 : 0)][orIndex];
-
+		// Discard all pr's cards
+		while(r1.size() >= 1)
+			discardPile.discard(r1.remove(0));
+		// turn needToCoverDiscardedCard on
+		needToCoverDiscardedCard = true;
+		//check or for king, then jack, then aces to discard
+		if(r2.contains(Card.KING)){
+			discardPile.discard(r2.remove(r2.indexOf(Card.KING)));
+		}else if(r2.contains(Card.JACK)){
+			discardPile.discard(r2.remove(r2.indexOf(Card.JACK)));
+			while(r2.contains(Card.ACE))
+				discardPile.discard(r2.remove(r2.indexOf(Card.ACE)));
+		}
 
 	}
 
@@ -544,7 +573,9 @@ public class WanderingJacks{
 					deck.shuffleWithOtherCards(discardPile.takeAllCards());
 					discardPile.discard(deck.dealCard());
 				}
-				player[activePlayer].addToHand(deck.dealCard());
+				Card drawnCard = deck.dealCard();
+				player[activePlayer].addToHand(drawnCard);
+				System.out.println("You drew the "+drawnCard.toString());
 			}
 		}
 		return true;
@@ -586,8 +617,11 @@ public class WanderingJacks{
 
 	public void ensureActivePlayerHasCardToPlayInEmptyRetainer(){
 		// draw up to 4 cards in hand
-		while(player[activePlayer].handSize() < 4)
-			player[activePlayer].addToHand(deck.dealCard());
+		while(player[activePlayer].handSize() < 4){
+			Card drawnCard = deck.dealCard();
+			System.out.println("You drew the "+drawnCard.toString());
+			player[activePlayer].addToHand(drawnCard);
+		}
 
 		int[] playRequest = new int[3];
 		playRequest[0] = ConsoleUI.cardLocation("My Hand");
@@ -601,7 +635,9 @@ public class WanderingJacks{
 			if(!haveCardToPlay){
 				int handIndex = ConsoleUI.promptPlayerToChooseCardToFillEmptyRetainer(player[activePlayer]) - 1;
 				discardPile.discard(player[activePlayer].playFromHand(handIndex));
-				player[activePlayer].addToHand(deck.dealCard());
+				Card drawnCard = deck.dealCard();
+				System.out.println("You drew the "+drawnCard.toString());
+				player[activePlayer].addToHand(drawnCard);
 			}
 		}
 	}

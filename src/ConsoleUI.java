@@ -162,6 +162,7 @@ public class ConsoleUI {
 	}
 
 	public static int promptPlayerToChooseCardFromHand(Player player, boolean hasAnEmptyRetainer, boolean onFirstPlayFromHandOfTurn){
+		ConsoleUI.drawPlayersHand(player);
 		HashMap<Integer, String> options = new HashMap<Integer, String>();
 		// If joker in hand, only option to play is the Joker
 		if(player.handContains("Joker")){

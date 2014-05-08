@@ -451,7 +451,7 @@ public class WanderingJacksTest{
 		wj.retainer[1][0].add(aKing);
 		wj.retainer[1][0].add(aJack);
 		wj.moveJoker(0, 0);
-		assertEquals(wj.retainer[1][0].size(), 1);
+		assertEquals(wj.retainer[1][0].size(), 3);
 		assertTrue(wj.retainer[1][0].contains(Card.JACK));
 		assertTrue(wj.retainer[1][0].contains(Card.ACE));
 		assertFalse(wj.retainer[1][0].contains(Card.KING));
