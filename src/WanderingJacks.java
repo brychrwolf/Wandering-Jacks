@@ -116,8 +116,8 @@ public class WanderingJacks{
 	}
 
 	public void playNewGame() throws IOException{
-		//setUpGameEnvironment();
-		stageGameEnvironment();
+		setUpGameEnvironment();
+		//stageGameEnvironment();
 		int[] playRequest = new int[3];
 		while(!isGameOver()){
 			// https://www.pivot1altracker.com/story/show/69883240

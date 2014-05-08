@@ -97,7 +97,7 @@ public class ConsoleUI {
 	public static void drawPlayersHand(Player player){
 		String outString = "";
 		for(int i = 0; i < player.handSize(); i++){
-			outString += " ["+i+"] = "+player.getFromHand(i) .toString()+" ";
+			outString += " ["+(i+1)+"] = "+player.getFromHand(i) .toString()+" ";
 		}
 		outString += newLine;
 		System.out.print(outString);
