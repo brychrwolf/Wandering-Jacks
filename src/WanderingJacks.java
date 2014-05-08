@@ -116,8 +116,8 @@ public class WanderingJacks{
 	}
 
 	public void playNewGame() throws IOException{
-		setUpGameEnvironment();
-		//stageGameEnvironment();
+		//setUpGameEnvironment();
+		stageGameEnvironment();
 		int[] playRequest = new int[3];
 		while(!isGameOver()){
 			// https://www.pivot1altracker.com/story/show/69883240
@@ -158,7 +158,7 @@ public class WanderingJacks{
 							//	6.3 check validation rules for which retainer is valid
 							//  6.4 If playing Joker, cannot discard
 							prompt += player[activePlayer].getFromHand(handIndex).toString()+":";
-						}else if(handIndex == 101){ // Den of Thieves
+						}else if(handIndex == 100){ // Den of Thieves
 							cardFromHand = "Den of Thieves";
 							prompt += cardFromHand+":";
 						}
@@ -328,14 +328,14 @@ public class WanderingJacks{
 		deck.dealCard(); // Joker
 		deck.dealCard(); // Joker
 
-		/*/ Den of thieves
-		deck.dealCard();
-		deck.dealCard();
-		for(int i = 0; i < 3; i++)
-			player[0].addToHand(new Card(1, 1));
-		for(int i = 0; i < 2; i++)
-			for(int j = 0; j < 4; j++)
-				retainer[i][j].add(new Card(12, 1));*/
+		// Den of thieves
+		player[0].addToHand(new Card(Card.ACE, 1));
+		player[0].addToHand(new Card(Card.ACE, 1));
+		player[0].addToHand(new Card(Card.ACE, 1));
+		retainer[0][0].add(new Card(8, 1));
+		retainer[0][1].add(new Card(10, 1));
+		retainer[0][2].add(new Card(9, 1));
+		retainer[0][3].add(new Card(Card.QUEEN, 1));
 
 		/*/3oak+A
 		player[0].addToHand(new Card(Card.ACE, 1));
@@ -351,7 +351,7 @@ public class WanderingJacks{
 		retainer[1][2].add(new Card(7, 1));
 		retainer[1][3].add(new Card(7, 1));*/
 
-		//joker
+		/*/moveJoker
 		player[0].addToHand(new Card(Card.JOKER, Card.JOKER));
 		retainer[0][0].add(new Card(3, 1));
 		retainer[0][1].add(new Card(3, 1));
@@ -360,9 +360,9 @@ public class WanderingJacks{
 		retainer[1][0].add(new Card(Card.JACK, 1));
 		retainer[1][1].add(new Card(7, 1));
 		retainer[1][2].add(new Card(7, 1));
-		retainer[1][3].add(new Card(7, 1));
+		retainer[1][3].add(new Card(7, 1));*/
 
-
+		checkForEmptyRetainers();
 	}
 
 	/**
@@ -664,7 +664,7 @@ public class WanderingJacks{
 		 * cardLocations.put(7, "My 4th Retainer");
 		 */
 
-		if(fromHere == 3 && handIndex == 101){ // Den of Thieves
+		if(fromHere == 3 && handIndex == 100){ // Den of Thieves
 			WanderingJacks.playDenOfThieves(game, toThere);
 		}else{ // Single card play
 			Card cardFromHere = new Card(); // Should never return as this value
