@@ -187,7 +187,15 @@ public class WanderingJacks{
 							move_3oakPlusAce(prIndex, orIndex);
 						}else if(pr.get(pr.size() - 1).getValue() == Card.JOKER){
 							// Move was a Joker!
-							int orIndex = ConsoleUI.promptPlayerToChooseOpponantsRetainer(retainer[(activePlayer == 1 ? 0 : 1)], "joker");
+							// check if opponent has a jack or king first!
+							boolean opHasCardsToBurn = false;
+							for(int i = 0; i < 4; i++)
+								if(retainer[activePlayer == 1 ? 0 : 1][i].contains(Card.JACK)
+								|| retainer[activePlayer == 1 ? 0 : 1][i].contains(Card.KING))
+									opHasCardsToBurn = true;
+							int orIndex = -1;
+							if(opHasCardsToBurn)
+								orIndex = ConsoleUI.promptPlayerToChooseOpponantsRetainer(retainer[(activePlayer == 1 ? 0 : 1)], "joker");
 							moveJoker(prIndex, orIndex);
 						}
 					}
@@ -531,26 +539,27 @@ public class WanderingJacks{
 	}
 
 	public void moveJoker(int prIndex, int orIndex){
-		// Check if both indexes are within bounds
-		if(prIndex > 3 || prIndex < 0) throw new IllegalArgumentException(prIndex + " is not within the range of valid retainers, 0-3");
-		if(orIndex > 3 || orIndex < 0) throw new IllegalArgumentException(orIndex + " is not within the range of valid retainers, 0-3");
-		// normalize retainer references
-		Retainer r1 = retainer[activePlayer][prIndex];
-		Retainer r2 = retainer[(activePlayer == 0 ? 1 : 0)][orIndex];
-		// Discard all pr's cards
-		while(r1.size() >= 1)
-			discardPile.discard(r1.remove(0));
-		// turn needToCoverDiscardedCard on
-		needToCoverDiscardedCard = true;
-		//check or for king, then jack, then aces to discard
-		if(r2.contains(Card.KING)){
-			discardPile.discard(r2.remove(r2.indexOf(Card.KING)));
-		}else if(r2.contains(Card.JACK)){
-			discardPile.discard(r2.remove(r2.indexOf(Card.JACK)));
-			while(r2.contains(Card.ACE))
-				discardPile.discard(r2.remove(r2.indexOf(Card.ACE)));
+		if(orIndex != -1){
+			// Check if both indexes are within bounds
+			if(prIndex > 3 || prIndex < 0) throw new IllegalArgumentException(prIndex + " is not within the range of valid retainers, 0-3");
+			if(orIndex > 3 || orIndex < 0) throw new IllegalArgumentException(orIndex + " is not within the range of valid retainers, 0-3");
+			// normalize retainer references
+			Retainer r1 = retainer[activePlayer][prIndex];
+			Retainer r2 = retainer[(activePlayer == 0 ? 1 : 0)][orIndex];
+			// Discard all pr's cards
+			while(r1.size() >= 1)
+				discardPile.discard(r1.remove(0));
+			// turn needToCoverDiscardedCard on
+			needToCoverDiscardedCard = true;
+			//check or for king, then jack, then aces to discard
+			if(r2.contains(Card.KING)){
+				discardPile.discard(r2.remove(r2.indexOf(Card.KING)));
+			}else if(r2.contains(Card.JACK)){
+				discardPile.discard(r2.remove(r2.indexOf(Card.JACK)));
+				while(r2.contains(Card.ACE))
+					discardPile.discard(r2.remove(r2.indexOf(Card.ACE)));
+			}
 		}
-
 	}
 
 	public boolean requestPlay(int[] request){

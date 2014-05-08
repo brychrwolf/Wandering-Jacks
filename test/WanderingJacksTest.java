@@ -470,6 +470,11 @@ public class WanderingJacksTest{
 		wj.moveJoker(0, 0);
 		assertTrue(wj.needToCoverDiscardedCard);
 	}
+	@Test
+	public void moveJoker_acceptsNeg1ForOpIndex(){
+		wj.moveJoker(0, -1);
+	}
+
 
 
 	/*
