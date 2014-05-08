@@ -114,6 +114,8 @@ public class Retainer{
 		try{
 			c = retainer.get(index);
 			retainer.remove(c);
+			if(c.getValueAsString() == "Jack")
+				retainsJack = false;
 		}catch(IndexOutOfBoundsException e){
 			throw new IndexOutOfBoundsException("Index "+index+" is not within bounds: "+retainer.size());
 		}

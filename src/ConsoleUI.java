@@ -57,6 +57,9 @@ public class ConsoleUI {
 		System.out.print("Player's Bankroll: ");
 		drawPlayersBankroll(wj.player[wj.activePlayer]);
 
+		System.out.print("Discard Pile: ");
+		drawDiscardPile(wj.discardPile);
+
 		System.out.println("Player's Hand:");
 		drawPlayersHand(wj.player[wj.activePlayer]);
 
@@ -66,8 +69,7 @@ public class ConsoleUI {
 		System.out.println("Opponent's Retainers:");
 		drawRetainerGroup(wj.retainer[(wj.activePlayer == 0 ? 1 : 0)]);
 
-		System.out.print("Discard Pile: ");
-		drawDiscardPile(wj.discardPile);
+		System.out.println("------------------------------");
 	}
 
 	/**
