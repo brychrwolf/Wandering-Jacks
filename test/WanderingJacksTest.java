@@ -657,7 +657,7 @@ public class WanderingJacksTest{
 		wj.player[0].addToHand(anAce);
 		wj.player[0].addToHand(anAce);
 		wj.player[0].addToHand(anAce);
-		int[] pr = {3, 4, 101}; // from hand, to 1st retainer, with DenOfThieves
+		int[] pr = {3, 4, 100}; // from hand, to 1st retainer, with DenOfThieves
 		assertTrue(wj.requestPlay(pr));
 		assertEquals(wj.retainer[0][0].size(), 4);
 		assertTrue(wj.retainer[0][0].get(0).equals(aQueen));
@@ -1050,6 +1050,22 @@ public class WanderingJacksTest{
 			wj.retainer[0][i].add(a9);
 		wj.checkForEmptyRetainers();
 		assertFalse(wj.hasAnEmptyRetainer[0]);
+	}
+
+	/*
+	 * activateSpecialMoves
+	 */
+	@Test
+	public void aSM_3oakPlusA(){
+		fail("not implemented");
+	}
+	@Test
+	public void aSM_joker(){
+		fail("not implemented");
+	}
+	@Test
+	public void aSM_4oak(){
+		fail("not implemented");
 	}
 
 }

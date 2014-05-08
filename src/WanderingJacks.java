@@ -173,33 +173,9 @@ public class WanderingJacks{
 					requestPlay(playRequest);
 					//  no longer on the first play-from-hand of turn
 					onFirstPlayFromHandOfTurn = false;
-					// perform any fancy moves like 3oak+A
+					// activate moves: 3oak+A, 4oak, and jokers
 					//	  prompt user for opponent's retainer if necessary
-					if(playRequest[1] >= 4 && playRequest[1] <= 7){
-						int prIndex = playRequest[1] - 4;
-						Retainer pr = retainer[activePlayer][prIndex];
-						if(pr.size() == 4
-						&& pr.get(0).getValue() == pr.get(1).getValue()
-						&& pr.get(0).getValue() == pr.get(2).getValue()
-						&& pr.get(3).getValue() == Card.ACE){
-							// Move was a 3oak+A!
-							int orIndex = ConsoleUI.promptPlayerToChooseOpponantsRetainer(retainer[(activePlayer == 1 ? 0 : 1)], "3oak+A");
-							move_3oakPlusAce(prIndex, orIndex);
-						}else if(pr.get(pr.size() - 1).getValue() == Card.JOKER){
-							// Move was a Joker!
-							// check if opponent has a jack or king first!
-							boolean opHasCardsToBurn = false;
-							for(int i = 0; i < 4; i++)
-								if(retainer[activePlayer == 1 ? 0 : 1][i].contains(Card.JACK)
-								|| retainer[activePlayer == 1 ? 0 : 1][i].contains(Card.KING))
-									opHasCardsToBurn = true;
-							int orIndex = -1;
-							if(opHasCardsToBurn)
-								orIndex = ConsoleUI.promptPlayerToChooseOpponantsRetainer(retainer[(activePlayer == 1 ? 0 : 1)], "joker");
-							moveJoker(prIndex, orIndex);
-						}
-					}
-
+					activateSpecialMoves(playRequest);
 					// display game state
 					ConsoleUI.draw(this);
 					// check for empty retainers
@@ -544,13 +520,14 @@ public class WanderingJacks{
 		if(orIndex > 3 || orIndex < -1) throw new IllegalArgumentException(orIndex + " is not within the range of valid retainers, 0-3");
 		// normalize retainer references
 		Retainer r1 = retainer[activePlayer][prIndex];
-		Retainer r2 = retainer[(activePlayer == 0 ? 1 : 0)][orIndex];
 		// Discard all pr's cards
 		while(r1.size() >= 1)
 			discardPile.discard(r1.remove(0));
 		// turn needToCoverDiscardedCard on
 		needToCoverDiscardedCard = true;
 		if(orIndex != -1){
+			// normalize retainer references
+			Retainer r2 = retainer[(activePlayer == 0 ? 1 : 0)][orIndex];
 			//check or for king, then jack, then aces to discard
 			if(r2.contains(Card.KING)){
 				discardPile.discard(r2.remove(r2.indexOf(Card.KING)));
@@ -727,6 +704,33 @@ public class WanderingJacks{
 			for(int j = 0; j < retainer[i].length; j++)
 				if(retainer[i][j].isEmpty())
 					hasAnEmptyRetainer[i] = true;
+		}
+	}
+
+	private void activateSpecialMoves(int[] playRequest){
+		if(playRequest[1] >= 4 && playRequest[1] <= 7){
+			int prIndex = playRequest[1] - 4;
+			Retainer pr = retainer[activePlayer][prIndex];
+			if(pr.size() == 4
+			&& pr.get(0).getValue() == pr.get(1).getValue()
+			&& pr.get(0).getValue() == pr.get(2).getValue()
+			&& pr.get(3).getValue() == Card.ACE){
+				// Move was a 3oak+A!
+				int orIndex = ConsoleUI.promptPlayerToChooseOpponantsRetainer(retainer[(activePlayer == 1 ? 0 : 1)], "3oak+A");
+				move_3oakPlusAce(prIndex, orIndex);
+			}else if(pr.get(pr.size() - 1).getValue() == Card.JOKER){
+				// Move was a Joker!
+				// check if opponent has a jack or king first!
+				boolean opHasCardsToBurn = false;
+				for(int i = 0; i < 4; i++)
+					if(retainer[activePlayer == 1 ? 0 : 1][i].contains(Card.JACK)
+					|| retainer[activePlayer == 1 ? 0 : 1][i].contains(Card.KING))
+						opHasCardsToBurn = true;
+				int orIndex = -1;
+				if(opHasCardsToBurn)
+					orIndex = ConsoleUI.promptPlayerToChooseOpponantsRetainer(retainer[(activePlayer == 1 ? 0 : 1)], "joker");
+				moveJoker(prIndex, orIndex);
+			}
 		}
 	}
 }
