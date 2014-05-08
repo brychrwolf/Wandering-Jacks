@@ -465,7 +465,7 @@ public class WanderingJacks{
 		//	discard one from deck
 		if(discardPile.isEmpty() || needToCoverDiscardedCard){
 			Card drawnCard = deck.dealCard();
-			System.out.println("The "+drawnCard.toString()+" was discard.");
+			System.out.println("The "+drawnCard.toString()+" was discarded.");
 			discardPile.discard(drawnCard);
 		}
 		// toggle active player
@@ -537,6 +537,11 @@ public class WanderingJacks{
 					discardPile.discard(r2.remove(r2.indexOf(Card.ACE)));
 			}
 		}
+	}
+
+	public void move4oak(int prIndex){
+		while(!retainer[activePlayer][prIndex].isEmpty())
+			retainer[activePlayer][prIndex].remove(0);
 	}
 
 	public boolean requestPlay(int[] request){
@@ -730,7 +735,13 @@ public class WanderingJacks{
 				if(opHasCardsToBurn)
 					orIndex = ConsoleUI.promptPlayerToChooseOpponantsRetainer(retainer[(activePlayer == 1 ? 0 : 1)], "joker");
 				moveJoker(prIndex, orIndex);
-			}
+			}else if(pr.size() == 4)
+				if(pr.get(0).getValue() == pr.get(1).getValue()
+				&& pr.get(0).getValue() == pr.get(2).getValue()
+				&& pr.get(0).getValue() == pr.get(3).getValue()){
+					// move was a 4oak!
+					move4oak(prIndex);
+				}
 		}
 	}
 }

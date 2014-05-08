@@ -474,6 +474,22 @@ public class WanderingJacksTest{
 		wj.moveJoker(0, -1);
 	}
 
+	/*
+	 * move4oak
+	 */
+	@Test
+	public void move4oak_destroysAll4Cards(){
+		wj.retainer[0][0].add(a10);
+		wj.retainer[0][0].add(a10);
+		wj.retainer[0][0].add(a10);
+		wj.retainer[0][0].add(a10);
+		int origDpSize = wj.discardPile.size();
+		wj.move4oak(0);
+		assertTrue(wj.retainer[0][0].isEmpty());
+		assertEquals(origDpSize, wj.discardPile.size());
+
+	}
+
 
 
 	/*
