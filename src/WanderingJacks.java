@@ -539,18 +539,18 @@ public class WanderingJacks{
 	}
 
 	public void moveJoker(int prIndex, int orIndex){
+		// Check if both indexes are within bounds
+		if(prIndex > 3 || prIndex < 0) throw new IllegalArgumentException(prIndex + " is not within the range of valid retainers, 0-3");
+		if(orIndex > 3 || orIndex < -1) throw new IllegalArgumentException(orIndex + " is not within the range of valid retainers, 0-3");
+		// normalize retainer references
+		Retainer r1 = retainer[activePlayer][prIndex];
+		Retainer r2 = retainer[(activePlayer == 0 ? 1 : 0)][orIndex];
+		// Discard all pr's cards
+		while(r1.size() >= 1)
+			discardPile.discard(r1.remove(0));
+		// turn needToCoverDiscardedCard on
+		needToCoverDiscardedCard = true;
 		if(orIndex != -1){
-			// Check if both indexes are within bounds
-			if(prIndex > 3 || prIndex < 0) throw new IllegalArgumentException(prIndex + " is not within the range of valid retainers, 0-3");
-			if(orIndex > 3 || orIndex < 0) throw new IllegalArgumentException(orIndex + " is not within the range of valid retainers, 0-3");
-			// normalize retainer references
-			Retainer r1 = retainer[activePlayer][prIndex];
-			Retainer r2 = retainer[(activePlayer == 0 ? 1 : 0)][orIndex];
-			// Discard all pr's cards
-			while(r1.size() >= 1)
-				discardPile.discard(r1.remove(0));
-			// turn needToCoverDiscardedCard on
-			needToCoverDiscardedCard = true;
 			//check or for king, then jack, then aces to discard
 			if(r2.contains(Card.KING)){
 				discardPile.discard(r2.remove(r2.indexOf(Card.KING)));
