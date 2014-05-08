@@ -339,31 +339,31 @@ public class WanderingJacksTest{
 	 * Test that a player can swap a retainer with 3oak+A
 	 */
 	@Test(expected=IllegalStateException.class)
-	public void exceptionThrown_PlayerHasNo3oak(){
+	public void threeOakPA_exThrown_PlayerHasNo3oak(){
 		wj.move_3oakPlusAce(0, 0);
 	}
 
 	@Test(expected=IllegalStateException.class)
-	public void exceptionThrown_ORcontainsAJack(){
+	public void threeOakPA_exThrown_ORcontainsAJack(){
 		wj.retainer[0][0] = three9s;
 		wj.retainer[1][0].add(aJack);
 		wj.move_3oakPlusAce(0, 0);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
-	public void exceptionThrown_PIndexOutOfBounds(){
+	public void threeOakPA_exThrown_PIndexOutOfBounds(){
 		wj.retainer[0][0] = three9s;
 		wj.move_3oakPlusAce(5, 0);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
-	public void exceptionThrown_OIndexOutOfBounds(){
+	public void threeOakPA_exThrown_OIndexOutOfBounds(){
 		wj.retainer[0][0] = three9s;
 		wj.move_3oakPlusAce(0, 5);
 	}
 
 	@Test
-	public void threeOfAKindSwapsRetainers(){
+	public void threeOakPA_SwapsRetainers(){
 		wj.retainer[0][0] = three9s;
 		wj.retainer[1][0] = twoQueens;
 		wj.move_3oakPlusAce(0, 0);
@@ -374,9 +374,8 @@ public class WanderingJacksTest{
 		assertTrue(wj.retainer[1][0].get(0).equals(a9));
 		assertTrue(wj.discardPile.peekAtTopCard().equals(a9));
 	}
-
 	@Test
-	public void threeOfAKind_turnsOn_needToCoverDiscardedCard(){
+	public void threeOakPA_turnsOn_needToCoverDiscardedCard(){
 		wj.retainer[0][0] = three9s;
 		wj.retainer[1][0] = twoQueens;
 		assertFalse(wj.needToCoverDiscardedCard);
@@ -974,7 +973,6 @@ public class WanderingJacksTest{
 		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "Den of Thieves");
 		assertFalse(vp[0]);
 	}
-
 	@Test
 	public void vPF_WhenPlayingADoT_DontInclude_RsWithMoreThanOneCard(){
 		wj.retainer[0][0].add(aQueen);
@@ -982,14 +980,12 @@ public class WanderingJacksTest{
 		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "Den of Thieves");
 		assertFalse(vp[0]);
 	}
-
 	@Test
 	public void vPF_WhenPlayingADoT_Include_RsWithQueens(){
 		wj.retainer[0][0].add(aQueen);
 		boolean[] vp = WanderingJacks.validPlayFor(wj.retainer[0], "Den of Thieves");
 		assertTrue(vp[0]);
 	}
-
 	@Test
 	public void vPF_WhenPlayingADoT_Include_RsWith10s(){
 		wj.retainer[0][0].add(a10);
