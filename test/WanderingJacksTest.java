@@ -1069,15 +1069,53 @@ public class WanderingJacksTest{
 	 */
 	@Test
 	public void aSM_3oakPlusA(){
-		fail("not implemented");
+		wj.retainer[0][0].add(a9);
+		wj.retainer[0][0].add(a9);
+		wj.retainer[0][0].add(a9);
+		wj.retainer[0][0].add(anAce);
+		wj.retainer[1][0].add(a10);
+		int[] playRequest = {3, 4, 0};
+
+		String mockUserInput = "0"+newLine;
+		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
+		System.setIn(mockIn);
+		wj.activateSpecialMoves(playRequest);
+		System.setIn(System.in);
+
+		assertTrue(wj.retainer[0][0].get(0).equals(a10));
+		assertTrue(wj.retainer[1][0].get(0).equals(a9));
+		assertTrue(wj.discardPile.peekAtTopCard().equals(anAce));
 	}
 	@Test
 	public void aSM_joker(){
-		fail("not implemented");
+		wj.retainer[0][0].add(a9);
+		wj.retainer[0][0].add(aJoker);
+		int[] playRequest = {3, 4, 0};
+
+		String mockUserInput = "0"+newLine;
+		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
+		System.setIn(mockIn);
+		wj.activateSpecialMoves(playRequest);
+		System.setIn(System.in);
+
+		assertTrue(wj.retainer[0][0].isEmpty());
+		assertTrue(wj.discardPile.peekAtTopCard().equals(aJoker));
 	}
 	@Test
 	public void aSM_4oak(){
-		fail("not implemented");
+		wj.retainer[0][0].add(a9);
+		wj.retainer[0][0].add(a9);
+		wj.retainer[0][0].add(a9);
+		wj.retainer[0][0].add(a9);
+		int[] playRequest = {3, 4, 0};
+
+		String mockUserInput = "0"+newLine;
+		ByteArrayInputStream mockIn = new ByteArrayInputStream(mockUserInput.getBytes());
+		System.setIn(mockIn);
+		wj.activateSpecialMoves(playRequest);
+		System.setIn(System.in);
+
+		assertTrue(wj.retainer[0][0].isEmpty());
 	}
 
 }

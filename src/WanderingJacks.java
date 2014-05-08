@@ -304,7 +304,7 @@ public class WanderingJacks{
 		deck.dealCard(); // Joker
 		deck.dealCard(); // Joker
 
-		// Den of thieves
+		/*/ Den of thieves
 		player[0].addToHand(new Card(Card.ACE, 1));
 		player[0].addToHand(new Card(Card.ACE, 1));
 		player[0].addToHand(new Card(Card.ACE, 1));
@@ -312,6 +312,7 @@ public class WanderingJacks{
 		retainer[0][1].add(new Card(10, 1));
 		retainer[0][2].add(new Card(9, 1));
 		retainer[0][3].add(new Card(Card.QUEEN, 1));
+		*/
 
 		/*/3oak+A
 		player[0].addToHand(new Card(Card.ACE, 1));
@@ -325,9 +326,10 @@ public class WanderingJacks{
 		retainer[1][0].add(new Card(Card.QUEEN, 1));
 		retainer[1][1].add(new Card(7, 1));
 		retainer[1][2].add(new Card(7, 1));
-		retainer[1][3].add(new Card(7, 1));*/
+		retainer[1][3].add(new Card(7, 1));
+		*/
 
-		/*/moveJoker
+		//moveJoker
 		player[0].addToHand(new Card(Card.JOKER, Card.JOKER));
 		retainer[0][0].add(new Card(3, 1));
 		retainer[0][1].add(new Card(3, 1));
@@ -336,7 +338,7 @@ public class WanderingJacks{
 		retainer[1][0].add(new Card(Card.JACK, 1));
 		retainer[1][1].add(new Card(7, 1));
 		retainer[1][2].add(new Card(7, 1));
-		retainer[1][3].add(new Card(7, 1));*/
+		retainer[1][3].add(new Card(7, 1));
 
 		checkForEmptyRetainers();
 	}
@@ -712,7 +714,7 @@ public class WanderingJacks{
 		}
 	}
 
-	private void activateSpecialMoves(int[] playRequest){
+	public void activateSpecialMoves(int[] playRequest){
 		// If card was played to a retainer
 		if(playRequest[1] >= 4 && playRequest[1] <= 7){
 			int prIndex = playRequest[1] - 4;
