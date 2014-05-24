@@ -467,7 +467,7 @@ public class WanderingJacks{
 		//	discard one from deck
 		if(discardPile.isEmpty() || needToCoverDiscardedCard){
 			Card drawnCard = deck.dealCard();
-			System.out.println("The "+drawnCard.toString()+" was discarded.");
+			System.out.println("REFEREE: The "+drawnCard.toString()+" was discarded.");
 			discardPile.discard(drawnCard);
 		}
 		// toggle active player

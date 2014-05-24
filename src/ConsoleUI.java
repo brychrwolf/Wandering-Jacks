@@ -187,7 +187,7 @@ public class ConsoleUI {
 				options.put(101, "Den of Thieves");
 		}
 		int selection = -1; // Should never return as -1
-		try{ selection = ConsoleUI.getPlayerInput("Please select which card from your hand:", options);
+		try{ selection = ConsoleUI.getPlayerInput("Please select a card from your hand to play:", options);
 		}catch(IOException e){
 			System.err.println("Failed to accept player input.");}
 		return selection;
